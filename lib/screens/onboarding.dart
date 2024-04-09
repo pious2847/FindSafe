@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:lost_mode_app/screens/home.dart';
 import 'package:lost_mode_app/utils/content_model.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 class Onbording extends StatefulWidget {
   @override
@@ -11,11 +13,20 @@ class Onbording extends StatefulWidget {
 
 class _OnbordingState extends State<Onbording> {
   int currentIndex = 0;
- late PageController _controller;
+  late PageController _controller;
+
+  Future<void> requestPermissions() async {
+    // ignore: unused_local_variable
+    Map<Permission, PermissionStatus> statuses = await [
+      Permission.location,
+      Permission.storage,
+    ].request();
+  }
 
   @override
   void initState() {
     _controller = PageController(initialPage: 0);
+    requestPermissions();
     super.initState();
   }
 
@@ -82,14 +93,17 @@ class _OnbordingState extends State<Onbording> {
             margin: const EdgeInsets.all(40),
             width: double.infinity,
             child: TextButton(
-              onPressed: () {
+              onPressed: () async {
                 if (currentIndex == contents.length - 1) {
                   Navigator.pushReplacement(
+                    // ignore: use_build_context_synchronously
                     context,
                     MaterialPageRoute(
                       builder: (_) => const HomeScreen(),
                     ),
                   );
+                  final prefs = await SharedPreferences.getInstance();
+                  prefs.setBool('showHome', true);
                 }
                 _controller.nextPage(
                   duration: const Duration(milliseconds: 100),

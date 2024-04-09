@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:lost_mode_app/constants/NavBar.dart';
 import 'package:permission_handler/permission_handler.dart';
 
 class HomeScreen extends StatefulWidget {
-  const HomeScreen({Key? key}) : super(key: key);
+  const HomeScreen({super.key});
 
   @override
   State<HomeScreen> createState() => _HomeScreenState();
@@ -10,6 +11,7 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   Future<void> requestPermissions() async {
+    // ignore: unused_local_variable
     Map<Permission, PermissionStatus> statuses = await [
       Permission.location,
       Permission.storage,
@@ -39,8 +41,14 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      drawer: NavBar(),
       appBar: AppBar(
-        title: Text("Home"),
+        title: const Text("FindSafe", style: TextStyle(fontWeight: FontWeight.w400),),
+        backgroundColor: Colors.white,
+        actions: [
+          
+        ],
+        elevation: 0.0,
       ),
       body: Center(
         child: ElevatedButton(
@@ -52,7 +60,7 @@ class _HomeScreenState extends State<HomeScreen> {
               promptEnableMobileData();
             }
           },
-          child: Text("Request Permissions"),
+          child: const Text("Request Permissions"),
         ),
       ),
     );

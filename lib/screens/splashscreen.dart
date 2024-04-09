@@ -1,30 +1,43 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:lost_mode_app/constants/colors.dart';
+import 'package:lost_mode_app/screens/home.dart';
 import 'package:lost_mode_app/screens/onboarding.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class SplashScreen extends StatefulWidget {
-  const SplashScreen({super.key});
+  const SplashScreen({Key? key}) : super(key: key);
 
   @override
-  State<SplashScreen> createState() => _SplashScreenState();
+  _SplashScreenState createState() => _SplashScreenState();
 }
 
 class _SplashScreenState extends State<SplashScreen>
     with SingleTickerProviderStateMixin {
-  @override
-  void initState() {
-    super.initState();
-    SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersive);
+  bool showHome = false;
+
+@override
+void initState() {
+  super.initState();
+  SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersive);
+
+  SharedPreferences.getInstance().then((prefs) {
+    bool showHome = prefs.getBool('showHome') ?? false;
 
     Future.delayed(const Duration(seconds: 4), () {
+      setState(() {
+        showHome = showHome;
+      });
+
       Navigator.of(context).pushReplacement(
         MaterialPageRoute(
-          builder: (_) =>  Onbording(),
+          builder: (_) => showHome ? const HomeScreen() : Onbording(),
         ),
       );
     });
-  }
+  });
+}
+
 
   @override
   void dispose() {

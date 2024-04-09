@@ -1,11 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:lost_mode_app/screens/splashscreen.dart';
 
-void main() {
-  runApp(MyApp());
+void main() async {
+ 
+  runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
+  const MyApp({super.key});
+
+ 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -18,4 +22,3 @@ class MyApp extends StatelessWidget {
     );
   }
 }
-
