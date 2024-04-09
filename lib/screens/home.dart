@@ -23,14 +23,15 @@ class _HomeScreenState extends State<HomeScreen> {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text("Enable Mobile Data"),
-          content: Text("Please enable mobile data to send your device's location."),
+          title: const Text("Enable Mobile Data"),
+          content:
+              const Text("Please enable mobile data to send your device's location."),
           actions: <Widget>[
             TextButton(
               onPressed: () {
                 Navigator.of(context).pop();
               },
-              child: Text("OK"),
+              child: const Text("OK"),
             ),
           ],
         );
@@ -41,15 +42,8 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      drawer: NavBar(),
-      appBar: AppBar(
-        title: const Text("FindSafe", style: TextStyle(fontWeight: FontWeight.w400),),
-        backgroundColor: Colors.white,
-        actions: [
-          
-        ],
-        elevation: 0.0,
-      ),
+      drawer: const NavBar(),
+      appBar: _AppBar(),
       body: Center(
         child: ElevatedButton(
           onPressed: () async {
@@ -63,6 +57,30 @@ class _HomeScreenState extends State<HomeScreen> {
           child: const Text("Request Permissions"),
         ),
       ),
+    );
+  }
+
+  AppBar _AppBar() {
+    return AppBar(
+      title: const Text(
+        "FindSafe",
+        style: TextStyle(fontWeight: FontWeight.w400, fontSize: 18),
+      ),
+      backgroundColor: Colors.white,
+      actions: const [
+        SizedBox(
+          width: 60,
+          child: Padding(
+            padding: EdgeInsets.all(13.0),
+            child: CircleAvatar(
+              backgroundImage: AssetImage(
+                'assets/images/avatar.jpg',
+              ),
+            ),
+          ),
+        )
+      ],
+      elevation: 0.0,
     );
   }
 }
