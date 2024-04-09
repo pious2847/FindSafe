@@ -6,10 +6,19 @@ class NavBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return  Drawer(
+    return Drawer(
       child: ListView(
         children: [
-          UserAccountsDrawerHeader(accountName: Text("Abdul Hafis Mohammed"), accountEmail: Text('abdulhafis2847@gmail.com'))
+          UserAccountsDrawerHeader(
+            accountName: const Text("Abdul Hafis Mohammed"),
+            accountEmail: const Text('abdulhafis2847@gmail.com'),
+            currentAccountPicture: CircleAvatar(
+              child: ClipOval(child: Image.asset('assets/images/avatar.jpg'),),
+            ),
+            decoration: BoxDecoration(
+              image: DecorationImage(image: AssetImage('assets/images/background.jpg'))
+            ),
+          )
         ],
       ),
     );
