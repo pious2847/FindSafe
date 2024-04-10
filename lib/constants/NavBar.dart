@@ -1,5 +1,6 @@
+// ignore_for_file: avoid_print
+
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 
 class NavBar extends StatelessWidget {
   const NavBar({super.key});
@@ -18,7 +19,7 @@ class NavBar extends StatelessWidget {
                 child: Image.asset('assets/images/avatar.jpg'),
               ),
             ),
-            decoration: BoxDecoration(
+            decoration: const BoxDecoration(
                 image: DecorationImage(
                     image: AssetImage('assets/images/background.jpg'),
                     fit: BoxFit.cover)),
@@ -31,23 +32,23 @@ class NavBar extends StatelessWidget {
                 Column(
                   children: [
                     ListTile(
-                      leading: Icon(Icons.home_filled),
-                      title: Text('Dashboard'),
+                      leading: const Icon(Icons.home_filled),
+                      title: const Text('Dashboard'),
                       onTap: () => print('tapped'),
                     ),
                     ListTile(
-                      leading: Icon(Icons.home),
-                      title: Text('Dashboard'),
+                      leading: const Icon(Icons.home),
+                      title: const Text('Dashboard'),
                       onTap: () => print('tapped'),
                     ),
                     ListTile(
-                      leading: Icon(Icons.home),
-                      title: Text('Dashboard'),
+                      leading: const Icon(Icons.home),
+                      title: const Text('Dashboard'),
                       onTap: () => print('tapped'),
                     ),
                     ListTile(
-                      leading: Icon(Icons.settings),
-                      title: Text('Settings'),
+                      leading: const Icon(Icons.settings),
+                      title: const Text('Settings'),
                       onTap: () => print('tapped'),
                     ),
                   ],
@@ -55,13 +56,13 @@ class NavBar extends StatelessWidget {
                 Column(
                   children: [
                     ListTile(
-                      leading: Icon(Icons.settings),
-                      title: Text('Settings'),
+                      leading: const Icon(Icons.settings),
+                      title: const Text('Settings'),
                       onTap: () => print('tapped Settings'),
                     ),
                  ListTile(
-                      leading: Icon(Icons.logout_outlined),
-                      title: Text('Logout'),
+                      leading: const Icon(Icons.logout_outlined),
+                      title: const Text('Logout'),
                       onTap: () => print('tapped Logout'),
                     ),
                   ],
