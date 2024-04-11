@@ -1,0 +1,32 @@
+  void promptEnableMobileData() {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text("Enable Mobile Data"),
+          content:
+              const Text("Please enable mobile data to send your device's location."),
+          actions: <Widget>[
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: const Text("OK"),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  child: ElevatedButton(
+          onPressed: () async {
+            await requestPermissions();
+            // Check if location permission is granted before proceeding
+            if (await Permission.location.isGranted) {
+              // Prompt user to enable mobile data
+              promptEnableMobileData();
+            }
+          },
+          child: const Text("Request Permissions"),
+        ),

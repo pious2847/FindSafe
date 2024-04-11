@@ -10,34 +10,7 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  Future<void> requestPermissions() async {
-    // ignore: unused_local_variable
-    Map<Permission, PermissionStatus> statuses = await [
-      Permission.location,
-      Permission.storage,
-    ].request();
-  }
 
-  void promptEnableMobileData() {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: const Text("Enable Mobile Data"),
-          content:
-              const Text("Please enable mobile data to send your device's location."),
-          actions: <Widget>[
-            TextButton(
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-              child: const Text("OK"),
-            ),
-          ],
-        );
-      },
-    );
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -46,13 +19,8 @@ class _HomeScreenState extends State<HomeScreen> {
       appBar: _AppBar(),
       body: Center(
         child: ElevatedButton(
-          onPressed: () async {
-            await requestPermissions();
-            // Check if location permission is granted before proceeding
-            if (await Permission.location.isGranted) {
-              // Prompt user to enable mobile data
-              promptEnableMobileData();
-            }
+          onPressed: ()  {
+          
           },
           child: const Text("Request Permissions"),
         ),
@@ -60,6 +28,7 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
+  // ignore: non_constant_identifier_names
   AppBar _AppBar() {
     return AppBar(
       title: const Text(
