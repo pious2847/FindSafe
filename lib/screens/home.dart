@@ -16,7 +16,7 @@ class _HomeScreenState extends State<HomeScreen> {
     return Scaffold(
       drawer: const NavBar(),
       appBar: _AppBar(),
-      body: 
+      
     );
   }
 
