@@ -19,8 +19,8 @@ class _HomeScreenState extends State<HomeScreen> {
       appBar: _AppBar(),
       body: Column(
         children: [
-          LocationMap(),
-          
+          MapScreen(),
+
         ],
       ),
     );
