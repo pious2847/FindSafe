@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:lost_mode_app/constants/NavBar.dart';
+import 'package:lost_mode_app/utils/usermap.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -16,7 +17,12 @@ class _HomeScreenState extends State<HomeScreen> {
     return Scaffold(
       drawer: const NavBar(),
       appBar: _AppBar(),
-      
+      body: Column(
+        children: [
+          LocationMap(),
+          
+        ],
+      ),
     );
   }
 
