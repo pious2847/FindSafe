@@ -4,13 +4,14 @@ import 'package:location/location.dart';
 
 class LocationMap extends StatefulWidget {
   @override
+  // ignore: library_private_types_in_public_api
   _LocationMapState createState() => _LocationMapState();
 }
 
 class _LocationMapState extends State<LocationMap> {
   late GoogleMapController mapController;
   Location location = Location();
-  LatLng _initialCameraPosition = LatLng(0.0, 0.0); // Default position
+  LatLng _initialCameraPosition = const LatLng(0.0, 0.0); // Default position
 
   @override
   void initState() {
