@@ -23,6 +23,7 @@ class DirectionsRepository {
         'key': googleAPIKey,
       },
     );
+   print('Direction request has been made result =======: ${response.data ?? "No data"}');
 
     // Check if response is successful
     if (response.statusCode == 200) {

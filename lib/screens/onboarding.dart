@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:lost_mode_app/screens/home.dart';
 import 'package:lost_mode_app/utils/content_model.dart';
+import 'package:lost_mode_app/utils/usermap.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:permission_handler/permission_handler.dart';
 
@@ -99,7 +100,7 @@ class _OnbordingState extends State<Onbording> {
                     // ignore: use_build_context_synchronously
                     context,
                     MaterialPageRoute(
-                      builder: (_) => const HomeScreen(),
+                      builder: (_) => const MapScreen(),
                     ),
                   );
                   final prefs = await SharedPreferences.getInstance();

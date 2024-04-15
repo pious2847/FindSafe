@@ -7,6 +7,8 @@ import 'package:lost_mode_app/utils/directions_model.dart';
 import 'package:lost_mode_app/utils/directions_repository.dart';
 
 class MapScreen extends StatefulWidget {
+  const MapScreen({Key? key}) : super(key: key);
+
   @override
   _MapScreenState createState() => _MapScreenState();
 }
@@ -18,7 +20,7 @@ class _MapScreenState extends State<MapScreen> {
   );
 
   late GoogleMapController _googleMapController;
-  late Marker _origin;
+  Marker? _origin;
   Marker? _destination;
   Directions? _info;
 
@@ -35,13 +37,12 @@ class _MapScreenState extends State<MapScreen> {
         centerTitle: false,
         title: const Text('Google Maps'),
         actions: [
-          // ignore: unnecessary_null_comparison
           if (_origin != null)
             TextButton(
               onPressed: () => _googleMapController.animateCamera(
                 CameraUpdate.newCameraPosition(
                   CameraPosition(
-                    target: _origin.position,
+                    target: _origin!.position,
                     zoom: 14.5,
                     tilt: 50.0,
                   ),
@@ -81,8 +82,9 @@ class _MapScreenState extends State<MapScreen> {
             initialCameraPosition: _initialCameraPosition,
             onMapCreated: (controller) => _googleMapController = controller,
             markers: {
-              if (_origin != null) _origin,
+              if (_origin != null) _origin!,
               if (_destination != null) _destination!,
+              
             },
             polylines: {
               if (_info != null)
@@ -117,7 +119,7 @@ class _MapScreenState extends State<MapScreen> {
                   ],
                 ),
                 child: Text(
-                  '${_info!.totalDistance}, ${_info!.totalDuration}',
+                  '${_info?.totalDistance}, ${_info?.totalDuration}',
                   style: const TextStyle(
                     fontSize: 18.0,
                     fontWeight: FontWeight.w600,
@@ -142,14 +144,14 @@ class _MapScreenState extends State<MapScreen> {
 
   void _addMarker(LatLng pos) async {
     if (_origin == null || (_origin != null && _destination != null)) {
+    
       // Origin is not set OR Origin/Destination are both set
       // Set origin
       setState(() {
         _origin = Marker(
           markerId: const MarkerId('origin'),
           infoWindow: const InfoWindow(title: 'Origin'),
-          icon:
-              BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueGreen),
+          icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueGreen),
           position: pos,
         );
         // Reset destination
@@ -172,8 +174,8 @@ class _MapScreenState extends State<MapScreen> {
 
       // Get directions
       final directions = await DirectionsRepository()
-          .getDirections(origin: _origin.position, destination: pos);
-      setState(() => _info = directions!);
+          .getDirections(origin: _origin!.position, destination: pos);
+      setState(() => _info = directions);
     }
   }
 }
