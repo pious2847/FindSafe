@@ -14,15 +14,30 @@ class MapScreen extends StatefulWidget {
 }
 
 class _MapScreenState extends State<MapScreen> {
-  static const _initialCameraPosition = CameraPosition(
-    target: LatLng(37.773972, -122.431297),
-    zoom: 11.5,
-  );
+  void _getLocation() async {
+    LocationData currentLocation = await _location.getLocation();
+    setState(() {
+      _initialCameraPosition = CameraPosition(
+        target: LatLng(currentLocation.latitude!, currentLocation.longitude!),
+        zoom: 11.5,
+      );
+    });
+  }
+
+  late CameraPosition _initialCameraPosition;
 
   late GoogleMapController _googleMapController;
   Marker? _origin;
   Marker? _destination;
   Directions? _info;
+  late Location _location;
+
+  @override
+  void initState() {
+    super.initState();
+    _location = Location();
+    _getLocation();
+  }
 
   @override
   void dispose() {
@@ -84,7 +99,6 @@ class _MapScreenState extends State<MapScreen> {
             markers: {
               if (_origin != null) _origin!,
               if (_destination != null) _destination!,
-              
             },
             polylines: {
               if (_info != null)
@@ -141,35 +155,45 @@ class _MapScreenState extends State<MapScreen> {
       ),
     );
   }
-void _addMarker(LatLng pos) async {
-  if (_origin == null) {
-    // Set origin to current location
+
+  void _addMarker(LatLng pos) async {
+    // Get current location
     LocationData currentLocation = await Location.instance.getLocation();
-    LatLng originLatLng = LatLng(currentLocation.latitude!, currentLocation.longitude!);
-    
+    LatLng currentLatLng =
+        LatLng(currentLocation.latitude!, currentLocation.longitude!);
+
+    // Set origin to current location
     setState(() {
       _origin = Marker(
         markerId: const MarkerId('origin'),
         infoWindow: const InfoWindow(title: 'Origin'),
         icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueGreen),
-        position: originLatLng,
-      );
-    });
-  } else if (_destination == null) {
-    // Set destination to current location of the device being tracked
-    setState(() {
-      _destination = Marker(
-        markerId: const MarkerId('destination'),
-        infoWindow: const InfoWindow(title: 'Destination'),
-        icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueBlue),
-        position: pos,
+        position: currentLatLng,
       );
     });
 
+    // Set destination marker if it's null
+    if (_destination == null) {
+      setState(() {
+        _destination = Marker(
+          markerId: const MarkerId('destination'),
+          infoWindow: const InfoWindow(title: 'Destination'),
+          icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueBlue),
+          position: pos,
+        );
+      });
+ LatLng destinationCoordinates = await _getDestinationCoordinatesFromAPI();
+    
     // Get directions
     final directions = await DirectionsRepository()
-        .getDirections(origin: _origin!.position, destination: pos);
+        .getDirections(origin: _origin!.position, destination: destinationCoordinates);
     setState(() => _info = directions);
   }
+  
+  }
+  Future<LatLng> _getDestinationCoordinatesFromAPI() async {
+  // Make API call to get destination coordinates
+  // For demonstration purposes, let's assume the API returns a fixed set of coordinates
+  return LatLng(37.7749, -122.4194);
 }
 }
