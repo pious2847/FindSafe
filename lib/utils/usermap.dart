@@ -176,14 +176,14 @@ class _MapScreenState extends State<MapScreen> {
               ],
             ),
           ),
-          SizedBox(
+          const SizedBox(
             height: 15,
           ),
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Padding(
-                padding: const EdgeInsets.only(left: 10, bottom: 10),
+              const Padding(
+                padding: EdgeInsets.only(left: 10, bottom: 10),
                 child: Text(
                   'Connected Devices ',
                   
