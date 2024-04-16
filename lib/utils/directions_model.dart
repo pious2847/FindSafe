@@ -19,7 +19,7 @@ factory Directions.fromMap(Map<String, dynamic> map) {
   if ((map['routes'] as List).isEmpty) {
     // Return a default Directions object or throw an exception
     return Directions(
-      bounds: LatLngBounds(northeast: LatLng(0, 0), southwest: LatLng(0, 0)),
+      bounds: LatLngBounds(northeast: const LatLng(0, 0), southwest: const LatLng(0, 0)),
       polylinePoints: [],
       totalDistance: '',
       totalDuration: '',

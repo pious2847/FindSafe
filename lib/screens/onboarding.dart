@@ -7,6 +7,8 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:permission_handler/permission_handler.dart';
 
 class Onbording extends StatefulWidget {
+  const Onbording({super.key});
+
   @override
   // ignore: library_private_types_in_public_api
   _OnbordingState createState() => _OnbordingState();

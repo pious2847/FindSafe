@@ -7,9 +7,10 @@ import 'package:lost_mode_app/utils/directions_model.dart';
 import 'package:lost_mode_app/utils/directions_repository.dart';
 
 class MapScreen extends StatefulWidget {
-  const MapScreen({Key? key}) : super(key: key);
+  const MapScreen({super.key});
 
   @override
+  // ignore: library_private_types_in_public_api
   _MapScreenState createState() => _MapScreenState();
 }
 
@@ -30,7 +31,7 @@ class _MapScreenState extends State<MapScreen> {
     });
   }
 
-  late CameraPosition _initialCameraPosition = CameraPosition(
+  late CameraPosition _initialCameraPosition = const CameraPosition(
     target: LatLng(0, 0),
     zoom: 12.5,
   );
@@ -197,6 +198,6 @@ class _MapScreenState extends State<MapScreen> {
   Future<LatLng> _getDestinationCoordinatesFromAPI() async {
     // Make API call to get destination coordinates
     // For demonstration purposes, let's assume the API returns a fixed set of coordinates
-    return LatLng(37.7749, -122.4194);
+    return const LatLng(37.7749, -122.4194);
   }
 }
