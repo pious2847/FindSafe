@@ -5,6 +5,8 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:location/location.dart';
 import 'package:lost_mode_app/utils/directions_model.dart';
 import 'package:lost_mode_app/utils/directions_repository.dart';
+import 'package:lost_mode_app/utils/phoneCard.dart';
+import 'package:lost_mode_app/utils/phone_model.dart';
 
 class MapScreen extends StatefulWidget {
   const MapScreen({super.key});
@@ -49,6 +51,12 @@ class _MapScreenState extends State<MapScreen> {
     super.dispose();
   }
 
+  List<Phone> phones = [
+    Phone(name: 'Samsung Galaxy S24', imageUrl: 'https://cdn.tmobile.com/content/dam/t-mobile/en-p/cell-phones/samsung/Samsung-Galaxy-S24/Amber-Yellow/Samsung-Galaxy-S24-Amber-Yellow-thumbnail.png'),
+    Phone(name: 'iPhone 15 Pro', imageUrl: 'https://cdn.tmobile.com/content/dam/t-mobile/en-p/cell-phones/apple/Apple-iPhone-15-Pro/Blue-Titanium/Apple-iPhone-15-Pro-Blue-Titanium-thumbnail.png'),
+    // Add more phones as needed
+  ];
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -92,68 +100,84 @@ class _MapScreenState extends State<MapScreen> {
             )
         ],
       ),
-      body: Column(
-        children: [
-          SizedBox(
-            height: MediaQuery.of(context).size.height * 0.6,
-            width: MediaQuery.of(context).size.width,
-            child: Stack(
-              alignment: Alignment.center,
-              children: [
-                GoogleMap(
-                  myLocationButtonEnabled: false,
-                  zoomControlsEnabled: false,
-                  initialCameraPosition: _initialCameraPosition,
-                  onMapCreated: (controller) => _googleMapController = controller,
-                  markers: {
-                    if (_origin != null) _origin!,
-                    if (_destination != null) _destination!,
-                  },
-                  polylines: {
-                    if (_info != null)
-                      Polyline(
-                        polylineId: const PolylineId('overview_polyline'),
-                        color: Colors.red,
-                        width: 5,
-                        points: _info!.polylinePoints
-                            .map((e) => LatLng(e.latitude, e.longitude))
-                            .toList(),
-                      ),
-                  },
-                  onLongPress: _addMarker,
-                ),
-                if (_info != null)
-                  Positioned(
-                    top: 20.0,
-                    child: Container(
-                      padding: const EdgeInsets.symmetric(
-                        vertical: 6.0,
-                        horizontal: 12.0,
-                      ),
-                      decoration: BoxDecoration(
-                        color: Colors.yellowAccent,
-                        borderRadius: BorderRadius.circular(20.0),
-                        boxShadow: const [
-                          BoxShadow(
-                            color: Colors.black26,
-                            offset: Offset(0, 2),
-                            blurRadius: 6.0,
-                          )
-                        ],
-                      ),
-                      child: Text(
-                        '${_info?.totalDistance}, ${_info?.totalDuration}',
-                        style: const TextStyle(
-                          fontSize: 18.0,
-                          fontWeight: FontWeight.w600,
+      body: SingleChildScrollView(
+        child: Column(
+          children: [
+            SizedBox(
+              height: MediaQuery.of(context).size.height * 0.6,
+              width: MediaQuery.of(context).size.width,
+              child: Stack(
+                alignment: Alignment.center,
+                children: [
+                  GoogleMap(
+                    myLocationButtonEnabled: false,
+                    zoomControlsEnabled: false,
+                    initialCameraPosition: _initialCameraPosition,
+                    onMapCreated: (controller) =>
+                        _googleMapController = controller,
+                    markers: {
+                      if (_origin != null) _origin!,
+                      if (_destination != null) _destination!,
+                    },
+                    polylines: {
+                      if (_info != null)
+                        Polyline(
+                          polylineId: const PolylineId('overview_polyline'),
+                          color: Colors.red,
+                          width: 5,
+                          points: _info!.polylinePoints
+                              .map((e) => LatLng(e.latitude, e.longitude))
+                              .toList(),
+                        ),
+                    },
+                    onLongPress: _addMarker,
+                  ),
+                  if (_info != null)
+                    Positioned(
+                      top: 20.0,
+                      child: Container(
+                        padding: const EdgeInsets.symmetric(
+                          vertical: 6.0,
+                          horizontal: 12.0,
+                        ),
+                        decoration: BoxDecoration(
+                          color: Colors.yellowAccent,
+                          borderRadius: BorderRadius.circular(20.0),
+                          boxShadow: const [
+                            BoxShadow(
+                              color: Colors.black26,
+                              offset: Offset(0, 2),
+                              blurRadius: 6.0,
+                            )
+                          ],
+                        ),
+                        child: Text(
+                          '${_info?.totalDistance}, ${_info?.totalDuration}',
+                          style: const TextStyle(
+                            fontSize: 18.0,
+                            fontWeight: FontWeight.w600,
+                          ),
                         ),
                       ),
                     ),
-                  ),
-              ],
+                ],
+              ),
             ),
-          ),
-        ],
+            SizedBox(
+              height: 15,
+            ),
+            Container(
+              height: MediaQuery.of(context).size.height * 0.3, // Adjust height as needed
+              child: ListView.builder(
+                scrollDirection: Axis.horizontal,
+                itemCount: phones.length,
+                itemBuilder: (context, index) {
+                  return PhoneListCard(phone: phones[index]);
+                },
+              ),
+            )
+          ],
+        ),
       ),
       floatingActionButton: FloatingActionButton(
         backgroundColor: Theme.of(context).primaryColor,
