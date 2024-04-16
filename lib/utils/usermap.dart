@@ -3,6 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:location/location.dart';
+import 'package:lost_mode_app/constants/NavBar.dart';
 import 'package:lost_mode_app/utils/directions_model.dart';
 import 'package:lost_mode_app/utils/directions_repository.dart';
 import 'package:lost_mode_app/utils/phoneCard.dart';
@@ -74,46 +75,8 @@ class _MapScreenState extends State<MapScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        centerTitle: false,
-        title: const Text('Google Maps'),
-        actions: [
-          if (_origin != null)
-            TextButton(
-              onPressed: () => _googleMapController.animateCamera(
-                CameraUpdate.newCameraPosition(
-                  CameraPosition(
-                    target: _origin!.position,
-                    zoom: 14.5,
-                    tilt: 50.0,
-                  ),
-                ),
-              ),
-              style: TextButton.styleFrom(
-                foregroundColor: Colors.green,
-                textStyle: const TextStyle(fontWeight: FontWeight.w600),
-              ),
-              child: const Text('ORIGIN'),
-            ),
-          if (_destination != null)
-            TextButton(
-              onPressed: () => _googleMapController.animateCamera(
-                CameraUpdate.newCameraPosition(
-                  CameraPosition(
-                    target: _destination!.position,
-                    zoom: 14.5,
-                    tilt: 50.0,
-                  ),
-                ),
-              ),
-              style: TextButton.styleFrom(
-                foregroundColor: Colors.blue,
-                textStyle: const TextStyle(fontWeight: FontWeight.w600),
-              ),
-              child: const Text('DEST'),
-            )
-        ],
-      ),
+      drawer: const NavBar(),
+      appBar: _AppBar(),
       body: Column(
         children: [
           SizedBox(
@@ -219,6 +182,57 @@ class _MapScreenState extends State<MapScreen> {
         ),
         child: const Icon(Icons.center_focus_strong),
       ),
+    );
+    
+  }
+
+  AppBar _AppBar() {
+    return AppBar(
+      centerTitle: false,
+      title: const Text(
+      "FindSafe",
+      style: TextStyle(fontWeight: FontWeight.w400, fontSize: 18),
+    ),
+    backgroundColor: Colors.white,
+
+      actions: [
+        if (_origin != null)
+          TextButton(
+            onPressed: () => _googleMapController.animateCamera(
+              CameraUpdate.newCameraPosition(
+                CameraPosition(
+                  target: _origin!.position,
+                  zoom: 14.5,
+                  tilt: 50.0,
+                ),
+              ),
+            ),
+            style: TextButton.styleFrom(
+              foregroundColor: Colors.green,
+              textStyle: const TextStyle(fontWeight: FontWeight.w600),
+            ),
+            child: const Text('ORIGIN'),
+          ),
+        if (_destination != null)
+          TextButton(
+            onPressed: () => _googleMapController.animateCamera(
+              CameraUpdate.newCameraPosition(
+                CameraPosition(
+                  target: _destination!.position,
+                  zoom: 14.5,
+                  tilt: 50.0,
+                ),
+              ),
+            ),
+            style: TextButton.styleFrom(
+              foregroundColor: Colors.blue,
+              textStyle: const TextStyle(fontWeight: FontWeight.w600),
+            ),
+            child: const Text('DEST'),
+          )
+      ],
+    elevation: 0.0,
+
     );
   }
 
