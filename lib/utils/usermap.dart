@@ -95,7 +95,7 @@ class _MapScreenState extends State<MapScreen> {
       body: Column(
         children: [
           SizedBox(
-            height: MediaQuery.of(context).size.height * 0.7,
+            height: MediaQuery.of(context).size.height * 0.6,
             width: MediaQuery.of(context).size.width,
             child: Stack(
               alignment: Alignment.center,
