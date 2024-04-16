@@ -186,6 +186,7 @@ class _MapScreenState extends State<MapScreen> {
     
   }
 
+  // ignore: non_constant_identifier_names
   AppBar _AppBar() {
     return AppBar(
       centerTitle: false,
