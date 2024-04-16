@@ -172,18 +172,22 @@ class _MapScreenState extends State<MapScreen> {
           )
         ],
       ),
-      floatingActionButton: FloatingActionButton(
-        backgroundColor: Theme.of(context).primaryColor,
-        foregroundColor: Colors.black,
-        onPressed: () => _googleMapController.animateCamera(
-          _info != null
-              ? CameraUpdate.newLatLngBounds(_info!.bounds, 100.0)
-              : CameraUpdate.newCameraPosition(_initialCameraPosition),
-        ),
-        child: const Icon(Icons.center_focus_strong),
-      ),
+      floatingActionButton: _FloatingActionButton(context),
     );
     
+  }
+
+  FloatingActionButton _FloatingActionButton(BuildContext context) {
+    return FloatingActionButton(
+      backgroundColor: Theme.of(context).primaryColor,
+      foregroundColor: const Color.fromARGB(255, 202, 202, 202),
+      onPressed: () => _googleMapController.animateCamera(
+        _info != null
+            ? CameraUpdate.newLatLngBounds(_info!.bounds, 100.0)
+            : CameraUpdate.newCameraPosition(_initialCameraPosition),
+      ),
+      child: const Icon(Icons.center_focus_strong),
+    );
   }
 
   // ignore: non_constant_identifier_names
