@@ -1,4 +1,4 @@
-// ignore_for_file: unnecessary_null_comparison
+// ignore_for_file: unnecessary_null_comparison, non_constant_identifier_names
 
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
@@ -86,7 +86,7 @@ class _MapScreenState extends State<MapScreen> {
               alignment: Alignment.center,
               children: [
                 GoogleMap(
-                  myLocationButtonEnabled: false,
+                  myLocationButtonEnabled: true,
                   zoomControlsEnabled: false,
                   initialCameraPosition: _initialCameraPosition,
                   onMapCreated: (controller) =>
