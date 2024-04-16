@@ -141,41 +141,35 @@ class _MapScreenState extends State<MapScreen> {
       ),
     );
   }
-
-  void _addMarker(LatLng pos) async {
-    if (_origin == null || (_origin != null && _destination != null)) {
+void _addMarker(LatLng pos) async {
+  if (_origin == null) {
+    // Set origin to current location
+    LocationData currentLocation = await Location.instance.getLocation();
+    LatLng originLatLng = LatLng(currentLocation.latitude!, currentLocation.longitude!);
     
-      // Origin is not set OR Origin/Destination are both set
-      // Set origin
-      setState(() {
-        _origin = Marker(
-          markerId: const MarkerId('origin'),
-          infoWindow: const InfoWindow(title: 'Origin'),
-          icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueGreen),
-          position: pos,
-        );
-        // Reset destination
-        _destination = null;
+    setState(() {
+      _origin = Marker(
+        markerId: const MarkerId('origin'),
+        infoWindow: const InfoWindow(title: 'Origin'),
+        icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueGreen),
+        position: originLatLng,
+      );
+    });
+  } else if (_destination == null) {
+    // Set destination to current location of the device being tracked
+    setState(() {
+      _destination = Marker(
+        markerId: const MarkerId('destination'),
+        infoWindow: const InfoWindow(title: 'Destination'),
+        icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueBlue),
+        position: pos,
+      );
+    });
 
-        // Reset info
-        _info = null;
-      });
-    } else {
-      // Origin is already set
-      // Set destination
-      setState(() {
-        _destination = Marker(
-          markerId: const MarkerId('destination'),
-          infoWindow: const InfoWindow(title: 'Destination'),
-          icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueBlue),
-          position: pos,
-        );
-      });
-
-      // Get directions
-      final directions = await DirectionsRepository()
-          .getDirections(origin: _origin!.position, destination: pos);
-      setState(() => _info = directions);
-    }
+    // Get directions
+    final directions = await DirectionsRepository()
+        .getDirections(origin: _origin!.position, destination: pos);
+    setState(() => _info = directions);
   }
+}
 }
