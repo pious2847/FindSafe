@@ -14,23 +14,27 @@ class MapScreen extends StatefulWidget {
 }
 
 class _MapScreenState extends State<MapScreen> {
-  void _getLocation() async {
-    LocationData currentLocation = await _location.getLocation();
-    setState(() {
-      _initialCameraPosition = CameraPosition(
-        target: LatLng(currentLocation.latitude!, currentLocation.longitude!),
-        zoom: 11.5,
-      );
-    });
-  }
-
-  late CameraPosition _initialCameraPosition;
 
   late GoogleMapController _googleMapController;
   Marker? _origin;
   Marker? _destination;
   Directions? _info;
   late Location _location;
+   late CameraPosition _initialCameraPosition;
+
+  void _getLocation() async {
+    LocationData currentLocation = await _location.getLocation();
+    setState(() {
+      _initialCameraPosition = CameraPosition(
+        target: LatLng(currentLocation.latitude!, currentLocation.longitude!),
+        zoom: 15.5,
+      );
+    });
+  }
+
+
+
+
 
   @override
   void initState() {
@@ -112,6 +116,7 @@ class _MapScreenState extends State<MapScreen> {
                 ),
             },
             onLongPress: _addMarker,
+            
           ),
           if (_info != null)
             Positioned(
@@ -189,7 +194,7 @@ class _MapScreenState extends State<MapScreen> {
         .getDirections(origin: _origin!.position, destination: destinationCoordinates);
     setState(() => _info = directions);
   }
-  
+
   }
   Future<LatLng> _getDestinationCoordinatesFromAPI() async {
   // Make API call to get destination coordinates
