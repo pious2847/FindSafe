@@ -52,9 +52,23 @@ class _MapScreenState extends State<MapScreen> {
   }
 
   List<Phone> phones = [
-    Phone(name: 'Samsung Galaxy S24', imageUrl: 'https://cdn.tmobile.com/content/dam/t-mobile/en-p/cell-phones/samsung/Samsung-Galaxy-S24/Amber-Yellow/Samsung-Galaxy-S24-Amber-Yellow-thumbnail.png'),
-    Phone(name: 'iPhone 15 Pro', imageUrl: 'https://cdn.tmobile.com/content/dam/t-mobile/en-p/cell-phones/apple/Apple-iPhone-15-Pro/Blue-Titanium/Apple-iPhone-15-Pro-Blue-Titanium-thumbnail.png'),
-    // Add more phones as needed
+    Phone(
+        name: 'Samsung Galaxy S24',
+        imageUrl:
+            'https://cdn.tmobile.com/content/dam/t-mobile/en-p/cell-phones/samsung/Samsung-Galaxy-S24/Amber-Yellow/Samsung-Galaxy-S24-Amber-Yellow-thumbnail.png'),
+    Phone(
+        name: 'iPhone 15 Pro',
+        imageUrl:
+            'https://cdn.tmobile.com/content/dam/t-mobile/en-p/cell-phones/apple/Apple-iPhone-15-Pro/Blue-Titanium/Apple-iPhone-15-Pro-Blue-Titanium-thumbnail.png'),
+    Phone(
+        name: 'galaxy z flip5',
+        imageUrl:
+            'https://cdn.tmobile.com/content/dam/t-mobile/en-p/cell-phones/samsung/Samsung-Galaxy-Z-Flip5/Graphite/Samsung-Galaxy-Z-Flip5-Graphite-thumbnail.png'),
+ Phone(
+        name: 'Galaxy S22 Ultra',
+        imageUrl:
+            'https://cdn.tmobile.com/content/dam/t-mobile/en-p/cell-phones/samsung/Samsung-Galaxy-S22-Ultra/Phantom-Black/Samsung-Galaxy-S22-Ultra-Phantom-Black-frontimage.png'),
+        
   ];
 
   @override
@@ -166,15 +180,33 @@ class _MapScreenState extends State<MapScreen> {
             SizedBox(
               height: 15,
             ),
-            Container(
-              height: MediaQuery.of(context).size.height * 0.3, // Adjust height as needed
-              child: ListView.builder(
-                scrollDirection: Axis.horizontal,
-                itemCount: phones.length,
-                itemBuilder: (context, index) {
-                  return PhoneListCard(phone: phones[index]);
-                },
-              ),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Padding(
+                  padding: const EdgeInsets.only(left: 10, bottom: 10),
+                  child: Text(
+                    'Connected Devices ',
+                    
+                    style: TextStyle(
+                      fontSize: 16.0,
+                      fontWeight: FontWeight.w300,
+                      
+                    ),
+                  ),
+                ),
+                Container(
+                  height: MediaQuery.of(context).size.height *
+                      0.3, // Adjust height as needed
+                  child: ListView.builder(
+                    scrollDirection: Axis.horizontal,
+                    itemCount: phones.length,
+                    itemBuilder: (context, index) {
+                      return PhoneListCard(phone: phones[index]);
+                    },
+                  ),
+                ),
+              ],
             )
           ],
         ),

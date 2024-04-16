@@ -19,14 +19,14 @@ class PhoneListCard extends StatelessWidget {
               phone.imageUrl,
               width: 90,
               height: 90,
-              fit: BoxFit.cover,
+              fit: BoxFit.contain,
             ),
           ),
           const SizedBox(height: 8.0),
           Text(
             phone.name,
             style: TextStyle(
-              fontSize: 15.0,
+              fontSize: 12.0,
               fontWeight: FontWeight.bold,
             ),
           ),
