@@ -102,6 +102,14 @@ packages:
     description: flutter
     source: sdk
     version: "0.0.0"
+  flutter_foreground_service:
+    dependency: "direct main"
+    description:
+      name: flutter_foreground_service
+      sha256: e045aaad2af73bd44b52d2b38aa3684258c6e7005de4e8887aa192d2be084fa1
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.4.1"
   flutter_lints:
     dependency: "direct dev"
     description:
@@ -110,6 +118,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "3.0.2"
+  flutter_lock_screen:
+    dependency: "direct main"
+    description:
+      name: flutter_lock_screen
+      sha256: "4d0181ad75ec608a8bb92a02e0de968bac740ef8087f72565c6486ee06bbade3"
+      url: "https://pub.dev"
+    source: hosted
+    version: "2.0.1"
   flutter_map:
     dependency: "direct main"
     description:
@@ -134,6 +150,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.0.0"
+  flutter_screen_lock:
+    dependency: "direct main"
+    description:
+      name: flutter_screen_lock
+      sha256: f8e504aa0e5fe61ea13b66692ecdec3e8761118173b51c9b3b5518b8e2911e5b
+      url: "https://pub.dev"
+    source: hosted
+    version: "9.0.2"
   flutter_svg:
     dependency: "direct main"
     description:

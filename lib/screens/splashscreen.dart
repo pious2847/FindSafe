@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:lost_mode_app/constants/colors.dart';
-import 'package:lost_mode_app/screens/home.dart';
 import 'package:lost_mode_app/screens/onboarding.dart';
-import 'package:lost_mode_app/utils/usermap.dart';
+import 'package:lost_mode_app/screens/usermap.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class SplashScreen extends StatefulWidget {
