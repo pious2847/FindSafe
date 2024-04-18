@@ -47,6 +47,7 @@ dependencies:
   flutter_screen_lock: ^9.0.2
   flutter_lock_screen: ^2.0.1
   flutter_foreground_service: ^0.4.1
+  fluttertoast: ^8.2.5
 
 
 

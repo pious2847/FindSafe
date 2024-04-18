@@ -1,27 +1,14 @@
-// In your Android foreground service class
-import 'dart:developer';
+import 'package:flutter/services.dart';
 
-final public class TrackingForegroundService extends Service {
+class TrackingForegroundService {
+  static const MethodChannel _channel =
+      MethodChannel('tracking_foreground_service');
 
-    private BroadcastReceiver shutdownReceiver = new BroadcastReceiver() {
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            // Intercept the shutdown action
-            // Prompt the user for authentication
-            // If authentication succeeds, allow the shutdown
-            // If authentication fails, cancel the shutdown
-        }
-    };
-
-    @Override
-    public void onCreate() {
-        super.onCreate();
-        registerReceiver(shutdownReceiver, new IntentFilter(Intent.ACTION_SHUTDOWN));
+  static Future<void> startService() async {
+    try {
+      await _channel.invokeMethod('startService');
+    } on PlatformException catch (e) {
+      print("Failed to start service: '${e.message}'.");
     }
-
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        unregisterReceiver(shutdownReceiver);
-    }
+  }
 }
