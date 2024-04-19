@@ -1,6 +1,8 @@
 // ignore_for_file: avoid_print, file_names
 
 import 'package:flutter/material.dart';
+import 'package:lost_mode_app/screens/disablescreen.dart';
+
 
 class NavBar extends StatelessWidget {
   const NavBar({super.key});
@@ -34,7 +36,12 @@ class NavBar extends StatelessWidget {
                     ListTile(
                       leading: const Icon(Icons.home_filled),
                       title: const Text('Dashboard'),
-                      onTap: () => print('tapped'),
+                      onTap: () => { 
+                         Navigator.of(context).push(
+        MaterialPageRoute(
+          builder: (_) => LostModeScreen(),
+        ),
+      ),}
                     ),
                     ListTile(
                       leading: const Icon(Icons.home),
