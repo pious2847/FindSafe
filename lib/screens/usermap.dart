@@ -8,6 +8,8 @@ import 'package:lost_mode_app/utils/directions_model.dart';
 import 'package:lost_mode_app/utils/directions_repository.dart';
 import 'package:lost_mode_app/utils/phoneCard.dart';
 import 'package:lost_mode_app/utils/phone_model.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
 
 class MapScreen extends StatefulWidget {
   const MapScreen({super.key});
@@ -51,27 +53,9 @@ class _MapScreenState extends State<MapScreen> {
     _googleMapController.dispose();
     super.dispose();
   }
+  List<Phone> phones = [];
 
-  List<Phone> phones = [
-    Phone(
-        name: 'Samsung Galaxy S24',
-        imageUrl:
-            'https://cdn.tmobile.com/content/dam/t-mobile/en-p/cell-phones/samsung/Samsung-Galaxy-S24/Amber-Yellow/Samsung-Galaxy-S24-Amber-Yellow-thumbnail.png'),
-    Phone(
-        name: 'iPhone 15 Pro',
-        imageUrl:
-            'https://cdn.tmobile.com/content/dam/t-mobile/en-p/cell-phones/apple/Apple-iPhone-15-Pro/Blue-Titanium/Apple-iPhone-15-Pro-Blue-Titanium-thumbnail.png'),
-    Phone(
-        name: 'galaxy z flip5',
-        imageUrl:
-            'https://cdn.tmobile.com/content/dam/t-mobile/en-p/cell-phones/samsung/Samsung-Galaxy-Z-Flip5/Graphite/Samsung-Galaxy-Z-Flip5-Graphite-thumbnail.png'),
- Phone(
-        name: 'Galaxy S22 Ultra',
-        imageUrl:
-            'https://cdn.tmobile.com/content/dam/t-mobile/en-p/cell-phones/samsung/Samsung-Galaxy-S22-Ultra/Phantom-Black/Samsung-Galaxy-S22-Ultra-Phantom-Black-frontimage.png'),
-        
-  ];
-
+ 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
