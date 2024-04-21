@@ -9,7 +9,7 @@ class PhoneListCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: const EdgeInsets.symmetric(horizontal: 8.0),
+      margin: const EdgeInsets.all(8.0),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
@@ -25,7 +25,7 @@ class PhoneListCard extends StatelessWidget {
           const SizedBox(height: 8.0),
           Text(
             phone.name,
-            style: TextStyle(
+            style: const TextStyle(
               fontSize: 12.0,
               fontWeight: FontWeight.bold,
             ),

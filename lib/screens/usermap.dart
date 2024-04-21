@@ -46,6 +46,7 @@ class _MapScreenState extends State<MapScreen> {
     super.initState();
     _location = Location();
     _getLocation();
+    fetchMobileDevices();
   }
 
   @override
@@ -53,9 +54,9 @@ class _MapScreenState extends State<MapScreen> {
     _googleMapController.dispose();
     super.dispose();
   }
+
   List<Phone> phones = [];
 
- 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -133,11 +134,9 @@ class _MapScreenState extends State<MapScreen> {
                 padding: EdgeInsets.only(left: 10, bottom: 10),
                 child: Text(
                   'Connected Devices ',
-                  
                   style: TextStyle(
                     fontSize: 16.0,
                     fontWeight: FontWeight.w300,
-                    
                   ),
                 ),
               ),
@@ -158,7 +157,6 @@ class _MapScreenState extends State<MapScreen> {
       ),
       floatingActionButton: _FloatingActionButton(context),
     );
-    
   }
 
   FloatingActionButton _FloatingActionButton(BuildContext context) {
@@ -179,11 +177,10 @@ class _MapScreenState extends State<MapScreen> {
     return AppBar(
       centerTitle: false,
       title: const Text(
-      "FindSafe",
-      style: TextStyle(fontWeight: FontWeight.w400, fontSize: 18),
-    ),
-    backgroundColor: Colors.white,
-
+        "FindSafe",
+        style: TextStyle(fontWeight: FontWeight.w400, fontSize: 18),
+      ),
+      backgroundColor: Colors.white,
       actions: [
         if (_origin != null)
           TextButton(
@@ -220,8 +217,7 @@ class _MapScreenState extends State<MapScreen> {
             child: const Text('DEST'),
           )
       ],
-    elevation: 0.0,
-
+      elevation: 0.0,
     );
   }
 
@@ -264,5 +260,18 @@ class _MapScreenState extends State<MapScreen> {
     // Make API call to get destination coordinates
     // For demonstration purposes, let's assume the API returns a fixed set of coordinates
     return const LatLng(37.7749, -122.4194);
+  }
+
+  Future<void> fetchMobileDevices() async {
+    final response =
+        await http.get(Uri.parse('http://localhost:8080/api/mobiledevices'));
+    if (response.statusCode == 200) {
+      List<dynamic> data = jsonDecode(response.body);
+      setState(() {
+        phones = data.map((item) => Phone.fromJson(item)).toList();
+      });
+    } else {
+      throw Exception('Failed to load mobile devices');
+    }
   }
 }
