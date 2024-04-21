@@ -8,7 +8,7 @@ import 'package:lost_mode_app/utils/directions_model.dart';
 import 'package:lost_mode_app/utils/directions_repository.dart';
 import 'package:lost_mode_app/utils/phoneCard.dart';
 import 'package:lost_mode_app/utils/phone_model.dart';
-import 'package:http/http.dart' as http;
+import 'package:dio/dio.dart';
 import 'dart:convert';
 
 class MapScreen extends StatefulWidget {
@@ -262,16 +262,21 @@ class _MapScreenState extends State<MapScreen> {
     return const LatLng(37.7749, -122.4194);
   }
 
-  Future<void> fetchMobileDevices() async {
-    final response =
-        await http.get(Uri.parse('http://localhost:8080/api/mobiledevices'));
+
+Future<void> fetchMobileDevices() async {
+  final dio = Dio();
+  try {
+    final response = await dio.get('http://localhost:8080/api/mobiledevices');
     if (response.statusCode == 200) {
-      List<dynamic> data = jsonDecode(response.body);
+      List<dynamic> data = response.data;
       setState(() {
         phones = data.map((item) => Phone.fromJson(item)).toList();
       });
     } else {
       throw Exception('Failed to load mobile devices');
     }
+  } catch (e) {
+    throw Exception('Failed to make API call: $e');
   }
+}
 }
