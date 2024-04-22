@@ -21,7 +21,7 @@ class _SigninState extends State<Signin> {
   Future<void> save() async {
     final dio = Dio();
     var res = await dio.post(
-      "$APIURL/signin",
+      "$APIURL/login",
       options: Options(headers: {
         'Content-Type': 'application/json; charset=UTF-8',
       }),
@@ -33,7 +33,7 @@ class _SigninState extends State<Signin> {
     print(res.data);
     Navigator.push(
       context,
-      MaterialPageRoute(builder: (context) => MapScreen()),
+      MaterialPageRoute(builder: (context) => const MapScreen()),
     );
   }
 
@@ -58,7 +58,7 @@ class _SigninState extends State<Signin> {
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                SizedBox(
+                const SizedBox(
                   height: 150,
                 ),
                 Text(
@@ -68,7 +68,7 @@ class _SigninState extends State<Signin> {
                       fontSize: 50,
                       color: Colors.blue),
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 25,
                 ),
                 Padding(
@@ -90,23 +90,23 @@ class _SigninState extends State<Signin> {
                       }
                     },
                     decoration: InputDecoration(
-                        icon: Icon(
+                        icon: const Icon(
                           Icons.email,
                           color: Colors.blue,
                         ),
                         hintText: 'Enter Email',
                         enabledBorder: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(16),
-                            borderSide: BorderSide(color: Colors.blue)),
+                            borderSide: const BorderSide(color: Colors.blue)),
                         focusedBorder: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(16),
-                            borderSide: BorderSide(color: Colors.blue)),
+                            borderSide: const BorderSide(color: Colors.blue)),
                         errorBorder: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(16),
-                            borderSide: BorderSide(color: Colors.red)),
+                            borderSide: const BorderSide(color: Colors.red)),
                         focusedErrorBorder: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(16),
-                            borderSide: BorderSide(color: Colors.red))),
+                            borderSide: const BorderSide(color: Colors.red))),
                   ),
                 ),
                 Padding(
@@ -124,27 +124,27 @@ class _SigninState extends State<Signin> {
                     },
                     obscureText: true,
                     decoration: InputDecoration(
-                        icon: Icon(
+                        icon: const Icon(
                           Icons.vpn_key,
                           color: Colors.blue,
                         ),
                         hintText: 'Enter Password',
                         enabledBorder: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(16),
-                            borderSide: BorderSide(color: Colors.blue)),
+                            borderSide: const BorderSide(color: Colors.blue)),
                         focusedBorder: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(16),
-                            borderSide: BorderSide(color: Colors.blue)),
+                            borderSide: const BorderSide(color: Colors.blue)),
                         errorBorder: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(16),
-                            borderSide: BorderSide(color: Colors.red)),
+                            borderSide: const BorderSide(color: Colors.red)),
                         focusedErrorBorder: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(16),
-                            borderSide: BorderSide(color: Colors.red))),
+                            borderSide: const BorderSide(color: Colors.red))),
                   ),
                 ),
                 Padding(
-                  padding: EdgeInsets.fromLTRB(55, 16, 16, 0),
+                  padding: const EdgeInsets.fromLTRB(55, 16, 16, 0),
                   child: Container(
                     height: 50,
                     width: 400,
@@ -162,7 +162,7 @@ class _SigninState extends State<Signin> {
                           print("not ok");
                         }
                       },
-                      child: Text(
+                      child: const Text(
                         "Signin",
                         style: TextStyle(color: Colors.white, fontSize: 20),
                       ),
@@ -173,7 +173,7 @@ class _SigninState extends State<Signin> {
                     padding: const EdgeInsets.fromLTRB(95, 20, 0, 0),
                     child: Row(
                       children: [
-                        Text(
+                        const Text(
                           "Not have Account ? ",
                           style: TextStyle(
                               color: Colors.black, fontWeight: FontWeight.bold),
@@ -185,7 +185,7 @@ class _SigninState extends State<Signin> {
                                 new MaterialPageRoute(
                                     builder: (context) => Signup()));
                           },
-                          child: Text(
+                          child: const Text(
                             "Signup",
                             style: TextStyle(
                                 color: Colors.blue,

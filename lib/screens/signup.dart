@@ -24,6 +24,7 @@ class _SignupState extends State<Signup> {
         },
       ),
       data: {
+        'usernames': user.username,
         'email': user.email,
         'password': user.password,
       });
@@ -66,6 +67,39 @@ class _SignupState extends State<Signup> {
                 ),
                 SizedBox(
                   height: 25,
+                ),
+                Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: TextFormField(
+                    controller: TextEditingController(text: user.username),
+                    onChanged: (value) {
+                      user.username = value;
+                    },
+                    validator: (value) {
+                      if (value!.isEmpty) {
+                        return 'Enter something';
+                      }
+                      return null;
+                    },
+                    decoration: InputDecoration(
+                        icon: Icon(
+                          Icons.person_4_outlined,
+                          color: Colors.blue,
+                        ),
+                        hintText: 'Enter Username',
+                        enabledBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(16),
+                            borderSide: BorderSide(color: Colors.blue)),
+                        focusedBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(16),
+                            borderSide: BorderSide(color: Colors.blue)),
+                        errorBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(16),
+                            borderSide: BorderSide(color: Colors.red)),
+                        focusedErrorBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(16),
+                            borderSide: BorderSide(color: Colors.red))),
+                  ),
                 ),
                 Padding(
                   padding: const EdgeInsets.all(16.0),
