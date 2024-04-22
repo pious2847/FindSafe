@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_lock_screen/flutter_lock_screen.dart';
-import 'package:flutter_screen_lock/flutter_screen_lock.dart';
+// import 'package:flutter_screen_lock/flutter_screen_lock.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
 
