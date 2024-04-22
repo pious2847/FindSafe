@@ -1,7 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:lost_mode_app/.env.dart';
 import 'package:lost_mode_app/models/User_model.dart';
 import 'package:lost_mode_app/screens/login.dart';
@@ -34,7 +33,7 @@ class _SignupState extends State<Signup> {
 }
 
 
-  User user = User('', '');
+  User user = User('', '', '');
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -60,7 +59,7 @@ class _SignupState extends State<Signup> {
                 ),
                 Text(
                   "Signup",
-                  style: GoogleFonts.pacifico(
+                  style: TextStyle(
                       fontWeight: FontWeight.bold,
                       fontSize: 50,
                       color: Colors.blue),
