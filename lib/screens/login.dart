@@ -37,19 +37,19 @@ class _SigninState extends State<Signin> {
     );
   }
 
-  User user = User('', '');
+  User user = User('', '','');
   @override
   Widget build(BuildContext context) {
     return Scaffold(
         body: Stack(
       children: [
-        Positioned(
-            top: 0,
-            child: SvgPicture.asset(
-              'images/top.svg',
-              width: 400,
-              height: 150,
-            )),
+        // Positioned(
+        //     top: 0,
+        //     child: SvgPicture.asset(
+        //       'images/top.svg',
+        //       width: 400,
+        //       height: 150,
+        //     )),
         Container(
           alignment: Alignment.center,
           child: Form(
