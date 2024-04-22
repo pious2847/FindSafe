@@ -50,6 +50,7 @@ dependencies:
   fluttertoast: ^8.2.5
   workmanager: ^0.5.2
   device_info: ^2.0.2
+  google_fonts: ^6.2.1
 
 
 

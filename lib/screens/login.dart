@@ -3,6 +3,7 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:lost_mode_app/.env.dart';
 import 'package:lost_mode_app/models/User_model.dart';
 import 'package:lost_mode_app/screens/signup.dart';
@@ -36,19 +37,19 @@ class _SigninState extends State<Signin> {
     );
   }
 
-  User user = User('', '', '');
+  User user = User('', '');
   @override
   Widget build(BuildContext context) {
     return Scaffold(
         body: Stack(
       children: [
-        // Positioned(
-        //     top: 0,
-        //     child: SvgPicture.asset(
-        //       'images/top.svg',
-        //       width: 400,
-        //       height: 150,
-        //     )),
+        Positioned(
+            top: 0,
+            child: SvgPicture.asset(
+              'images/top.svg',
+              width: 400,
+              height: 150,
+            )),
         Container(
           alignment: Alignment.center,
           child: Form(
@@ -62,7 +63,7 @@ class _SigninState extends State<Signin> {
                 ),
                 Text(
                   "Signin",
-                  style: TextStyle(
+                  style: GoogleFonts.pacifico(
                       fontWeight: FontWeight.bold,
                       fontSize: 50,
                       color: Colors.blue),
