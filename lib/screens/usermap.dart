@@ -6,7 +6,7 @@ import 'package:location/location.dart';
 import 'package:lost_mode_app/constants/NavBar.dart';
 import 'package:lost_mode_app/utils/directions_model.dart';
 import 'package:lost_mode_app/utils/directions_repository.dart';
-import 'package:lost_mode_app/utils/phoneCard.dart';
+import 'package:lost_mode_app/utils/phonecard.dart';
 import 'package:lost_mode_app/utils/phone_model.dart';
 import 'package:dio/dio.dart';
 // import 'dart:convert';
