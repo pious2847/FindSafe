@@ -140,7 +140,7 @@ class _MapScreenState extends State<MapScreen> {
                   ),
                 ),
               ),
-              Container(
+              SizedBox(
                 height: MediaQuery.of(context).size.height *
                     0.2, // Adjust height as needed
                 child: ListView.builder(

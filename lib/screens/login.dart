@@ -10,7 +10,7 @@ import 'package:lost_mode_app/screens/signup.dart';
 import 'package:lost_mode_app/screens/usermap.dart';
 
 class Signin extends StatefulWidget {
-  Signin({Key? key}) : super(key: key);
+  const Signin({super.key});
 
   @override
   _SigninState createState() => _SigninState();
@@ -145,7 +145,7 @@ class _SigninState extends State<Signin> {
                 ),
                 Padding(
                   padding: const EdgeInsets.fromLTRB(55, 16, 16, 0),
-                  child: Container(
+                  child: SizedBox(
                     height: 50,
                     width: 400,
                     child: TextButton(
@@ -182,8 +182,8 @@ class _SigninState extends State<Signin> {
                           onTap: () {
                             Navigator.push(
                                 context,
-                                new MaterialPageRoute(
-                                    builder: (context) => Signup()));
+                                MaterialPageRoute(
+                                    builder: (context) => const Signup()));
                           },
                           child: const Text(
                             "Signup",

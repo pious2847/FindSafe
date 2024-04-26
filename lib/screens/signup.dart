@@ -1,3 +1,5 @@
+// ignore_for_file: library_private_types_in_public_api, use_build_context_synchronously
+
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:lost_mode_app/.env.dart';
@@ -5,7 +7,7 @@ import 'package:lost_mode_app/models/User_model.dart';
 import 'package:lost_mode_app/screens/login.dart';
 
 class Signup extends StatefulWidget {
-  Signup({Key? key}) : super(key: key);
+  const Signup({super.key});
 
   @override
   _SignupState createState() => _SignupState();
@@ -28,7 +30,7 @@ class _SignupState extends State<Signup> {
       });
   print(res.data);
   Navigator.push(
-      context, new MaterialPageRoute(builder: (context) => Signin()));
+      context, MaterialPageRoute(builder: (context) => const Signin()));
 }
 
 
@@ -53,17 +55,17 @@ class _SignupState extends State<Signup> {
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                SizedBox(
+                const SizedBox(
                   height: 150,
                 ),
-                Text(
+                const Text(
                   "Signup",
                   style: TextStyle(
                       fontWeight: FontWeight.bold,
                       fontSize: 50,
                       color: Colors.blue),
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 25,
                 ),
                 Padding(
@@ -80,23 +82,23 @@ class _SignupState extends State<Signup> {
                       return null;
                     },
                     decoration: InputDecoration(
-                        icon: Icon(
+                        icon: const Icon(
                           Icons.person_4_outlined,
                           color: Colors.blue,
                         ),
                         hintText: 'Enter Username',
                         enabledBorder: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(16),
-                            borderSide: BorderSide(color: Colors.blue)),
+                            borderSide: const BorderSide(color: Colors.blue)),
                         focusedBorder: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(16),
-                            borderSide: BorderSide(color: Colors.blue)),
+                            borderSide: const BorderSide(color: Colors.blue)),
                         errorBorder: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(16),
-                            borderSide: BorderSide(color: Colors.red)),
+                            borderSide: const BorderSide(color: Colors.red)),
                         focusedErrorBorder: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(16),
-                            borderSide: BorderSide(color: Colors.red))),
+                            borderSide: const BorderSide(color: Colors.red))),
                   ),
                 ),
                 Padding(
@@ -118,23 +120,23 @@ class _SignupState extends State<Signup> {
                       }
                     },
                     decoration: InputDecoration(
-                        icon: Icon(
+                        icon: const Icon(
                           Icons.email,
                           color: Colors.blue,
                         ),
                         hintText: 'Enter Email',
                         enabledBorder: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(16),
-                            borderSide: BorderSide(color: Colors.blue)),
+                            borderSide: const BorderSide(color: Colors.blue)),
                         focusedBorder: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(16),
-                            borderSide: BorderSide(color: Colors.blue)),
+                            borderSide: const BorderSide(color: Colors.blue)),
                         errorBorder: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(16),
-                            borderSide: BorderSide(color: Colors.red)),
+                            borderSide: const BorderSide(color: Colors.red)),
                         focusedErrorBorder: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(16),
-                            borderSide: BorderSide(color: Colors.red))),
+                            borderSide: const BorderSide(color: Colors.red))),
                   ),
                 ),
                 Padding(
@@ -151,28 +153,28 @@ class _SignupState extends State<Signup> {
                       return null;
                     },
                     decoration: InputDecoration(
-                        icon: Icon(
+                        icon: const Icon(
                           Icons.vpn_key,
                           color: Colors.blue,
                         ),
                         hintText: 'Enter Password',
                         enabledBorder: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(16),
-                            borderSide: BorderSide(color: Colors.blue)),
+                            borderSide: const BorderSide(color: Colors.blue)),
                         focusedBorder: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(16),
-                            borderSide: BorderSide(color: Colors.blue)),
+                            borderSide: const BorderSide(color: Colors.blue)),
                         errorBorder: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(16),
-                            borderSide: BorderSide(color: Colors.red)),
+                            borderSide: const BorderSide(color: Colors.red)),
                         focusedErrorBorder: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(16),
-                            borderSide: BorderSide(color: Colors.red))),
+                            borderSide: const BorderSide(color: Colors.red))),
                   ),
                 ),
                 Padding(
-                  padding: EdgeInsets.fromLTRB(55, 16, 16, 0),
-                  child: Container(
+                  padding: const EdgeInsets.fromLTRB(55, 16, 16, 0),
+                  child: SizedBox(
                     height: 50,
                     width: 400,
                     child: TextButton(
@@ -192,7 +194,7 @@ class _SignupState extends State<Signup> {
                           print("not ok");
                         }
                       },
-                      child: Text(
+                      child: const Text(
                         "Signup",
                         style: TextStyle(color: Colors.white, fontSize: 20),
                       ),
@@ -203,7 +205,7 @@ class _SignupState extends State<Signup> {
                     padding: const EdgeInsets.fromLTRB(95, 20, 0, 0),
                     child: Row(
                       children: [
-                        Text(
+                        const Text(
                           "Already have Account ? ",
                           style: TextStyle(
                               color: Colors.black, fontWeight: FontWeight.bold),
@@ -212,10 +214,10 @@ class _SignupState extends State<Signup> {
                           onTap: () {
                             Navigator.push(
                                 context,
-                                new MaterialPageRoute(
-                                    builder: (context) => Signin()));
+                                MaterialPageRoute(
+                                    builder: (context) => const Signin()));
                           },
-                          child: Text(
+                          child: const Text(
                             "Signin",
                             style: TextStyle(
                                 color: Colors.blue,
