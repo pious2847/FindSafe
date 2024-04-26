@@ -4,7 +4,7 @@ import 'package:lost_mode_app/utils/phone_model.dart';
 class PhoneListCard extends StatelessWidget {
   final Phone phone;
 
-  const PhoneListCard({Key? key, required this.phone}) : super(key: key);
+  const PhoneListCard({super.key, required this.phone});
 
   @override
   Widget build(BuildContext context) {
