@@ -1,4 +1,4 @@
-// ignore_for_file: unnecessary_null_comparison, non_constant_identifier_names
+// ignore_for_file: unnecessary_null_comparison, non_constant_identifier_names, duplicate_ignore
 
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
@@ -9,7 +9,7 @@ import 'package:lost_mode_app/utils/directions_repository.dart';
 import 'package:lost_mode_app/utils/phoneCard.dart';
 import 'package:lost_mode_app/utils/phone_model.dart';
 import 'package:dio/dio.dart';
-import 'dart:convert';
+// import 'dart:convert';
 
 class MapScreen extends StatefulWidget {
   const MapScreen({super.key});
