@@ -24,7 +24,7 @@ void initState() {
   SharedPreferences.getInstance().then((prefs) {
     bool showHome = prefs.getBool('showHome') ?? false;
 
-    Future.delayed(const Duration(seconds: 4), () {
+    Future.delayed(const Duration(seconds: 2), () {
       setState(() {
         showHome = showHome;
       });
