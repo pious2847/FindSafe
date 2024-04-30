@@ -30,7 +30,7 @@ class _SigninState extends State<Signin> {
         'password': user.password,
       },
     );
-    if(res.statuscode === 200 || res.statuscode === 201){
+    if(res.status == 200 || res.statuscode == 201){
          print(res.data);
     }
     print(res.data);
