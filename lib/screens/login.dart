@@ -50,7 +50,7 @@ class _SigninState extends State<Signin> {
     }
   }
 
-  Userlogin user = Userlogin('', '',);
+  User user = User('', '','',);
   @override
   Widget build(BuildContext context) {
     return Scaffold(

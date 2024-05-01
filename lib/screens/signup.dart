@@ -158,9 +158,9 @@ class _SignupState extends State<Signup> {
                   Padding(
                     padding: const EdgeInsets.all(16.0),
                     child: TextFormField(
-                      controller: TextEditingController(text: user.email),
+                      controller: TextEditingController(text: user.password),
                       onChanged: (value) {
-                        user.email = value;
+                        user.password = value;
                       },
                       validator: (value) {
                         if (value!.isEmpty) {

@@ -1,8 +1,8 @@
 // ignore_for_file: avoid_print, file_names
 
 import 'package:flutter/material.dart';
+import 'package:lost_mode_app/screens/login.dart';
 // import 'package:lost_mode_app/screens/disablescreen.dart';
-
 
 class NavBar extends StatelessWidget {
   const NavBar({super.key});
@@ -27,18 +27,16 @@ class NavBar extends StatelessWidget {
                     fit: BoxFit.cover)),
           ),
           SizedBox(
-            height: MediaQuery.of(context).size.height *0.7,
+            height: MediaQuery.of(context).size.height * 0.7,
             child: Column(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Column(
                   children: [
                     ListTile(
-                      leading: const Icon(Icons.home_filled),
-                      title: const Text('Dashboard'),
-                      onTap: () => { 
-                       }
-                    ),
+                        leading: const Icon(Icons.home_filled),
+                        title: const Text('Dashboard'),
+                        onTap: () => {}),
                     ListTile(
                       leading: const Icon(Icons.home),
                       title: const Text('Dashboard'),
@@ -63,14 +61,19 @@ class NavBar extends StatelessWidget {
                       title: const Text('Settings'),
                       onTap: () => print('tapped Settings'),
                     ),
-                 ListTile(
+                    ListTile(
                       leading: const Icon(Icons.logout_outlined),
                       title: const Text('Logout'),
-                      onTap: () => print('tapped Logout'),
+                      onTap: () => {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => const Signin()),
+                        )
+                      },
                     ),
                   ],
                 ),
-                  
               ],
             ),
           )
