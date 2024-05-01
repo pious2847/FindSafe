@@ -4,6 +4,7 @@ import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:lost_mode_app/.env.dart';
 import 'package:lost_mode_app/models/User_model.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:lost_mode_app/screens/login.dart';
 
 class Signup extends StatefulWidget {
@@ -59,9 +60,9 @@ class _SignupState extends State<Signup> {
                   const SizedBox(
                     height: 150,
                   ),
-                  const Text(
+                   Text(
                     "Signup",
-                    style: TextStyle(
+                    style: GoogleFonts.pacifico(
                         fontWeight: FontWeight.bold,
                         fontSize: 50,
                         color: Colors.blue),
