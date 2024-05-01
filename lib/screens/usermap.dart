@@ -3,6 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:location/location.dart';
+import 'package:lost_mode_app/.env.dart';
 import 'package:lost_mode_app/constants/NavBar.dart';
 import 'package:lost_mode_app/utils/directions_model.dart';
 import 'package:lost_mode_app/utils/directions_repository.dart';
@@ -266,7 +267,7 @@ class _MapScreenState extends State<MapScreen> {
 Future<void> fetchMobileDevices() async {
   final dio = Dio();
   try {
-    final response = await dio.get('http://localhost:8080/api/mobiledevices');
+    final response = await dio.get('$APIURL/mobiledevices');
     if (response.statusCode == 200) {
       List<dynamic> data = response.data;
       setState(() {
