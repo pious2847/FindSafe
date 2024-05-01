@@ -104,8 +104,6 @@ class _OnbordingState extends State<Onbording> {
                       builder: (_) =>  const Signin(),
                     ),
                   );
-                  final prefs = await SharedPreferences.getInstance();
-                  prefs.setBool('showHome', true);
                 }
                 _controller.nextPage(
                   duration: const Duration(milliseconds: 100),

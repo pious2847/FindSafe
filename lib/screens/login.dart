@@ -1,5 +1,7 @@
 // ignore_for_file: library_private_types_in_public_api, use_build_context_synchronously, avoid_print
 
+import 'dart:ffi';
+
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 // import 'package:flutter_svg/svg.dart';
@@ -8,6 +10,8 @@ import 'package:lost_mode_app/.env.dart';
 import 'package:lost_mode_app/models/User_model.dart';
 import 'package:lost_mode_app/screens/signup.dart';
 import 'package:lost_mode_app/screens/usermap.dart';
+import 'package:lost_mode_app/services/service.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class Signin extends StatefulWidget {
   const Signin({super.key});
@@ -36,7 +40,12 @@ class _SigninState extends State<Signin> {
       );
 
       if (response.statusCode == 200) {
-        print(response.data);
+        print('Userid ' + response.data);
+
+        await saveUserDataToLocalStorage(response.data);
+        final prefs = await SharedPreferences.getInstance();
+        prefs.setBool('showHome', true);
+        
         Navigator.push(
           context,
           MaterialPageRoute(builder: (context) => const MapScreen()),
@@ -50,7 +59,11 @@ class _SigninState extends State<Signin> {
     }
   }
 
-  User user = User('', '','',);
+  User user = User(
+    '',
+    '',
+    '',
+  );
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -190,7 +203,8 @@ class _SigninState extends State<Signin> {
                           const Text(
                             "Not have Account ? ",
                             style: TextStyle(
-                                color: Colors.black, fontWeight: FontWeight.bold),
+                                color: Colors.black,
+                                fontWeight: FontWeight.bold),
                           ),
                           InkWell(
                             onTap: () {

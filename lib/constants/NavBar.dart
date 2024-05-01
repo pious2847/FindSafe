@@ -2,6 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:lost_mode_app/screens/login.dart';
+import 'package:lost_mode_app/services/service.dart';
 // import 'package:lost_mode_app/screens/disablescreen.dart';
 
 class NavBar extends StatelessWidget {
@@ -64,7 +65,8 @@ class NavBar extends StatelessWidget {
                     ListTile(
                       leading: const Icon(Icons.logout_outlined),
                       title: const Text('Logout'),
-                      onTap: () => {
+                      onTap: () async => {
+                        await logout(),
                         Navigator.push(
                           context,
                           MaterialPageRoute(
