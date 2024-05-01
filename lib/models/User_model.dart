@@ -6,3 +6,9 @@ class User {
   String password;
   User(this.username,this.email, this.password);
 }
+
+class Userlogin {
+  String email;
+  String password;
+  Userlogin(this.email, this.password);
+}

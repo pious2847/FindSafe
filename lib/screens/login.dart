@@ -18,29 +18,39 @@ class Signin extends StatefulWidget {
 
 class _SigninState extends State<Signin> {
   final _formKey = GlobalKey<FormState>();
+
   Future<void> save() async {
     final dio = Dio();
-    var res = await dio.post(
-      "$APIURL/login",
-      options: Options(headers: {
-        'Content-Type': 'application/json; charset=UTF-8',
-      }),
-      data: {
-        'email': user.email,
-        'password': user.password,
-      },
-    );
-    // if(res.statuscode == 200 || res.statuscode == 201){
-    //      print(res.data);
-    // }
-    print(res.data);
-    Navigator.push(
-      context,
-      MaterialPageRoute(builder: (context) => const MapScreen()),
-    );
+    try {
+      final response = await dio.post(
+        "$APIURL/login",
+        options: Options(
+          headers: {
+            'Content-Type': 'application/json; charset=UTF-8',
+          },
+        ),
+        data: {
+          'email': user.email,
+          'password': user.password,
+        },
+      );
+
+      if (response.statusCode == 200) {
+        print(response.data);
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => const MapScreen()),
+        );
+      } else {
+        print("Invalid response ${response.statusCode}: ${response.data}");
+      }
+    } catch (e) {
+      print("Error occurred: $e");
+      // Handle error, show toast or snackbar
+    }
   }
 
-  User user = User('', '','');
+  Userlogin user = Userlogin('', '',);
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -116,9 +126,9 @@ class _SigninState extends State<Signin> {
                   Padding(
                     padding: const EdgeInsets.all(16.0),
                     child: TextFormField(
-                      controller: TextEditingController(text: user.email),
+                      controller: TextEditingController(text: user.password),
                       onChanged: (value) {
-                        user.email = value;
+                        user.password = value;
                       },
                       validator: (value) {
                         if (value!.isEmpty) {
