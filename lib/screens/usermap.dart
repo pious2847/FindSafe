@@ -5,6 +5,7 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:location/location.dart';
 import 'package:lost_mode_app/.env.dart';
 import 'package:lost_mode_app/constants/NavBar.dart';
+import 'package:lost_mode_app/constants/devce_info.dart';
 import 'package:lost_mode_app/utils/directions_model.dart';
 import 'package:lost_mode_app/utils/directions_repository.dart';
 import 'package:lost_mode_app/utils/phonecard.dart';
@@ -263,31 +264,31 @@ class _MapScreenState extends State<MapScreen> {
     return const LatLng(37.7749, -122.4194);
   }
 
-Future<void> fetchMobileDevices() async {
-  final dio = Dio();
-  try {
-    final response = await dio.get('$APIURL/mobiledevices');
-    print('Response: $response');
+  Future<void> fetchMobileDevices() async {
+    final dio = Dio();
+    try {
+      final response = await dio.get('$APIURL/mobiledevices');
+      print('Response: $response');
 
-    if (response.statusCode == 200) {
-      // Access the 'mobileDevices' property from the response data
-      final List<dynamic> mobileDevicesData = response.data['mobileDevices'];
+      if (response.statusCode == 200) {
+        // Access the 'mobileDevices' property from the response data
+        final List<dynamic> mobileDevicesData = response.data['mobileDevices'];
 
-      // Map over the mobile devices data and convert them into Phone objects
-      final List<Phone> phonesList = mobileDevicesData
-          .map((item) => Phone.fromJson(item))
-          .toList();
+        // Map over the mobile devices data and convert them into Phone objects
+        final List<Phone> phonesList =
+            mobileDevicesData.map((item) => Phone.fromJson(item)).toList();
 
-      setState(() {
-        phones = phonesList;
-      });
-    } else {
-      throw Exception('Failed to load mobile devices');
+        setState(() {
+          phones = phonesList;
+        });
+        print('error occured here');
+        Map<String, dynamic> deviceInfo = await getDeviceInfo();
+        print(deviceInfo);
+      } else {
+        throw Exception('Failed to load mobile devices');
+      }
+    } catch (e) {
+      throw Exception('Failed to make API call: $e');
     }
-  } catch (e) {
-    throw Exception('Failed to make API call: $e');
   }
-}
-
-
 }
