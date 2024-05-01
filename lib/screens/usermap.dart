@@ -263,21 +263,21 @@ class _MapScreenState extends State<MapScreen> {
     return const LatLng(37.7749, -122.4194);
   }
 
-
-Future<void> fetchMobileDevices() async {
-  final dio = Dio();
-  try {
-    final response = await dio.get('$APIURL/mobiledevices');
-    if (response.statusCode == 200) {
-      List<dynamic> data = response.data;
-      setState(() {
-        phones = data.map((item) => Phone.fromJson(item)).toList();
-      });
-    } else {
-      throw Exception('Failed to load mobile devices');
+  Future<void> fetchMobileDevices() async {
+    final dio = Dio();
+    try {
+      final response = await dio.get('$APIURL/mobiledevices');
+      if (response.statusCode == 200) {
+        List<dynamic> data = response.data;
+        setState(() {
+          phones = data.map((item) => Phone.fromJson(item)).toList();
+        });
+        print(response.data);
+      } else {
+        throw Exception('Failed to load mobile devices');
+      }
+    } catch (e) {
+      throw Exception('Failed to make API call: $e');
     }
-  } catch (e) {
-    throw Exception('Failed to make API call: $e');
   }
-}
 }
