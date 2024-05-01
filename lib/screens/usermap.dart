@@ -267,12 +267,19 @@ class _MapScreenState extends State<MapScreen> {
     final dio = Dio();
     try {
       final response = await dio.get('$APIURL/mobiledevices');
+      print('Response: $response');
+
       if (response.statusCode == 200) {
-        List<dynamic> data = response.data;
+        // Access the 'mobileDevices' property from the response data
+        final List<dynamic> mobileDevicesData = response.data['mobileDevices'];
+
+        // Map over the mobile devices data and convert them into Phone objects
+        final List<Phone> phonesList =
+            mobileDevicesData.map((item) => Phone.fromJson(item)).toList();
+
         setState(() {
-          phones = data.map((item) => Phone.fromJson(item)).toList();
+          phones = phonesList;
         });
-        print(response.data);
       } else {
         throw Exception('Failed to load mobile devices');
       }
