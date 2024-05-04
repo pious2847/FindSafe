@@ -1,4 +1,8 @@
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:dio/dio.dart';
+import 'package:lost_mode_app/.env.dart';
+
+
 
 Future<void> saveUserDataToLocalStorage(String userId) async {
   final prefs = await SharedPreferences.getInstance();
@@ -21,4 +25,23 @@ Future<void> logout() async {
   await prefs.setBool('showHome', false);
 
   print("User Logged Out");
+}
+
+Future<void> addDeviceInfo(userId,devicename, modelNumer,) async { 
+  final dio = Dio();
+     try {
+      final response = await dio.post(
+        "$APIURL/register-device/$userId/$devicename/$modelNumer",
+      );
+
+      if (response.statusCode == 200) {
+        print("device info inserted successfull");
+      } else {
+        print("Invalid response ${response.statusCode}: ${response.data}");
+      }
+    } catch (e) {
+      print("Error occurred: $e");
+      // Handle error, show toast or snackbar
+    }
+
 }

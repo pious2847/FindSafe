@@ -7,7 +7,7 @@ class Phone {
   factory Phone.fromJson(Map<String, dynamic> json) {
     return Phone(
       name: json['devicename'],
-      imageUrl: json['imageUrl'],
+      imageUrl: json['image'],
     );
   }
 }

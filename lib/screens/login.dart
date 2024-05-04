@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 // import 'package:flutter_svg/svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:lost_mode_app/.env.dart';
+import 'package:lost_mode_app/constants/devce_info.dart';
 import 'package:lost_mode_app/models/User_model.dart';
 import 'package:lost_mode_app/screens/signup.dart';
 import 'package:lost_mode_app/screens/usermap.dart';
@@ -42,10 +43,21 @@ class _SigninState extends State<Signin> {
       if (response.statusCode == 200) {
         print('Userid ' + response.data);
 
+        Map<String, dynamic> deviceInfo = await getDeviceInfo();
+        print(deviceInfo);
+        String deviceName =  deviceInfo['model']; // Get the device name
+        String deviceModel = deviceInfo['manufacturer'];// Get the device model
+
+        await addDeviceInfo(
+          response.data,
+          deviceName,
+          deviceModel,
+        );
+
         await saveUserDataToLocalStorage(response.data);
         final prefs = await SharedPreferences.getInstance();
         prefs.setBool('showHome', true);
-        
+
         Navigator.push(
           context,
           MaterialPageRoute(builder: (context) => const MapScreen()),

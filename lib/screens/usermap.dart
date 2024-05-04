@@ -11,6 +11,8 @@ import 'package:lost_mode_app/utils/directions_repository.dart';
 import 'package:lost_mode_app/utils/phonecard.dart';
 import 'package:lost_mode_app/utils/phone_model.dart';
 import 'package:dio/dio.dart';
+
+import '../services/service.dart';
 // import 'dart:convert';
 
 class MapScreen extends StatefulWidget {
@@ -266,8 +268,12 @@ class _MapScreenState extends State<MapScreen> {
 
   Future<void> fetchMobileDevices() async {
     final dio = Dio();
+
     try {
-      final response = await dio.get('$APIURL/mobiledevices');
+      final userData = await getUserDataFromLocalStorage();
+      final userId = userData['userId'] as String?;
+
+      final response = await dio.get('$APIURL/mobiledevices/$userId');
       print('Response: $response');
 
       if (response.statusCode == 200) {
@@ -282,8 +288,6 @@ class _MapScreenState extends State<MapScreen> {
           phones = phonesList;
         });
         print('error occured here');
-        Map<String, dynamic> deviceInfo = await getDeviceInfo();
-        print(deviceInfo);
       } else {
         throw Exception('Failed to load mobile devices');
       }
