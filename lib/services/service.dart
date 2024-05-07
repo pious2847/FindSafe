@@ -35,6 +35,8 @@ Future<void> addDeviceInfo(userId,devicename, modelNumer,) async {
       );
 
       if (response.statusCode == 200) {
+       final prefs = await SharedPreferences.getInstance();
+       await prefs.setBool('isRegisted', true);
         print("device info inserted successfull");
       } else {
         print("Invalid response ${response.statusCode}: ${response.data}");
