@@ -49,6 +49,7 @@ dependencies:
   workmanager: ^0.5.2
   google_fonts: ^6.2.1
   device_info_plus: ^10.1.0
+  iconsax_flutter: ^1.0.0
 
 
 

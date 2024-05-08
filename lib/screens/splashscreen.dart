@@ -17,7 +17,7 @@ class SplashScreen extends StatefulWidget {
 }
 
 class _SplashScreenState extends State<SplashScreen>
-    with SingleTickerProviderStateMixin {
+  with SingleTickerProviderStateMixin {
   bool showHome = false;
 
   @override
@@ -40,7 +40,8 @@ class _SplashScreenState extends State<SplashScreen>
           ),
         );
       });
-    });
+    }
+    );
   }
 
   @override

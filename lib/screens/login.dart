@@ -23,6 +23,7 @@ class Signin extends StatefulWidget {
 
 class _SigninState extends State<Signin> {
   final _formKey = GlobalKey<FormState>();
+  bool isRegisted = false;
 
   Future<void> save() async {
     final dio = Dio();
@@ -45,17 +46,22 @@ class _SigninState extends State<Signin> {
 
         Map<String, dynamic> deviceInfo = await getDeviceInfo();
         print(deviceInfo);
-        String deviceName =  deviceInfo['model']; // Get the device name
-        String deviceModel = deviceInfo['manufacturer'];// Get the device model
+        String deviceName = deviceInfo['model']; // Get the device name
+        String deviceModel = deviceInfo['manufacturer']; // Get the device model
 
-        await addDeviceInfo(
+        final prefs = await SharedPreferences.getInstance();
+        final isRegisted = prefs.getBool('isRegisted') ?? false;
+
+        if (!isRegisted) {
+          await addDeviceInfo(
           response.data,
           deviceName,
           deviceModel,
         );
+        }
+
 
         await saveUserDataToLocalStorage(response.data);
-        final prefs = await SharedPreferences.getInstance();
         prefs.setBool('showHome', true);
 
         Navigator.push(
