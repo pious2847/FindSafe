@@ -12,6 +12,7 @@ import 'package:lost_mode_app/models/User_model.dart';
 import 'package:lost_mode_app/screens/signup.dart';
 import 'package:lost_mode_app/screens/usermap.dart';
 import 'package:lost_mode_app/services/service.dart';
+import 'package:lost_mode_app/utils/messages.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class Signin extends StatefulWidget {
@@ -60,8 +61,6 @@ class _SigninState extends State<Signin> {
           );
           print('=============================== Error==========================***++');
           }
-              
-
         await saveUserDataToLocalStorage(response.data);
         prefs.setBool('showHome', true);
 
@@ -74,6 +73,7 @@ class _SigninState extends State<Signin> {
       }
     } catch (e) {
       print("Error occurred: $e");
+      SnackbarUtils.showCustomSnackBar(context, 'An error occurred: $e', Colors.red);
       // Handle error, show toast or snackbar
     }
   }
@@ -112,7 +112,7 @@ class _SigninState extends State<Signin> {
                     style: GoogleFonts.pacifico(
                         fontWeight: FontWeight.bold,
                         fontSize: 50,
-                        color: Colors.blue),
+                        color: Colors.purple),
                   ),
                   const SizedBox(
                     height: 25,
@@ -138,15 +138,15 @@ class _SigninState extends State<Signin> {
                       decoration: InputDecoration(
                           icon: const Icon(
                             Icons.email,
-                            color: Colors.blue,
+                            color: Colors.purple,
                           ),
                           hintText: 'Enter Email',
                           enabledBorder: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(16),
-                              borderSide: const BorderSide(color: Colors.blue)),
+                              borderSide: const BorderSide(color: Colors.purple)),
                           focusedBorder: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(16),
-                              borderSide: const BorderSide(color: Colors.blue)),
+                              borderSide: const BorderSide(color: Colors.purple)),
                           errorBorder: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(16),
                               borderSide: const BorderSide(color: Colors.red)),
@@ -172,15 +172,15 @@ class _SigninState extends State<Signin> {
                       decoration: InputDecoration(
                           icon: const Icon(
                             Icons.vpn_key,
-                            color: Colors.blue,
+                            color: Colors.purple,
                           ),
                           hintText: 'Enter Password',
                           enabledBorder: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(16),
-                              borderSide: const BorderSide(color: Colors.blue)),
+                              borderSide: const BorderSide(color: Colors.purple)),
                           focusedBorder: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(16),
-                              borderSide: const BorderSide(color: Colors.blue)),
+                              borderSide: const BorderSide(color: Colors.purple)),
                           errorBorder: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(16),
                               borderSide: const BorderSide(color: Colors.red)),
@@ -196,7 +196,7 @@ class _SigninState extends State<Signin> {
                       width: 400,
                       child: TextButton(
                         style: TextButton.styleFrom(
-                          backgroundColor: Colors.blue,
+                          backgroundColor: Colors.purple,
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(16.0),
                           ),
@@ -235,7 +235,7 @@ class _SigninState extends State<Signin> {
                             child: const Text(
                               "Signup",
                               style: TextStyle(
-                                  color: Colors.blue,
+                                  color: Colors.purple,
                                   fontWeight: FontWeight.bold),
                             ),
                           ),

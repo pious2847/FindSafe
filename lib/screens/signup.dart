@@ -81,7 +81,7 @@ class _SignupState extends State<Signup> {
                     style: GoogleFonts.pacifico(
                         fontWeight: FontWeight.bold,
                         fontSize: 50,
-                        color: Colors.blue),
+                        color: Colors.purple),
                   ),
                   const SizedBox(
                     height: 25,
@@ -102,15 +102,15 @@ class _SignupState extends State<Signup> {
                       decoration: InputDecoration(
                           icon: const Icon(
                             Icons.person_4_outlined,
-                            color: Colors.blue,
+                            color: Colors.purple,
                           ),
                           hintText: 'Enter Username',
                           enabledBorder: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(16),
-                              borderSide: const BorderSide(color: Colors.blue)),
+                              borderSide: const BorderSide(color: Colors.purple)),
                           focusedBorder: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(16),
-                              borderSide: const BorderSide(color: Colors.blue)),
+                              borderSide: const BorderSide(color: Colors.purple)),
                           errorBorder: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(16),
                               borderSide: const BorderSide(color: Colors.red)),
@@ -140,15 +140,15 @@ class _SignupState extends State<Signup> {
                       decoration: InputDecoration(
                           icon: const Icon(
                             Icons.email,
-                            color: Colors.blue,
+                            color: Colors.purple,
                           ),
                           hintText: 'Enter Email',
                           enabledBorder: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(16),
-                              borderSide: const BorderSide(color: Colors.blue)),
+                              borderSide: const BorderSide(color: Colors.purple)),
                           focusedBorder: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(16),
-                              borderSide: const BorderSide(color: Colors.blue)),
+                              borderSide: const BorderSide(color: Colors.purple)),
                           errorBorder: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(16),
                               borderSide: const BorderSide(color: Colors.red)),
@@ -173,15 +173,15 @@ class _SignupState extends State<Signup> {
                       decoration: InputDecoration(
                           icon: const Icon(
                             Icons.vpn_key,
-                            color: Colors.blue,
+                            color: Color.fromARGB(255, 173, 63, 192),
                           ),
                           hintText: 'Enter Password',
                           enabledBorder: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(16),
-                              borderSide: const BorderSide(color: Colors.blue)),
+                              borderSide: const BorderSide(color: Colors.purple)),
                           focusedBorder: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(16),
-                              borderSide: const BorderSide(color: Colors.blue)),
+                              borderSide: const BorderSide(color: Color.fromARGB(255, 103, 10, 119))),
                           errorBorder: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(16),
                               borderSide: const BorderSide(color: Colors.red)),
@@ -198,7 +198,7 @@ class _SignupState extends State<Signup> {
                       child: TextButton(
                         style: ButtonStyle(
                           backgroundColor:
-                              MaterialStateProperty.all<Color>(Colors.blue),
+                              MaterialStateProperty.all(Theme.of(context).primaryColor),
                           shape: MaterialStateProperty.all<OutlinedBorder>(
                             RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(16.0),
@@ -238,7 +238,7 @@ class _SignupState extends State<Signup> {
                             child: const Text(
                               "Signin",
                               style: TextStyle(
-                                  color: Colors.blue,
+                                  color: Colors.purple,
                                   fontWeight: FontWeight.bold),
                             ),
                           ),
