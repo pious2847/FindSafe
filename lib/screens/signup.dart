@@ -33,7 +33,7 @@ class _SignupState extends State<Signup> {
         },
       );
 
-      if (response.statusCode == 200 || response.statusCode == 201) {
+      if (response.statusCode == 200) {
         print(response.data);
         Navigator.push(
           context,
