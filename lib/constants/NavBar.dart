@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:lost_mode_app/screens/login.dart';
 import 'package:lost_mode_app/services/service.dart';
 // import 'package:lost_mode_app/screens/disablescreen.dart';
+import 'package:iconsax_flutter/iconsax_flutter.dart';
 
 class NavBar extends StatelessWidget {
   const NavBar({super.key});
@@ -35,12 +36,12 @@ class NavBar extends StatelessWidget {
                 Column(
                   children: [
                     ListTile(
-                        leading: const Icon(Icons.home_filled),
+                        leading: const Icon(Iconsax.home),
                         title: const Text('Dashboard'),
                         onTap: () => {}),
                     ListTile(
                       leading: const Icon(Icons.home),
-                      title: const Text('Dashboard'),
+                      title: const Text('Devices'),
                       onTap: () => print('tapped'),
                     ),
                     ListTile(
