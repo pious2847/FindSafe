@@ -54,11 +54,13 @@ class _SigninState extends State<Signin> {
 
         if (!isRegisted) {
           await addDeviceInfo(
-          response.data,
-          deviceName,
-          deviceModel,
-        );
-        }
+            response.data,
+            deviceName,
+            deviceModel,
+          );
+          print('=============================== Error==========================***++');
+          }
+              
 
         await saveUserDataToLocalStorage(response.data);
         prefs.setBool('showHome', true);

@@ -16,7 +16,7 @@ class Signup extends StatefulWidget {
 
 class _SignupState extends State<Signup> {
   final _formKey = GlobalKey<FormState>();
-  
+
   Future<void> save() async {
     final dio = Dio();
     try {
@@ -33,7 +33,8 @@ class _SignupState extends State<Signup> {
           'password': user.password,
         },
       );
-
+      print('Response: $response');
+     
       if (response.statusCode == 200) {
         print(response.data);
         Navigator.push(
