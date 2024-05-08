@@ -217,8 +217,10 @@ class _SignupState extends State<Signup> {
                           style: TextStyle(color: Colors.white, ),
                         ),
                       ),
+                    
                     ),
                   ),
+                  
                   Padding(
                       padding: const EdgeInsets.fromLTRB(95, 20, 0, 0),
                       child: Row(

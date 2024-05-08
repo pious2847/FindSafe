@@ -138,8 +138,8 @@ class _SigninState extends State<Signin> {
                         }
                       },
                       decoration: InputDecoration(
-                          icon: const Icon(
-                            Iconsax.email,
+                          icon:  const Icon(
+                            Iconsax.message_2_copy,
                             color: Colors.purple,
                           ),
                           hintText: 'Enter Email',
@@ -173,7 +173,7 @@ class _SigninState extends State<Signin> {
                       obscureText: true,
                       decoration: InputDecoration(
                           icon: const Icon(
-                            Icons.vpn_key,
+                            Iconsax.key,
                             color: Colors.purple,
                           ),
                           hintText: 'Enter Password',
@@ -191,16 +191,19 @@ class _SigninState extends State<Signin> {
                               borderSide: const BorderSide(color: Colors.red))),
                     ),
                   ),
-                  Padding(
+                    Padding(
                     padding: const EdgeInsets.fromLTRB(55, 16, 16, 0),
                     child: SizedBox(
                       height: 50,
                       width: 400,
                       child: TextButton(
-                        style: TextButton.styleFrom(
-                          backgroundColor: Colors.purple,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(16.0),
+                        style: ButtonStyle(
+                          backgroundColor:
+                              MaterialStateProperty.all(Theme.of(context).primaryColor),
+                          shape: MaterialStateProperty.all<OutlinedBorder>(
+                            RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(16.0),
+                            ),
                           ),
                         ),
                         onPressed: () {
@@ -215,8 +218,10 @@ class _SigninState extends State<Signin> {
                           style: TextStyle(color: Colors.white, ),
                         ),
                       ),
+                    
                     ),
                   ),
+                  
                   Padding(
                       padding: const EdgeInsets.fromLTRB(95, 20, 0, 0),
                       child: Row(
