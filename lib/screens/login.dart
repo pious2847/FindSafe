@@ -14,6 +14,7 @@ import 'package:lost_mode_app/screens/usermap.dart';
 import 'package:lost_mode_app/services/service.dart';
 import 'package:lost_mode_app/utils/messages.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:iconsax_flutter/iconsax_flutter.dart';
 
 class Signin extends StatefulWidget {
   const Signin({super.key});
@@ -138,7 +139,7 @@ class _SigninState extends State<Signin> {
                       },
                       decoration: InputDecoration(
                           icon: const Icon(
-                            Icons.email,
+                            Iconsax.email,
                             color: Colors.purple,
                           ),
                           hintText: 'Enter Email',
@@ -211,7 +212,7 @@ class _SigninState extends State<Signin> {
                         },
                         child: const Text(
                           "Signin",
-                          style: TextStyle(color: Colors.white, fontSize: 20),
+                          style: TextStyle(color: Colors.white, ),
                         ),
                       ),
                     ),

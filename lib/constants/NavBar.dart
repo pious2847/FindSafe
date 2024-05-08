@@ -2,6 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:lost_mode_app/screens/login.dart';
+import 'package:lost_mode_app/screens/usermap.dart';
 import 'package:lost_mode_app/services/service.dart';
 // import 'package:lost_mode_app/screens/disablescreen.dart';
 import 'package:iconsax_flutter/iconsax_flutter.dart';
@@ -12,6 +13,7 @@ class NavBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Drawer(
+      width: MediaQuery.of(context).size.width * 0.8,
       child: ListView(
         padding: EdgeInsets.zero,
         children: [
@@ -36,22 +38,29 @@ class NavBar extends StatelessWidget {
                 Column(
                   children: [
                     ListTile(
-                        leading: const Icon(Iconsax.home),
+                        leading: const Icon(Iconsax.home_1_copy, color: Colors.purple,),
                         title: const Text('Dashboard'),
-                        onTap: () => {}),
+                        onTap: () => {
+                           Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => const MapScreen()),
+                        )
+                        }),
+
                     ListTile(
-                      leading: const Icon(Icons.home),
+                      leading: const Icon(Iconsax.user_octagon_copy,  color: Colors.purple),
+                      title: const Text('Profile'),
+                      onTap: () => print('tapped'),
+                    ),
+                                        ListTile(
+                      leading: const Icon(Iconsax.mobile_copy, color: Colors.purple),
                       title: const Text('Devices'),
                       onTap: () => print('tapped'),
                     ),
                     ListTile(
-                      leading: const Icon(Icons.home),
-                      title: const Text('Dashboard'),
-                      onTap: () => print('tapped'),
-                    ),
-                    ListTile(
-                      leading: const Icon(Icons.settings),
-                      title: const Text('Settings'),
+                      leading: const Icon(Iconsax.data_copy,  color: Colors.purple),
+                      title: const Text('Locations'),
                       onTap: () => print('tapped'),
                     ),
                   ],
@@ -59,12 +68,12 @@ class NavBar extends StatelessWidget {
                 Column(
                   children: [
                     ListTile(
-                      leading: const Icon(Icons.settings),
+                      leading: const Icon(Iconsax.settings, color: Colors.purple),
                       title: const Text('Settings'),
                       onTap: () => print('tapped Settings'),
                     ),
                     ListTile(
-                      leading: const Icon(Icons.logout_outlined),
+                      leading: const Icon(Iconsax.logout_1_copy, color: Colors.purple),
                       title: const Text('Logout'),
                       onTap: () async => {
                         await logout(),

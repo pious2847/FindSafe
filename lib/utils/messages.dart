@@ -7,6 +7,7 @@ class SnackbarUtils {
       SnackBar(
         content: Text(message),
         backgroundColor: backgroundColor,
+        
       ),
     );
   }
