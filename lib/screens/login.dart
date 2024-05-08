@@ -68,6 +68,7 @@ class _SigninState extends State<Signin> {
           context,
           MaterialPageRoute(builder: (context) => const MapScreen()),
         );
+        SnackbarUtils.showCustomSnackBar(context, 'Login successful', const Color.fromARGB(255, 76, 175, 80));
       } else {
         print("Invalid response ${response.statusCode}: ${response.data}");
       }
