@@ -75,7 +75,6 @@ class _SettingsState extends State<Settings> {
                 SingleSection(
                   title: "Modes",
                   children: [
-                    const Divider(),
                      CustomListTile(
                       icon: Iconsax.moon_copy,
                       title: "Lost Mode",
