@@ -69,7 +69,13 @@ class _SettingsState extends State<Settings> {
                           }),
                     ),
                     const Divider(),
-                    CustomListTile(
+                   
+                  ],
+                ),
+                SingleSection(
+                  title: "Modes",
+                  children: [
+                     CustomListTile(
                       icon: Iconsax.moon_copy,
                       title: "Lost Mode",
                       trailing: Switch(
@@ -93,8 +99,9 @@ class _SettingsState extends State<Settings> {
                           }),
                     ),
                     const Divider(),
-                  ],
+                  ]
                 )
+                
               ],
             ),
           ),
