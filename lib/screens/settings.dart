@@ -4,6 +4,7 @@ import 'package:iconsax_flutter/iconsax_flutter.dart';
 import 'package:lost_mode_app/.env.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:lost_mode_app/models/settings_model.dart';
+import 'package:lost_mode_app/theme/settheme.dart';
 
 class Settings extends StatefulWidget {
   const Settings({super.key});
@@ -14,6 +15,8 @@ class Settings extends StatefulWidget {
 
 class _SettingsState extends State<Settings> {
   bool _isDark = false;
+  
+  
   Future<void> save() async {
     final dio = Dio();
     try {
@@ -44,7 +47,9 @@ class _SettingsState extends State<Settings> {
     return Theme(
       data: _isDark ? ThemeData.dark() : ThemeData.light(),
       child: Scaffold(
-        appBar: AppBar(title: Text("Settings"),),
+        appBar: AppBar(
+          title: Text("Settings"),
+        ),
         body: Center(
           child: Container(
             constraints: const BoxConstraints(maxWidth: 400),
@@ -55,7 +60,10 @@ class _SettingsState extends State<Settings> {
                   children: [
                     const Divider(),
                     const CustomListTile(
-                        title: "About Phone", icon: Iconsax.mobile_copy, trailing: Icon(Iconsax.arrow_right_3_copy),),
+                      title: "About Phone",
+                      icon: Iconsax.mobile_copy,
+                      trailing: Icon(Iconsax.arrow_right_3_copy),
+                    ),
                     const Divider(),
                     CustomListTile(
                       icon: Iconsax.moon_copy,
@@ -63,45 +71,44 @@ class _SettingsState extends State<Settings> {
                       trailing: Switch(
                           value: _isDark,
                           onChanged: (value) {
-                            setState(() {
-                              _isDark = value;
+                            setState(() async {
+                              final themedata = await getTheme();
+                              final isDarkTheme = themedata['isDark'];
+
+                              if (!isDarkTheme) {
+                                await setTheme();
+                                print(
+                                    '=========================== Dark theme set ======================');
+                              }
+                              _isDark = isDarkTheme;
                             });
                           }),
                     ),
                     const Divider(),
-                   
                   ],
                 ),
-                SingleSection(
-                  title: "Modes",
-                  children: [
-                     CustomListTile(
-                      icon: Iconsax.moon_copy,
-                      title: "Lost Mode",
-                      trailing: Switch(
-                          value: _isDark,
-                          onChanged: (value) {
-                            setState(() {
-                              _isDark = value;
-                            });
-                          }),
-                    ),
-                    const Divider(),
-                    CustomListTile(
-                      icon: Iconsax.moon_copy,
-                      title: "Active Mode",
-                      trailing: Switch(
-                          value: _isDark,
-                          onChanged: (value) {
-                            setState(() {
-                              _isDark = value;
-                            });
-                          }),
-                    ),
-                    const Divider(),
-                  ]
-                )
-                
+                SingleSection(title: "Modes", children: [
+                  CustomListTile(
+                    icon: Iconsax.moon_copy,
+                    title: "Lost Mode",
+                    trailing: Switch(
+                        value: _isDark,
+                        onChanged: (value) {
+                          print(value);
+                        }),
+                  ),
+                  const Divider(),
+                  CustomListTile(
+                    icon: Iconsax.moon_copy,
+                    title: "Active Mode",
+                    trailing: Switch(
+                        value: _isDark,
+                        onChanged: (value) {
+                          print(value);
+                        }),
+                  ),
+                  const Divider(),
+                ])
               ],
             ),
           ),
