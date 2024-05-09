@@ -6,6 +6,7 @@ import 'package:lost_mode_app/.env.dart';
 import 'package:lost_mode_app/models/User_model.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:lost_mode_app/screens/login.dart';
+import 'package:lost_mode_app/utils/messages.dart';
 
 class Signup extends StatefulWidget {
   const Signup({super.key});
@@ -37,6 +38,7 @@ class _SignupState extends State<Signup> {
      
       if (response.statusCode == 200) {
         print(response.data);
+        SnackbarUtils.showCustomSnackBar(context, 'Account Created successful', const Color.fromARGB(255, 85, 189, 89));
         Navigator.push(
           context,
           MaterialPageRoute(builder: (context) => const Signin()),
@@ -45,6 +47,7 @@ class _SignupState extends State<Signup> {
         print("Invalid response ${response.statusCode}: ${response.data}");
       }
     } catch (e) {
+      SnackbarUtils.showCustomSnackBar(context, 'An error occurred: $e', Colors.red);
       print("Error occurred: $e");
       // Handle error, show toast or snackbar
     }

@@ -2,6 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:lost_mode_app/screens/login.dart';
+import 'package:lost_mode_app/screens/settings.dart';
 import 'package:lost_mode_app/screens/usermap.dart';
 import 'package:lost_mode_app/services/service.dart';
 // import 'package:lost_mode_app/screens/disablescreen.dart';
@@ -61,6 +62,11 @@ class NavBar extends StatelessWidget {
                     ListTile(
                       leading: const Icon(Iconsax.data_copy,  color: Colors.purple),
                       title: const Text('Locations'),
+                      onTap: () => print('Location tapped'),
+                    ),
+                    ListTile(
+                      leading: const Icon(Iconsax.activity_copy,  color: Colors.purple),
+                      title: const Text('Modes'),
                       onTap: () => print('tapped'),
                     ),
                   ],
@@ -70,7 +76,13 @@ class NavBar extends StatelessWidget {
                     ListTile(
                       leading: const Icon(Iconsax.settings, color: Colors.purple),
                       title: const Text('Settings'),
-                      onTap: () => print('tapped Settings'),
+                      onTap: ()  async =>{
+                         Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => const Settings()),
+                        )
+                      } ,
                     ),
                     ListTile(
                       leading: const Icon(Iconsax.logout_1_copy, color: Colors.purple),
