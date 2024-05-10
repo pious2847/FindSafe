@@ -24,12 +24,6 @@ class _SettingsState extends State<Settings> {
     super.initState();
   }
 
-  Future<bool> _loadCurrentTheme() async {
-    final prefs = await SharedPreferences.getInstance();
-    final isDark = prefs.getBool('isDark') ?? false;
-    return isDark;
-  }
-
   Future<void> save() async {
     final dio = Dio();
     try {
@@ -83,17 +77,10 @@ class _SettingsState extends State<Settings> {
                       value: _isDarkMode,
                       onChanged: (value) async {
                         setState(() async {
-                          await ThemeUtils.toggleTheme(value);
-                          // Update the UI with the new theme
-                        });
-                        
-                        final isdarkmode = _loadCurrentTheme();
-                        if(await isdarkmode){
-                            setState(() {
+                          await ThemeUtils.toggleTheme();
                           _isDarkMode = value;
+                          print(_isDarkMode);
                         });
-                        }
-                        
                       },
                     ),
                   ),
