@@ -1,25 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:lost_mode_app/screens/splashscreen.dart';
+import 'package:lost_mode_app/theme/settheme.dart'; // Import the ThemeUtils class
 
 void main() async {
- 
-  runApp(const MyApp());
+  // Load the theme before running the app
+  WidgetsFlutterBinding.ensureInitialized();
+  await ThemeUtils.loadTheme();
+  runApp( MyApp());
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+  static ThemeData theme = ThemeData.light();
 
- 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      theme: ThemeData.light(),
-      darkTheme: ThemeData.dark(),
-      // theme: ThemeData(
-      //   primarySwatch: Colors.blue,
-      //   visualDensity: VisualDensity.adaptivePlatformDensity,
-      // ),
+      theme: theme,
       home: const SplashScreen(),
     );
   }

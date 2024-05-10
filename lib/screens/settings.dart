@@ -17,7 +17,6 @@ class Settings extends StatefulWidget {
 }
 
 class _SettingsState extends State<Settings> {
-
   bool _isDarkMode = false;
 
   @override
@@ -33,6 +32,7 @@ class _SettingsState extends State<Settings> {
       _isDarkMode = isDark;
     });
   }
+
   Future<void> save() async {
     final dio = Dio();
     try {
@@ -83,14 +83,18 @@ class _SettingsState extends State<Settings> {
                     icon: Iconsax.moon_copy,
                     title: "Dark theme",
                     trailing: Switch(
-                        value:  _isDarkMode,
-                       onChanged: (value) {
-                setState(() {
-                  _isDarkMode = value;
-                });
-                ThemeUtils.toggleTheme(value, (theme) {});
-              },
-              ),
+                      value: _isDarkMode,
+                      onChanged: (value) async {
+                        
+                        setState(() async {
+                        await ThemeUtils.toggleTheme(value);
+                          // Update the UI with the new theme
+                        });
+                        setState(() {
+                          _isDarkMode = value;
+                        });
+                      },
+                    ),
                   ),
                   const Divider(),
                 ],
