@@ -6,6 +6,7 @@ import 'package:iconsax_flutter/iconsax_flutter.dart';
 import 'package:lost_mode_app/.env.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:lost_mode_app/models/settings_model.dart';
+import 'package:lost_mode_app/services/settings_service.dart';
 import 'package:lost_mode_app/theme/settheme.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -77,11 +78,16 @@ class _SettingsState extends State<Settings> {
                   trailing: Switch(
                     value: _isLostMode,
                     onChanged: (value) {
-                      setState(() {
+                      setState(()  {
                         _isLostMode = value;
                         if (value) {
                           _isActiveMode =
                               false; // Turn off Active Mode if Lost Mode is turned on
+                              setState(() async {
+                                await updatemode(
+                              'disable'); // Update the mode in the backend
+                              });
+                          
                         }
                       });
                     },
@@ -99,6 +105,10 @@ class _SettingsState extends State<Settings> {
                         if (value) {
                           _isLostMode =
                               false; // Turn off Lost Mode if Active Mode is turned on
+                          setState(() async {
+                            await updatemode(
+                                'active'); // Update the mode in the backend
+                          });
                         }
                       });
                     },
