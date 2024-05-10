@@ -21,8 +21,8 @@ class _SettingsState extends State<Settings> {
 
   @override
   void initState() {
-    super.initState();
     _loadCurrentTheme();
+    super.initState();
   }
 
   Future<void> _loadCurrentTheme() async {
