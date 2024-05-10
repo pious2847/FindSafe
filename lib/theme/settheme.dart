@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class ThemeUtils {
@@ -7,7 +8,8 @@ class ThemeUtils {
   static Future<void> loadTheme() async {
     final prefs = await SharedPreferences.getInstance();
     final isDark = prefs.getBool('isDark') ?? false;
-    _theme = isDark ? ThemeData.dark() : ThemeData.light();
+    Get.changeTheme(Get.isDarkMode? ThemeData.light(): ThemeData.dark());
+
   }
 
   static ThemeData getTheme() {
@@ -17,6 +19,6 @@ class ThemeUtils {
   static Future<void> toggleTheme(bool isDark) async {
     final prefs = await SharedPreferences.getInstance();
     await prefs.setBool('isDark', isDark);
-    _theme = isDark ? ThemeData.dark() : ThemeData.light();
+    Get.changeTheme(Get.isDarkMode? ThemeData.light(): ThemeData.dark());
   }
 }

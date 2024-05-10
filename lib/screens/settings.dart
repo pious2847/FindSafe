@@ -22,15 +22,12 @@ class _SettingsState extends State<Settings> {
   @override
   void initState() {
     super.initState();
-    _loadCurrentTheme();
   }
 
-  Future<void> _loadCurrentTheme() async {
+  Future<bool> _loadCurrentTheme() async {
     final prefs = await SharedPreferences.getInstance();
     final isDark = prefs.getBool('isDark') ?? false;
-    setState(() {
-      _isDarkMode = isDark;
-    });
+    return isDark;
   }
 
   Future<void> save() async {
@@ -85,14 +82,18 @@ class _SettingsState extends State<Settings> {
                     trailing: Switch(
                       value: _isDarkMode,
                       onChanged: (value) async {
-                        
                         setState(() async {
-                        await ThemeUtils.toggleTheme(value);
+                          await ThemeUtils.toggleTheme(value);
                           // Update the UI with the new theme
                         });
-                        setState(() {
+                        
+                        final isdarkmode = _loadCurrentTheme();
+                        if(await isdarkmode){
+                            setState(() {
                           _isDarkMode = value;
                         });
+                        }
+                        
                       },
                     ),
                   ),
@@ -101,7 +102,7 @@ class _SettingsState extends State<Settings> {
               ),
               SingleSection(title: "Modes", children: [
                 CustomListTile(
-                  icon: Iconsax.moon_copy,
+                  icon: Iconsax.danger_copy,
                   title: "Lost Mode",
                   trailing: Switch(
                       value: false,
@@ -111,7 +112,7 @@ class _SettingsState extends State<Settings> {
                 ),
                 const Divider(),
                 CustomListTile(
-                  icon: Iconsax.moon_copy,
+                  icon: Iconsax.activity_copy,
                   title: "Active Mode",
                   trailing: Switch(
                       value: false,

@@ -1,23 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:lost_mode_app/screens/splashscreen.dart';
-import 'package:lost_mode_app/theme/settheme.dart'; // Import the ThemeUtils class
+// Import the ThemeUtils class
+import 'package:get/get.dart';
 
 void main() async {
-  // Load the theme before running the app
-  WidgetsFlutterBinding.ensureInitialized();
-  await ThemeUtils.loadTheme();
-  runApp( MyApp());
+  runApp( const MyApp());
 }
 
 class MyApp extends StatelessWidget {
-  static ThemeData theme = ThemeData.light();
+  const MyApp({super.key});
+
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return  const GetMaterialApp(
+      // theme: Theme,
       debugShowCheckedModeBanner: false,
-      theme: theme,
-      home: const SplashScreen(),
+      home: SplashScreen(),
     );
   }
 }
