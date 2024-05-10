@@ -4,6 +4,7 @@ import 'package:lost_mode_app/screens/splashscreen.dart';
 import 'package:get/get.dart';
 
 void main() async {
+  
   runApp( const MyApp());
 }
 

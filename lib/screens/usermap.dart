@@ -6,10 +6,10 @@ import 'package:location/location.dart';
 import 'package:lost_mode_app/.env.dart';
 import 'package:lost_mode_app/constants/NavBar.dart';
 import 'package:lost_mode_app/constants/devce_info.dart';
-import 'package:lost_mode_app/utils/directions_model.dart';
+import 'package:lost_mode_app/models/directions_model.dart';
 import 'package:lost_mode_app/utils/directions_repository.dart';
 import 'package:lost_mode_app/utils/phonecard.dart';
-import 'package:lost_mode_app/utils/phone_model.dart';
+import 'package:lost_mode_app/models/phone_model.dart';
 import 'package:dio/dio.dart';
 
 import '../services/service.dart';

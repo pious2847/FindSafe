@@ -18,42 +18,19 @@ class Settings extends StatefulWidget {
 
 class _SettingsState extends State<Settings> {
   bool _isDarkMode = false;
+  bool _isLostMode = false;
+  bool _isActiveMode = true;
 
   @override
   void initState() {
-    _loadCurrentTheme();
+    loadCurrentTheme();
     super.initState();
   }
 
-  Future<void> _loadCurrentTheme() async {
+  Future<void> loadCurrentTheme() async {
     _isDarkMode = await ThemeUtils.loadTheme();
     print('the value of _isdarkmode is: $_isDarkMode');
     setState(() {});
-  }
-
-  Future<void> save() async {
-    final dio = Dio();
-    try {
-      final response = await dio.post(
-        "$APIURL/Settings",
-        options: Options(
-          headers: {
-            'Content-Type': 'application/json; charset=UTF-8',
-          },
-        ),
-        data: {},
-      );
-      print('Response: $response');
-
-      if (response.statusCode == 200) {
-        print(response.data);
-      } else {
-        print("Invalid response ${response.statusCode}: ${response.data}");
-      }
-    } catch (e) {
-      print("Error occurred: $e");
-      // Handle error, show toast or snackbar
-    }
   }
 
   @override
@@ -98,20 +75,34 @@ class _SettingsState extends State<Settings> {
                   icon: Iconsax.danger_copy,
                   title: "Lost Mode",
                   trailing: Switch(
-                      value: false,
-                      onChanged: (value) {
-                        print(value);
-                      }),
+                    value: _isLostMode,
+                    onChanged: (value) {
+                      setState(() {
+                        _isLostMode = value;
+                        if (value) {
+                          _isActiveMode =
+                              false; // Turn off Active Mode if Lost Mode is turned on
+                        }
+                      });
+                    },
+                  ),
                 ),
                 const Divider(),
                 CustomListTile(
                   icon: Iconsax.activity_copy,
                   title: "Active Mode",
                   trailing: Switch(
-                      value: false,
-                      onChanged: (value) {
-                        print(value);
-                      }),
+                    value: _isActiveMode,
+                    onChanged: (value) {
+                      setState(() {
+                        _isActiveMode = value;
+                        if (value) {
+                          _isLostMode =
+                              false; // Turn off Lost Mode if Active Mode is turned on
+                        }
+                      });
+                    },
+                  ),
                 ),
                 const Divider(),
               ])

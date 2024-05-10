@@ -1,7 +1,7 @@
 // ignore_for_file: file_names
 
 import 'package:flutter/material.dart';
-import 'package:lost_mode_app/utils/phone_model.dart';
+import 'package:lost_mode_app/models/phone_model.dart';
 
 class PhoneListCard extends StatelessWidget {
   final Phone phone;

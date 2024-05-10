@@ -2,7 +2,7 @@
 
 import 'package:dio/dio.dart';
 import 'package:lost_mode_app/.env.dart';
-import 'package:lost_mode_app/utils/directions_model.dart';
+import 'package:lost_mode_app/models/directions_model.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 class DirectionsRepository {

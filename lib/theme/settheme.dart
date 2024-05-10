@@ -21,16 +21,14 @@ static Future<bool> loadTheme() async {
     await prefs.setBool('isDark', true);
     print('========================The value of the isDark is currentlly is false: $isDark' );
     
-    final isDarktheme = prefs.getBool('isDark') ?? false;
-    Get.changeTheme(isDarktheme ? ThemeData.light() : ThemeData.dark());
+    Get.changeTheme(Get.isDarkMode ? ThemeData.light() : ThemeData.dark());
     }else{
       print('========================The value of the isDark is currentlly is true: $isDark' );
       final prefs = await SharedPreferences.getInstance();
        await prefs.setBool('isDark', false);
 
-       final isDarktheme = prefs.getBool('isDark') ?? false;
 
-       Get.changeTheme(isDarktheme ? ThemeData.light() : ThemeData.dark());
+       Get.changeTheme(Get.isDarkMode? ThemeData.light() : ThemeData.dark());
 
     }
   }
