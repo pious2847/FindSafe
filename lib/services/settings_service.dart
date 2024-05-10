@@ -30,3 +30,4 @@ Future<void> updatemode(String mode) async {
     // Handle error, show toast or snackbar
   }
 }
+

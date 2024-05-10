@@ -279,7 +279,6 @@ class _MapScreenState extends State<MapScreen> {
       if (response.statusCode == 200) {
         // Access the 'mobileDevices' property from the response data
         final List<dynamic> mobileDevicesData = response.data['mobileDevices'];
-
         // Map over the mobile devices data and convert them into Phone objects
         final List<Phone> phonesList =
             mobileDevicesData.map((item) => Phone.fromJson(item)).toList();

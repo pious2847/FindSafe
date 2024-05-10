@@ -8,6 +8,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:lost_mode_app/models/settings_model.dart';
 import 'package:lost_mode_app/services/settings_service.dart';
 import 'package:lost_mode_app/theme/settheme.dart';
+import 'package:lost_mode_app/utils/settings.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class Settings extends StatefulWidget {
@@ -25,6 +26,8 @@ class _SettingsState extends State<Settings> {
   @override
   void initState() {
     loadCurrentTheme();
+    _loadModes();
+
     super.initState();
   }
 
@@ -32,6 +35,14 @@ class _SettingsState extends State<Settings> {
     _isDarkMode = await ThemeUtils.loadTheme();
     print('the value of _isdarkmode is: $_isDarkMode');
     setState(() {});
+  }
+ 
+  Future<void> _loadModes() async {
+    final prefs = await SharedPreferences.getInstance();
+    setState(() {
+      _isLostMode = prefs.getBool('isLostMode') ?? false;
+      _isActiveMode = prefs.getBool('isActiveMode') ?? false;
+    });
   }
 
   @override
@@ -60,11 +71,12 @@ class _SettingsState extends State<Settings> {
                     title: "Dark theme",
                     trailing: Switch(
                       value: _isDarkMode,
-                      onChanged: (value) async {
-                        setState(() {
-                          _isDarkMode = value;
+                      onChanged: (value) {
+                        ThemeUtils.toggleTheme(value).then((_) {
+                          setState(() {
+                            _isDarkMode = value;
+                          });
                         });
-                        await ThemeUtils.toggleTheme(value);
                       },
                     ),
                   ),
@@ -78,15 +90,14 @@ class _SettingsState extends State<Settings> {
                   trailing: Switch(
                     value: _isLostMode,
                     onChanged: (value) {
-                      setState(()  {
+                      setState(() {
                         _isLostMode = value;
                         if (value) {
                           _isActiveMode =
                               false; // Turn off Active Mode if Lost Mode is turned on
-                              setState(() async {
-                                await updatemode(
-                              'disable'); // Update the mode in the backend
-                              });
+                              updatemode(
+                                'disable'); // Update the mode in the backend
+                                updateMode('disable');
                           
                         }
                       });
@@ -105,10 +116,11 @@ class _SettingsState extends State<Settings> {
                         if (value) {
                           _isLostMode =
                               false; // Turn off Lost Mode if Active Mode is turned on
-                          setState(() async {
-                            await updatemode(
+                          updatemode(
                                 'active'); // Update the mode in the backend
-                          });
+                                updateMode('active');
+
+                          
                         }
                       });
                     },
