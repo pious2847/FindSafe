@@ -22,6 +22,13 @@ class _SettingsState extends State<Settings> {
   @override
   void initState() {
     super.initState();
+    _loadCurrentTheme();
+  }
+
+  Future<void> _loadCurrentTheme() async {
+    _isDarkMode = await ThemeUtils.loadTheme();
+    print('the value of _isdarkmode is: $_isDarkMode');
+    setState(() {});
   }
 
   Future<void> save() async {
@@ -76,11 +83,10 @@ class _SettingsState extends State<Settings> {
                     trailing: Switch(
                       value: _isDarkMode,
                       onChanged: (value) async {
-                        setState(() async {
-                          await ThemeUtils.toggleTheme();
+                        setState(() {
                           _isDarkMode = value;
-                          print(_isDarkMode);
                         });
+                        await ThemeUtils.toggleTheme(value);
                       },
                     ),
                   ),
