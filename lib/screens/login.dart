@@ -61,7 +61,6 @@ class _SigninState extends State<Signin> {
             deviceName,
             deviceModel,
           );
-          print('=============================== Error==========================***++');
           }
         await saveUserDataToLocalStorage(response.data);
         prefs.setBool('showHome', true);

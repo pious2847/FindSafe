@@ -184,7 +184,6 @@ class _MapScreenState extends State<MapScreen> {
         "FindSafe",
         style: TextStyle(fontWeight: FontWeight.w400, fontSize: 18),
       ),
-      backgroundColor: Colors.white,
       actions: [
         if (_origin != null)
           TextButton(

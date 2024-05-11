@@ -2,6 +2,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:dio/dio.dart';
 import 'package:lost_mode_app/.env.dart';
 
+
 Future<void> saveUserDataToLocalStorage(String userId) async {
   final prefs = await SharedPreferences.getInstance();
   await prefs.setString('userId', userId);
@@ -23,6 +24,7 @@ Future<void> logout() async {
   await prefs.setBool('showHome', false);
   await prefs.setBool('isRegisted', false);
 
+
   print("User Logged Out");
 }
 
@@ -40,10 +42,8 @@ Future<void> addDeviceInfo(
     if (response.statusCode == 200) {
       final prefs = await SharedPreferences.getInstance();
       await prefs.setBool('isRegisted', true);
-      final results = response.data;
-      print('the deviceId is : $results');
-      // final deviceId = response.data['deviceId'] as String;
-      // await prefs.setString('deviceId', deviceId);
+      final deviceId = response.data['deviceId'] as String;
+      await prefs.setString('deviceId', deviceId);
       print('The responds for adding new device: $response');
       print("device info inserted successfull");
     } else {

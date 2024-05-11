@@ -5,7 +5,7 @@ import 'package:lost_mode_app/screens/login.dart';
 import 'package:lost_mode_app/screens/settings.dart';
 import 'package:lost_mode_app/screens/usermap.dart';
 import 'package:lost_mode_app/services/service.dart';
-// import 'package:lost_mode_app/screens/disablescreen.dart';
+import 'package:lost_mode_app/utils/messages.dart';
 import 'package:iconsax_flutter/iconsax_flutter.dart';
 
 class NavBar extends StatelessWidget {
@@ -93,7 +93,8 @@ class NavBar extends StatelessWidget {
                           context,
                           MaterialPageRoute(
                               builder: (context) => const Signin()),
-                        )
+                        ),
+                      SnackbarUtils.showCustomSnackBar(context, 'Logout successful', const Color.fromARGB(255, 76, 175, 80)),
                       },
                     ),
                   ],
