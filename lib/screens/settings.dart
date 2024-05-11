@@ -8,9 +8,8 @@ import 'package:lost_mode_app/.env.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:lost_mode_app/models/settings_model.dart';
 import 'package:lost_mode_app/services/settings_service.dart';
-import 'package:lost_mode_app/theme/settheme.dart';
 import 'package:lost_mode_app/utils/settings.dart';
-import 'package:lost_mode_app/theme//theme_controller.dart';
+import 'package:lost_mode_app/theme/theme_controller.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class Settings extends StatefulWidget {
@@ -27,7 +26,6 @@ class _SettingsState extends State<Settings> {
   @override
   void initState() {
     _loadModes();
-
     super.initState();
   }
 

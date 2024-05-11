@@ -139,10 +139,10 @@ class _SigninState extends State<Signin> {
                         }
                       },
                       decoration: InputDecoration(
-                          icon:  const Icon(
-                            Iconsax.message_2_copy,
-                            color: Colors.purple,
-                          ),
+                          // icon:  const Icon(
+                          //   Iconsax.message_2_copy,
+                          //   color: Colors.purple,
+                          // ),
                           hintText: 'Enter Email',
                           enabledBorder: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(16),
@@ -179,15 +179,15 @@ class _SigninState extends State<Signin> {
                           // ),
                           hintText: 'Enter Password',
                            suffixIcon: IconButton(
-      icon: Icon(
-        _obscureText ? Icons.visibility : Icons.visibility_off,
-      ),
-      onPressed: () {
-        setState(() {
-          _obscureText = !_obscureText;
-        });
-      },
-    ),
+                            icon: Icon(
+                              _obscureText ? Icons.visibility : Icons.visibility_off,
+                            ),
+                            onPressed: () {
+                              setState(() {
+                                _obscureText = !_obscureText;
+                              });
+                            },
+                          ),
                           enabledBorder: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(16),
                               borderSide: const BorderSide(color: Colors.purple)),
