@@ -2,6 +2,7 @@ import 'dart:isolate';
 
 import 'package:flutter/material.dart';
 import 'package:dio/dio.dart';
+import 'package:get/get.dart';
 import 'package:iconsax_flutter/iconsax_flutter.dart';
 import 'package:lost_mode_app/.env.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -9,6 +10,7 @@ import 'package:lost_mode_app/models/settings_model.dart';
 import 'package:lost_mode_app/services/settings_service.dart';
 import 'package:lost_mode_app/theme/settheme.dart';
 import 'package:lost_mode_app/utils/settings.dart';
+import 'package:lost_mode_app/theme//theme_controller.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class Settings extends StatefulWidget {
@@ -19,23 +21,17 @@ class Settings extends StatefulWidget {
 }
 
 class _SettingsState extends State<Settings> {
-  bool _isDarkMode = false;
   bool _isLostMode = false;
   bool _isActiveMode = true;
-
+    final ThemeController themeController = Get.find();
   @override
   void initState() {
-    loadCurrentTheme();
     _loadModes();
 
     super.initState();
   }
 
-  Future<void> loadCurrentTheme() async {
-    _isDarkMode = await ThemeUtils.loadTheme();
-    print('the value of _isdarkmode is: $_isDarkMode');
-    setState(() {});
-  }
+
  
   Future<void> _loadModes() async {
     final prefs = await SharedPreferences.getInstance();
@@ -70,14 +66,12 @@ class _SettingsState extends State<Settings> {
                     icon: Iconsax.moon_copy,
                     title: "Dark theme",
                     trailing: Switch(
-                      value: _isDarkMode,
+                      value: themeController.isDarkMode.value,
                       onChanged: (value) {
-                        ThemeUtils.toggleTheme(value).then((_) {
-                          setState(() {
-                            _isDarkMode = value;
-                          });
-                        });
-                      },
+                      setState((){
+                      themeController.toggleTheme();
+                    });
+              },
                     ),
                   ),
                   const Divider(),

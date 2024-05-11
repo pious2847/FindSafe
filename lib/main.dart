@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:lost_mode_app/screens/splashscreen.dart';
-// Import the ThemeUtils class
 import 'package:get/get.dart';
+import 'package:lost_mode_app/theme//theme_controller.dart';
+
 
 void main() async {
-  runApp(const MyApp());
+  runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
@@ -12,11 +13,11 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final ThemeController themeController = Get.put(ThemeController());
     return GetMaterialApp(
-      theme: ThemeData(
-          buttonTheme: ButtonThemeData(
-        buttonColor: Theme.of(context).primaryColor,
-      )),
+       theme: ThemeData.light(), // Default light theme
+      darkTheme: ThemeData.dark(), // Default dark theme
+      themeMode: themeController.isDarkMode.value ? ThemeMode.dark : ThemeMode.light,
       debugShowCheckedModeBanner: false,
       home: SplashScreen(),
     );

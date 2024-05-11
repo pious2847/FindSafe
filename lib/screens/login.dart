@@ -26,6 +26,7 @@ class Signin extends StatefulWidget {
 class _SigninState extends State<Signin> {
   final _formKey = GlobalKey<FormState>();
   bool isRegisted = false;
+  bool _obscureText = true;
 
   Future<void> save() async {
     final dio = Dio();
@@ -170,13 +171,23 @@ class _SigninState extends State<Signin> {
                         }
                         return null;
                       },
-                      obscureText: true,
+                      obscureText: _obscureText,
                       decoration: InputDecoration(
-                          icon: const Icon(
-                            Iconsax.key,
-                            color: Colors.purple,
-                          ),
+                          // icon: const Icon(
+                          //   Iconsax.key,
+                          //   color: Colors.purple,
+                          // ),
                           hintText: 'Enter Password',
+                           suffixIcon: IconButton(
+      icon: Icon(
+        _obscureText ? Icons.visibility : Icons.visibility_off,
+      ),
+      onPressed: () {
+        setState(() {
+          _obscureText = !_obscureText;
+        });
+      },
+    ),
                           enabledBorder: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(16),
                               borderSide: const BorderSide(color: Colors.purple)),
