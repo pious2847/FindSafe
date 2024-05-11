@@ -41,7 +41,7 @@ Future<void> addDeviceInfo(
       final prefs = await SharedPreferences.getInstance();
       await prefs.setBool('isRegisted', true);
       final results = response.data;
-      print('the daeviceId is : $results');
+      print('the deviceId is : $results');
       // final deviceId = response.data['deviceId'] as String;
       // await prefs.setString('deviceId', deviceId);
       print('The responds for adding new device: $response');

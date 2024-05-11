@@ -1,10 +1,8 @@
 // ignore_for_file: library_private_types_in_public_api, use_build_context_synchronously, avoid_print
 
 import 'dart:ffi';
-
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
-// import 'package:flutter_svg/svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:lost_mode_app/.env.dart';
 import 'package:lost_mode_app/constants/devce_info.dart';
@@ -15,6 +13,8 @@ import 'package:lost_mode_app/services/service.dart';
 import 'package:lost_mode_app/utils/messages.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:iconsax_flutter/iconsax_flutter.dart';
+import 'package:get/get.dart';
+
 
 class Signin extends StatefulWidget {
   const Signin({super.key});
@@ -139,10 +139,6 @@ class _SigninState extends State<Signin> {
                         }
                       },
                       decoration: InputDecoration(
-                          // icon:  const Icon(
-                          //   Iconsax.message_2_copy,
-                          //   color: Colors.purple,
-                          // ),
                           hintText: 'Enter Email',
                           enabledBorder: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(16),
@@ -173,10 +169,6 @@ class _SigninState extends State<Signin> {
                       },
                       obscureText: _obscureText,
                       decoration: InputDecoration(
-                          // icon: const Icon(
-                          //   Iconsax.key,
-                          //   color: Colors.purple,
-                          // ),
                           hintText: 'Enter Password',
                            suffixIcon: IconButton(
                             icon: Icon(
@@ -203,14 +195,20 @@ class _SigninState extends State<Signin> {
                     ),
                   ),
                     Padding(
-                    padding: const EdgeInsets.fromLTRB(55, 16, 16, 0),
+                    padding: const EdgeInsets.fromLTRB(16.0, 16, 16, 0),
                     child: SizedBox(
                       height: 50,
-                      width: 400,
+                      width: MediaQuery.of(context).size.width,
                       child: TextButton(
                         style: ButtonStyle(
-                          backgroundColor:
-                              MaterialStateProperty.all(Theme.of(context).primaryColor),
+                          backgroundColor: MaterialStateProperty.resolveWith<Color>(
+                            (Set<MaterialState> states) {
+                              if (states.contains(MaterialState.disabled)) {
+                                return Colors.grey; // Disabled button color
+                              }
+                              return Get.isDarkMode ? Colors.purple[700]! : Colors.purple; // Button color based on theme
+                            },
+                          ),
                           shape: MaterialStateProperty.all<OutlinedBorder>(
                             RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(16.0),
@@ -226,39 +224,42 @@ class _SigninState extends State<Signin> {
                         },
                         child: const Text(
                           "Signin",
-                          style: TextStyle(color: Colors.white, ),
+                          style: TextStyle(color: Colors.white),
                         ),
                       ),
-                    
                     ),
                   ),
-                  
-                  Padding(
-                      padding: const EdgeInsets.fromLTRB(95, 20, 0, 0),
-                      child: Row(
-                        children: [
-                          const Text(
-                            "Not have Account ? ",
-                            style: TextStyle(
-                                color: Colors.black,
-                                fontWeight: FontWeight.bold),
+                Padding(
+                    padding: const EdgeInsets.fromLTRB(95, 20, 0, 0),
+                    child: Row(
+                      children: [
+                        Text(
+                          "Not have Account ? ",
+                          style: TextStyle(
+                            color: Get.isDarkMode ? Colors.white : Colors.black,
+                            fontWeight: FontWeight.bold,
                           ),
-                          InkWell(
-                            onTap: () {
-                              Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) => const Signup()));
-                            },
-                            child: const Text(
-                              "Signup",
-                              style: TextStyle(
-                                  color: Colors.purple,
-                                  fontWeight: FontWeight.bold),
+                        ),
+                        InkWell(
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => const Signup(),
+                              ),
+                            );
+                          },
+                          child: Text(
+                            "Signup",
+                            style: TextStyle(
+                              color: Get.isDarkMode ? Colors.purple[300] : Colors.purple,
+                              fontWeight: FontWeight.bold,
                             ),
                           ),
-                        ],
-                      ))
+                        ),
+                      ],
+                    ),
+                  ),
                 ],
               ),
             ),

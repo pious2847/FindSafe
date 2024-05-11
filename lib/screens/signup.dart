@@ -7,6 +7,8 @@ import 'package:lost_mode_app/models/User_model.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:lost_mode_app/screens/login.dart';
 import 'package:lost_mode_app/utils/messages.dart';
+import 'package:get/get.dart';
+
 
 class Signup extends StatefulWidget {
   const Signup({super.key});
@@ -17,6 +19,7 @@ class Signup extends StatefulWidget {
 
 class _SignupState extends State<Signup> {
   final _formKey = GlobalKey<FormState>();
+  bool _obscureText = true;
 
   Future<void> save() async {
     final dio = Dio();
@@ -60,13 +63,7 @@ class _SignupState extends State<Signup> {
     return Scaffold(
         body: Stack(
       children: [
-        // Positioned(
-        //     top: 0,
-        //     child: SvgPicture.asset(
-        //       'images/top.svg',
-        //       width: 400,
-        //       height: 150,
-        //     )),
+      
         SingleChildScrollView(
           child: Container(
             alignment: Alignment.center,
@@ -103,10 +100,7 @@ class _SignupState extends State<Signup> {
                         return null;
                       },
                       decoration: InputDecoration(
-                          icon: const Icon(
-                            Icons.person_4_outlined,
-                            color: Colors.purple,
-                          ),
+                         
                           hintText: 'Enter Username',
                           enabledBorder: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(16),
@@ -141,10 +135,6 @@ class _SignupState extends State<Signup> {
                         }
                       },
                       decoration: InputDecoration(
-                          icon: const Icon(
-                            Icons.email,
-                            color: Colors.purple,
-                          ),
                           hintText: 'Enter Email',
                           enabledBorder: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(16),
@@ -174,11 +164,17 @@ class _SignupState extends State<Signup> {
                         return null;
                       },
                       decoration: InputDecoration(
-                          icon: const Icon(
-                            Icons.vpn_key,
-                            color: Color.fromARGB(255, 173, 63, 192),
-                          ),
                           hintText: 'Enter Password',
+                          suffixIcon: IconButton(
+                            icon: Icon(
+                              _obscureText ? Icons.visibility : Icons.visibility_off,
+                            ),
+                            onPressed: () {
+                              setState(() {
+                                _obscureText = !_obscureText;
+                              });
+                            },
+                          ),
                           enabledBorder: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(16),
                               borderSide: const BorderSide(color: Colors.purple)),
@@ -194,14 +190,20 @@ class _SignupState extends State<Signup> {
                     ),
                   ),
                   Padding(
-                    padding: const EdgeInsets.fromLTRB(55, 16, 16, 0),
+                    padding: const EdgeInsets.fromLTRB(16, 16, 16, 0),
                     child: SizedBox(
                       height: 50,
                       width: 400,
                       child: TextButton(
                         style: ButtonStyle(
-                          backgroundColor:
-                              MaterialStateProperty.all(Theme.of(context).primaryColor),
+                          backgroundColor: MaterialStateProperty.resolveWith<Color>(
+                            (Set<MaterialState> states) {
+                              if (states.contains(MaterialState.disabled)) {
+                                return Colors.grey; // Disabled button color
+                              }
+                              return Get.isDarkMode ? Colors.purple[700]! : Colors.purple; // Button color based on theme
+                            },
+                          ),
                           shape: MaterialStateProperty.all<OutlinedBorder>(
                             RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(16.0),
@@ -225,8 +227,9 @@ class _SignupState extends State<Signup> {
                   ),
                   
                   Padding(
-                      padding: const EdgeInsets.fromLTRB(95, 20, 0, 0),
+                      padding: const EdgeInsets.fromLTRB(20, 16, 0, 0),
                       child: Row(
+                        
                         children: [
                           const Text(
                             "Already have Account ? ",
