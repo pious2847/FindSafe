@@ -128,7 +128,7 @@ class _SigninState extends State<Signin> {
                       },
                       validator: (value) {
                         if (value!.isEmpty) {
-                          return 'Enter something';
+                          return 'Field cannot be empty.';
                         } else if (RegExp(
                                 r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
                             .hasMatch(value)) {
@@ -162,7 +162,7 @@ class _SigninState extends State<Signin> {
                       },
                       validator: (value) {
                         if (value!.isEmpty) {
-                          return 'Enter something';
+                          return 'Field cannot be empty.';
                         }
                         return null;
                       },

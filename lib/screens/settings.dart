@@ -4,6 +4,7 @@ import 'package:iconsax_flutter/iconsax_flutter.dart';
 import 'package:lost_mode_app/models/settings_model.dart';
 import 'package:lost_mode_app/screens/about.dart';
 import 'package:lost_mode_app/services/settings_service.dart';
+import 'package:lost_mode_app/utils/messages.dart';
 import 'package:lost_mode_app/utils/settings.dart';
 import 'package:lost_mode_app/theme/theme_controller.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -33,11 +34,26 @@ class _SettingsState extends State<Settings> {
     });
   }
 
+  void handleModeUpdate(String mode) async {
+    final responseMessage = await updatemode(mode);
+    print('resmsg:  $responseMessage');
+    SnackbarUtils.showCustomSnackBar(
+      context,
+      responseMessage,
+      responseMessage.startsWith('Error')
+          ? Colors.red
+          : const Color.fromARGB(255, 76, 175, 80),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Settings",style: TextStyle(fontWeight: FontWeight.w400, fontSize: 18),),
+        title: const Text(
+          "Settings",
+          style: TextStyle(fontWeight: FontWeight.w400, fontSize: 18),
+        ),
       ),
       body: Center(
         child: Container(
@@ -48,7 +64,7 @@ class _SettingsState extends State<Settings> {
                 title: "General",
                 children: [
                   const Divider(),
-                   CustomListTile(
+                  CustomListTile(
                     title: "About Phone",
                     icon: Iconsax.mobile_copy,
                     trailing: const Icon(Iconsax.arrow_right_3_copy),
@@ -84,8 +100,10 @@ class _SettingsState extends State<Settings> {
                         if (value) {
                           _isActiveMode =
                               false; // Turn off Active Mode if Lost Mode is turned on
-                          updatemode(
-                              'disable'); // Update the mode in the backend
+                          handleModeUpdate('disable');
+                          // updatemode(
+                          //     'disable'); // Update the mode in the backend
+
                           updateMode('disable');
                         }
                       });
@@ -104,8 +122,9 @@ class _SettingsState extends State<Settings> {
                         if (value) {
                           _isLostMode =
                               false; // Turn off Lost Mode if Active Mode is turned on
-                          updatemode(
-                              'active'); // Update the mode in the backend
+                          handleModeUpdate('active');
+                          // updatemode(
+                          //     'active'); // Update the mode in the backend
                           updateMode('active');
                         }
                       });

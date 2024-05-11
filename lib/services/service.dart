@@ -1,3 +1,7 @@
+import 'dart:ui';
+
+import 'package:flutter/src/widgets/framework.dart';
+import 'package:lost_mode_app/utils/messages.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:dio/dio.dart';
 import 'package:lost_mode_app/.env.dart';
@@ -46,6 +50,7 @@ Future<void> addDeviceInfo(
       await prefs.setString('deviceId', deviceId);
       print('The responds for adding new device: $response');
       print("device info inserted successfull");
+      
     } else {
       print("Invalid response ${response.statusCode}: ${response.data}");
     }
