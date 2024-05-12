@@ -23,38 +23,20 @@ Future<void> updateLocationTask() async {
   try {
     final location = Location();
     final currentLocation = await location.getLocation();
-    final deviceData = await SharedPreferences.getInstance();
+  final deviceData = await SharedPreferences.getInstance();
       final deviceId = deviceData.getString('deviceId');
 
-    // Update the device's current location
-    await updateCurrentLocation(deviceId, currentLocation);
-
-    // Add the previous location to the location history
-    await addLocationToHistory(deviceId, currentLocation);
+    await updateLocation(deviceId!, currentLocation);
   } catch (e) {
     print('Error updating location: $e');
   }
 }
 
-Future<void> updateCurrentLocation(String deviceId, LocationData location) async {
+Future<void> updateLocation(String deviceId, LocationData location) async {
   final dio = Dio();
-  final url = '$APIURL/mobiledevices/$deviceId/currentLocation';
+  const url = '$APIURL/api/update-location';
   final data = {
-    'latitude': location.latitude,
-    'longitude': location.longitude,
-  };
-
-  try {
-    await dio.put(url, data: data);
-  } catch (e) {
-    print('Error updating current location: $e');
-  }
-}
-
-Future<void> addLocationToHistory(String deviceId, LocationData location) async {
-  final dio = Dio();
-  final url = '$APIURL/mobiledevices/$deviceId/locationHistory';
-  final data = {
+    'deviceId': deviceId,
     'latitude': location.latitude,
     'longitude': location.longitude,
   };
@@ -62,6 +44,6 @@ Future<void> addLocationToHistory(String deviceId, LocationData location) async 
   try {
     await dio.post(url, data: data);
   } catch (e) {
-    print('Error adding location to history: $e');
+    print('Error updating location: $e');
   }
 }
