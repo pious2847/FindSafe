@@ -11,6 +11,7 @@ import 'package:lost_mode_app/utils/directions_repository.dart';
 import 'package:lost_mode_app/utils/phonecard.dart';
 import 'package:lost_mode_app/models/phone_model.dart';
 import 'package:dio/dio.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../services/service.dart';
 // import 'dart:convert';
@@ -51,6 +52,7 @@ class _MapScreenState extends State<MapScreen> {
     _location = Location();
     _getLocation();
     fetchMobileDevices();
+    _setOriginAndDestinationMarkers();
   }
 
   @override
@@ -60,6 +62,7 @@ class _MapScreenState extends State<MapScreen> {
   }
 
   List<Phone> phones = [];
+  List<dynamic> locationHistory = [];
 
   @override
   Widget build(BuildContext context) {
@@ -95,7 +98,7 @@ class _MapScreenState extends State<MapScreen> {
                             .toList(),
                       ),
                   },
-                  onLongPress: _addMarker,
+                  // onLongPress: _addMarker,
                 ),
                 if (_info != null)
                   Positioned(
@@ -145,13 +148,40 @@ class _MapScreenState extends State<MapScreen> {
                 ),
               ),
               SizedBox(
-                height: MediaQuery.of(context).size.height *
-                    0.2, // Adjust height as needed
+                height: MediaQuery.of(context).size.height * 0.2,
                 child: ListView.builder(
                   scrollDirection: Axis.horizontal,
                   itemCount: phones.length,
                   itemBuilder: (context, index) {
-                    return PhoneListCard(phone: phones[index]);
+                    return PhoneListCard(
+                      phone: phones[index],
+                      onTap: (deviceId) async {
+                        // Fetch the latest location for the device
+                        final latestLocation =
+                            await fetchLatestLocation(deviceId);
+
+                        if (latestLocation != null) {
+                          setState(() {
+                            _destination = Marker(
+                              markerId: const MarkerId('destination'),
+                              infoWindow:
+                                  const InfoWindow(title: 'Destination'),
+                              icon: BitmapDescriptor.defaultMarkerWithHue(
+                                  BitmapDescriptor.hueBlue),
+                              position: latestLocation,
+                            );
+                          });
+
+                          // Get directions from the origin to the new destination
+                          final directions =
+                              await DirectionsRepository().getDirections(
+                            origin: _origin!.position,
+                            destination: latestLocation,
+                          );
+                          setState(() => _info = directions);
+                        }
+                      },
+                    );
                   },
                 ),
               ),
@@ -224,9 +254,10 @@ class _MapScreenState extends State<MapScreen> {
     );
   }
 
-  void _addMarker(LatLng pos) async {
+
+  Future<void> _setOriginAndDestinationMarkers() async {
     // Get current location
-    LocationData currentLocation = await Location.instance.getLocation();
+    LocationData currentLocation = await _location.getLocation();
     LatLng currentLatLng =
         LatLng(currentLocation.latitude!, currentLocation.longitude!);
 
@@ -240,29 +271,36 @@ class _MapScreenState extends State<MapScreen> {
       );
     });
 
-    // Set destination marker if it's null
-    if (_destination == null) {
-      setState(() {
-        _destination = Marker(
-          markerId: const MarkerId('destination'),
-          infoWindow: const InfoWindow(title: 'Destination'),
-          icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueBlue),
-          position: pos,
-        );
-      });
-      LatLng destinationCoordinates = await _getDestinationCoordinatesFromAPI();
+    // Set destination marker based on the latest location from the API
+    LatLng destinationCoordinates = await _getDestinationCoordinatesFromAPI();
+    print('destinationCoordinates" $destinationCoordinates');
+    setState(() {
+      _destination = Marker(
+        markerId: const MarkerId('destination'),
+        infoWindow: const InfoWindow(title: 'Destination'),
+        icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueBlue),
+        position: destinationCoordinates,
+      );
+    });
 
-      // Get directions
-      final directions = await DirectionsRepository().getDirections(
-          origin: _origin!.position, destination: destinationCoordinates);
-      setState(() => _info = directions);
-    }
+    // Get directions
+    final directions = await DirectionsRepository().getDirections(
+      origin: _origin!.position,
+      destination: destinationCoordinates,
+    );
+    setState(() => _info = directions);
   }
 
   Future<LatLng> _getDestinationCoordinatesFromAPI() async {
-    // Make API call to get destination coordinates
-    // For demonstration purposes, let's assume the API returns a fixed set of coordinates
-    return const LatLng(37.7749, -122.4194);
+    final locationHistory = await fetchLocationHistory();
+
+    if (locationHistory.isNotEmpty) {
+      final latestLocation = locationHistory[0];
+      return LatLng(latestLocation['latitude'], latestLocation['longitude']);
+    } else {
+      // Return default coordinates or handle the case when location history is empty
+      return const LatLng(0, 0);
+    }
   }
 
   Future<void> fetchMobileDevices() async {
@@ -293,4 +331,42 @@ class _MapScreenState extends State<MapScreen> {
       throw Exception('Failed to make API call: $e');
     }
   }
+
+  Future<List<dynamic>> fetchLocationHistory() async {
+    final dio = Dio();
+
+    try {
+      final deviceData = await SharedPreferences.getInstance();
+      final deviceId = deviceData.getString('deviceId');
+      final response =
+          await dio.get('$APIURL/mobiledevices/$deviceId/locations');
+      print('Resloc: $response');
+      if (response.statusCode == 200) {
+        return response.data;
+      } else {
+        throw Exception('Failed to fetch location history');
+      }
+    } catch (e) {
+      throw Exception('Failed to make API call: $e');
+    }
+  }
+
+Future<LatLng?> fetchLatestLocation(String deviceId) async {
+  final dio = Dio();
+  final apiUrl = '$APIURL/mobiledevices/$deviceId/locations';
+
+  try {
+    final response = await dio.get(apiUrl);
+
+    if (response.statusCode == 200 && response.data.isNotEmpty) {
+      final latestLocation = response.data[0];
+      return LatLng(latestLocation['latitude'], latestLocation['longitude']);
+    } else {
+      return null;
+    }
+  } catch (e) {
+    print('Failed to fetch latest location: $e');
+    return null;
+  }
+}
 }
