@@ -10,6 +10,7 @@ void callbackDispatcher() {
   Workmanager().executeTask((task, inputData) async {
     switch (task) {
       case 'updateLocation':
+        print('Task not start');
         await updateLocationTask();
         break;
       default:
