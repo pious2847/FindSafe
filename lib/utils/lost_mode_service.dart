@@ -1,15 +1,11 @@
-import 'dart:isolate';
-import 'dart:ui';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
 import 'package:lost_mode_app/.env.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:wakelock/wakelock.dart';
 import 'package:workmanager/workmanager.dart';
 import 'package:device_unlock_zuel/device_unlock_zuel.dart';
-
 
 @pragma('vm:entry-point')
 void callbackDispatcher() {
@@ -21,9 +17,12 @@ void callbackDispatcher() {
       await Wakelock
           .enable(); // Acquire a wakelock to prevent the device from being turned off
       try {
-        final unlocked = await DeviceUnlock.request(
+        final deviceUnlock =
+            DeviceUnlock(); // Create an instance of DeviceUnlock
+        final unlocked = await deviceUnlock.request(
           localizedReason: 'We need to check your identity.',
         );
+
         if (!unlocked) {
           // User did not pass face, touch, or pin validation
           // Show a lock screen with a prompt for the activation code
@@ -87,7 +86,10 @@ Future<bool> checkLostMode() async {
 
 Future<bool> validateActivationCode(String activationCode) async {
   final dio = Dio();
-  final url = '$APIURL/validate-activation-code';
+  final deviceData = await SharedPreferences.getInstance();
+  final deviceId = deviceData.getString('deviceId');
+
+  final url = '$APIURL/$deviceId/validate-activation-code';
   final data = {'activationCode': activationCode};
 
   try {
