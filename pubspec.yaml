@@ -21,6 +21,7 @@ version: 1.0.0+1
 environment:
   sdk: '>=3.2.3 <4.0.0'
 
+
 # Dependencies specify other packages that your package needs in order to work.
 # To automatically upgrade your package dependencies to the latest versions
 # consider running `flutter pub upgrade --major-versions`. Alternatively,
@@ -44,7 +45,6 @@ dependencies:
   flutter_polyline_points: ^2.0.0
   dio: ^5.4.3+1
   flutter_lock_screen: ^2.0.1
-  # flutter_foreground_service: ^0.4.1
   fluttertoast: ^8.2.5
   workmanager: ^0.5.2
   google_fonts: ^6.2.1
@@ -52,6 +52,9 @@ dependencies:
   iconsax_flutter: ^1.0.0
   get: ^4.6.6
   geocoding: ^3.0.0
+  flutter_foreground_service: ^0.4.1
+  device_unlock_zuel: ^0.0.5
+  wakelock: ^0.4.0
 
 
 

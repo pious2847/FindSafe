@@ -4,13 +4,12 @@ import 'package:lost_mode_app/.env.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:workmanager/workmanager.dart';
 
-
 @pragma('vm:entry-point')
 void callbackDispatcher() {
   Workmanager().executeTask((task, inputData) async {
     switch (task) {
       case 'updateLocation':
-        print('Task not start');
+        print('Task  start');
         await updateLocationTask();
         break;
       default:
@@ -24,8 +23,8 @@ Future<void> updateLocationTask() async {
   try {
     final location = Location();
     final currentLocation = await location.getLocation();
-  final deviceData = await SharedPreferences.getInstance();
-      final deviceId = deviceData.getString('deviceId');
+    final deviceData = await SharedPreferences.getInstance();
+    final deviceId = deviceData.getString('deviceId');
 
     await updateLocation(deviceId!, currentLocation);
   } catch (e) {
@@ -35,7 +34,7 @@ Future<void> updateLocationTask() async {
 
 Future<void> updateLocation(String deviceId, LocationData location) async {
   final dio = Dio();
-  const url = '$APIURL/api/update-location';
+  const url = '$APIURL/update-location';
   final data = {
     'deviceId': deviceId,
     'latitude': location.latitude,
@@ -43,7 +42,8 @@ Future<void> updateLocation(String deviceId, LocationData location) async {
   };
 
   try {
-    await dio.post(url, data: data);
+   final response = await dio.post(url, data: data);
+    print('Schedule task executed Response = $response');
   } catch (e) {
     print('Error updating location: $e');
   }

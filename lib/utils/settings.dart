@@ -9,6 +9,6 @@ Future<void> updateMode(String mode) async {
       await prefs.setBool('isActiveMode', false);
       await prefs.setBool('isLostMode', true);
     }
-  }
+}
 
   
