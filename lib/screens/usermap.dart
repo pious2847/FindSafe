@@ -13,6 +13,7 @@ import 'package:lost_mode_app/models/phone_model.dart';
 import 'package:dio/dio.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:workmanager/workmanager.dart';
+import 'package:geolocator/geolocator.dart'; // Import the geolocator package
 
 import '../services/service.dart';
 // import 'dart:convert';
@@ -31,16 +32,24 @@ class _MapScreenState extends State<MapScreen> {
   Marker? _destination;
   Directions? _info;
   late Location _location;
+  String? _selectedDeviceId;
+  late LocationPermission permission; // Add this line to track permission status
 
-  void _getLocation() async {
+ Future<void> _getLocation() async {
+    permission = await Geolocator.requestPermission(); // Request permission
+
+    if (permission == LocationPermission.denied) {
+      print('Location permissions are denied');
+      return; // Handle the case when permissions are denied
+    }
     try {
-      LocationData currentLocation = await _location.getLocation();
-      print('Current location: $currentLocation');
+      Position currentPosition = await Geolocator.getCurrentPosition();
+      print('Current location: $currentPosition');
 
       setState(() {
         _initialCameraPosition = CameraPosition(
-          target: LatLng(currentLocation.latitude!, currentLocation.longitude!),
-          zoom: 12.5,
+          target: LatLng(currentPosition.latitude, currentPosition.longitude),
+          zoom: 11.5,
         );
       });
     } catch (e) {
@@ -167,13 +176,17 @@ class _MapScreenState extends State<MapScreen> {
                   scrollDirection: Axis.horizontal,
                   itemCount: phones.length,
                   itemBuilder: (context, index) {
+                    final phone = phones[index];
                     return PhoneListCard(
-                      phone: phones[index],
+                      phone: phone,
                       onTap: (deviceId) async {
+                        setState(() {
+                          _selectedDeviceId =
+                              deviceId; // Update the selected device ID
+                        });
                         // Fetch the latest location for the device
                         final latestLocation =
                             await fetchLatestLocation(deviceId);
-
                         if (latestLocation != null) {
                           setState(() {
                             _destination = Marker(
@@ -181,11 +194,11 @@ class _MapScreenState extends State<MapScreen> {
                               infoWindow:
                                   const InfoWindow(title: 'Destination'),
                               icon: BitmapDescriptor.defaultMarkerWithHue(
-                                  BitmapDescriptor.hueBlue),
+                                BitmapDescriptor.hueBlue,
+                              ),
                               position: latestLocation,
                             );
                           });
-
                           // Get directions from the origin to the new destination
                           final directions =
                               await DirectionsRepository().getDirections(
@@ -195,6 +208,8 @@ class _MapScreenState extends State<MapScreen> {
                           setState(() => _info = directions);
                         }
                       },
+                      isActive: phone.deviceId ==
+                          _selectedDeviceId, // Pass the active state based on the selected device ID
                     );
                   },
                 ),
@@ -271,7 +286,7 @@ class _MapScreenState extends State<MapScreen> {
   Future<void> _setOriginAndDestinationMarkers() async {
     // Get current location
     LocationData currentLocation = await _location.getLocation();
-      // print('Current location: $currentLocation');
+    print('Current location: $currentLocation');
 
     LatLng currentLatLng =
         LatLng(currentLocation.latitude!, currentLocation.longitude!);

@@ -1,5 +1,5 @@
 import 'package:dio/dio.dart';
-import 'package:location/location.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:lost_mode_app/.env.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:workmanager/workmanager.dart';
@@ -11,6 +11,7 @@ void callbackDispatcher() {
       case 'updateLocation':
         print('Task start');
         await updateLocationTask();
+        print('Task completed at ${DateTime.now()}'); // Print a message with the current time
         break;
       default:
         print('Task not found');
@@ -19,36 +20,52 @@ void callbackDispatcher() {
   });
 }
 
-late Location _location;
+Future<Position> _getCurrentPosition() async {
+  bool serviceEnabled;
+  LocationPermission permission;
 
-Future<LocationData> _getLocation() async {
-  LocationData currentLocation = await _location.getLocation();
-  print('Current location: $currentLocation');
-  return currentLocation;
+  serviceEnabled = await Geolocator.isLocationServiceEnabled();
+  if (!serviceEnabled) {
+    return Future.error('Location services are disabled.');
+  }
+
+  permission = await Geolocator.checkPermission();
+  if (permission == LocationPermission.denied) {
+    permission = await Geolocator.requestPermission();
+    if (permission == LocationPermission.denied) {
+      return Future.error('Location permissions are denied');
+    }
+  }
+
+  if (permission == LocationPermission.deniedForever) {
+    return Future.error(
+        'Location permissions are permanently denied, we cannot request permissions.');
+  }
+
+  return await Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
 }
 
 Future<void> updateLocationTask() async {
   try {
+    final currentPosition = await _getCurrentPosition();
+    print('Current Location: ${currentPosition.latitude}, ${currentPosition.longitude}');
 
-    final currentLocation = _getLocation() as LocationData;
-
-    print('Current Location:  $currentLocation');
     final deviceData = await SharedPreferences.getInstance();
     final deviceId = deviceData.getString('deviceId');
 
-    await updateLocation(deviceId!, currentLocation);
+    await updateLocation(deviceId!, currentPosition);
   } catch (e) {
     print('Error updating location: $e');
   }
 }
 
-Future<void> updateLocation(String deviceId, LocationData location) async {
+Future<void> updateLocation(String deviceId, Position position) async {
   final dio = Dio();
-  const url = '$APIURL/update-location';
+  final url = '$APIURL/update-location';
   final data = {
     'deviceId': deviceId,
-    'latitude': location.latitude,
-    'longitude': location.longitude,
+    'latitude': position.latitude,
+    'longitude': position.longitude,
   };
 
   try {
