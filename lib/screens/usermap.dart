@@ -5,15 +5,12 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:location/location.dart';
 import 'package:lost_mode_app/.env.dart';
 import 'package:lost_mode_app/constants/NavBar.dart';
-import 'package:lost_mode_app/constants/devce_info.dart';
 import 'package:lost_mode_app/models/directions_model.dart';
 import 'package:lost_mode_app/utils/directions_repository.dart';
 import 'package:lost_mode_app/utils/phonecard.dart';
 import 'package:lost_mode_app/models/phone_model.dart';
 import 'package:dio/dio.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:workmanager/workmanager.dart';
-import 'package:geolocator/geolocator.dart'; // Import the geolocator package
 
 import '../services/service.dart';
 // import 'dart:convert';
@@ -33,22 +30,16 @@ class _MapScreenState extends State<MapScreen> {
   Directions? _info;
   late Location _location;
   String? _selectedDeviceId;
-  late LocationPermission permission; // Add this line to track permission status
+  late CameraPosition _initialCameraPosition;
 
- Future<void> _getLocation() async {
-    permission = await Geolocator.requestPermission(); // Request permission
-
-    if (permission == LocationPermission.denied) {
-      print('Location permissions are denied');
-      return; // Handle the case when permissions are denied
-    }
+  void _getLocation() async {
     try {
-      Position currentPosition = await Geolocator.getCurrentPosition();
-      print('Current location: $currentPosition');
+      LocationData currentLocation = await _location.getLocation();
+      print('Current location: $currentLocation');
 
       setState(() {
         _initialCameraPosition = CameraPosition(
-          target: LatLng(currentPosition.latitude, currentPosition.longitude),
+          target: LatLng(currentLocation.latitude!, currentLocation.longitude!),
           zoom: 11.5,
         );
       });
@@ -58,10 +49,6 @@ class _MapScreenState extends State<MapScreen> {
     }
   }
 
-  late CameraPosition _initialCameraPosition = const CameraPosition(
-    target: LatLng(0, 0),
-    zoom: 12.5,
-  );
 
   @override
   void initState() {
