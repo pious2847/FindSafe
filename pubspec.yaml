@@ -51,6 +51,7 @@ dependencies:
   iconsax_flutter: ^1.0.0
   get: ^4.6.6
   geocoding: ^3.0.0
+  geolocator: ^11.1.0
 
 
 

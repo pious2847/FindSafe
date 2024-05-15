@@ -9,7 +9,7 @@ void callbackDispatcher() {
   Workmanager().executeTask((task, inputData) async {
     switch (task) {
       case 'updateLocation':
-        print('Task  start');
+        print('Task start');
         await updateLocationTask();
         break;
       default:
@@ -19,10 +19,20 @@ void callbackDispatcher() {
   });
 }
 
+late Location _location;
+
+Future<LocationData> _getLocation() async {
+  LocationData currentLocation = await _location.getLocation();
+  print('Current location: $currentLocation');
+  return currentLocation;
+}
+
 Future<void> updateLocationTask() async {
   try {
-    final location = Location();
-    final currentLocation = await location.getLocation();
+
+    final currentLocation = _getLocation() as LocationData;
+
+    print('Current Location:  $currentLocation');
     final deviceData = await SharedPreferences.getInstance();
     final deviceId = deviceData.getString('deviceId');
 
@@ -42,7 +52,7 @@ Future<void> updateLocation(String deviceId, LocationData location) async {
   };
 
   try {
-   final response = await dio.post(url, data: data);
+    final response = await dio.post(url, data: data);
     print('Schedule task executed Response = $response');
   } catch (e) {
     print('Error updating location: $e');

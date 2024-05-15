@@ -12,6 +12,7 @@ import 'package:lost_mode_app/utils/phonecard.dart';
 import 'package:lost_mode_app/models/phone_model.dart';
 import 'package:dio/dio.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:workmanager/workmanager.dart';
 
 import '../services/service.dart';
 // import 'dart:convert';
@@ -32,13 +33,20 @@ class _MapScreenState extends State<MapScreen> {
   late Location _location;
 
   void _getLocation() async {
-    LocationData currentLocation = await _location.getLocation();
-    setState(() {
-      _initialCameraPosition = CameraPosition(
-        target: LatLng(currentLocation.latitude!, currentLocation.longitude!),
-        zoom: 12.5,
-      );
-    });
+    try {
+      LocationData currentLocation = await _location.getLocation();
+      print('Current location: $currentLocation');
+
+      setState(() {
+        _initialCameraPosition = CameraPosition(
+          target: LatLng(currentLocation.latitude!, currentLocation.longitude!),
+          zoom: 12.5,
+        );
+      });
+    } catch (e) {
+      print('Error getting location: $e');
+      // Handle the error accordingly
+    }
   }
 
   late CameraPosition _initialCameraPosition = const CameraPosition(
@@ -53,6 +61,7 @@ class _MapScreenState extends State<MapScreen> {
     _getLocation();
     fetchMobileDevices();
     _setOriginAndDestinationMarkers();
+    // cancelTask('updateLocation');
   }
 
   @override
@@ -60,6 +69,11 @@ class _MapScreenState extends State<MapScreen> {
     _googleMapController.dispose();
     super.dispose();
   }
+
+  // void cancelTask(String uniqueName) {
+  //   Workmanager().cancelByUniqueName(uniqueName);
+  //   print("Task Cancel");
+  // }
 
   List<Phone> phones = [];
   List<dynamic> locationHistory = [];
@@ -254,10 +268,11 @@ class _MapScreenState extends State<MapScreen> {
     );
   }
 
-
   Future<void> _setOriginAndDestinationMarkers() async {
     // Get current location
     LocationData currentLocation = await _location.getLocation();
+      // print('Current location: $currentLocation');
+
     LatLng currentLatLng =
         LatLng(currentLocation.latitude!, currentLocation.longitude!);
 
@@ -351,22 +366,22 @@ class _MapScreenState extends State<MapScreen> {
     }
   }
 
-Future<LatLng?> fetchLatestLocation(String deviceId) async {
-  final dio = Dio();
-  final apiUrl = '$APIURL/mobiledevices/$deviceId/locations';
+  Future<LatLng?> fetchLatestLocation(String deviceId) async {
+    final dio = Dio();
+    final apiUrl = '$APIURL/mobiledevices/$deviceId/locations';
 
-  try {
-    final response = await dio.get(apiUrl);
+    try {
+      final response = await dio.get(apiUrl);
 
-    if (response.statusCode == 200 && response.data.isNotEmpty) {
-      final latestLocation = response.data[0];
-      return LatLng(latestLocation['latitude'], latestLocation['longitude']);
-    } else {
+      if (response.statusCode == 200 && response.data.isNotEmpty) {
+        final latestLocation = response.data[0];
+        return LatLng(latestLocation['latitude'], latestLocation['longitude']);
+      } else {
+        return null;
+      }
+    } catch (e) {
+      print('Failed to fetch latest location: $e');
       return null;
     }
-  } catch (e) {
-    print('Failed to fetch latest location: $e');
-    return null;
   }
-}
 }

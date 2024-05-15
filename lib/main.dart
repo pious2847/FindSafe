@@ -12,7 +12,7 @@ void main() async {
   Workmanager().registerPeriodicTask(
     'updateLocation',
     'updateLocation',
-    frequency: const Duration(minutes: 15),
+    frequency: const Duration(minutes: 1),
   );
 
   runApp(MyApp());
