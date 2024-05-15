@@ -24,6 +24,7 @@ class ToastMsg {
       gravity: ToastGravity.CENTER,
       backgroundColor: backgroundColor,
       textColor: Colors.white,
+      // toastDuration: Duration(seconds: 2),
     );
   }
 }
