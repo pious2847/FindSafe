@@ -30,9 +30,11 @@ class _MapScreenState extends State<MapScreen> {
   Marker? _origin;
   Marker? _destination;
   Directions? _info;
-  late Location _location;
   String? _selectedDeviceId;
-  late CameraPosition _initialCameraPosition;
+  late CameraPosition _initialCameraPosition = const CameraPosition(
+    target: LatLng(0, 0), // Set a default initial position
+    zoom: 11.5,
+  );
 
 Future<void> _getLocation() async {
     permission = await Geolocator.requestPermission(); // Request permission
