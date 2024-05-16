@@ -33,6 +33,14 @@ class PhoneListCard extends StatelessWidget {
                 width: 90,
                 height: 90,
                 fit: BoxFit.contain,
+                errorBuilder: (context, error, stackTrace) {
+                  // Handle the error case
+                  return const Icon(
+                    Icons.error,
+                    color: Colors.red,
+                    size: 90,
+                  );
+                },
               ),
             ),
             const SizedBox(height: 8.0),

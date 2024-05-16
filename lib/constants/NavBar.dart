@@ -90,10 +90,12 @@ class NavBar extends StatelessWidget {
                       onTap: () async => {
                         await logout(),
                         Navigator.push(
+                          // ignore: use_build_context_synchronously
                           context,
                           MaterialPageRoute(
                               builder: (context) => const Signin()),
                         ),
+                      // ignore: use_build_context_synchronously
                       SnackbarUtils.showCustomSnackBar(context, 'Logout successful', const Color.fromARGB(255, 76, 175, 80)),
                       },
                     ),

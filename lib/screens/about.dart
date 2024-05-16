@@ -1,6 +1,4 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:iconsax_flutter/iconsax_flutter.dart';
 
 class AboutPhone extends StatefulWidget {
   const AboutPhone({super.key});
@@ -14,11 +12,11 @@ class _AboutPhoneState extends State<AboutPhone> {
   Widget build(BuildContext context) {
     return  Scaffold(
       appBar: AppBar(
-        title: Text('About', style: TextStyle(fontWeight: FontWeight.w400, fontSize: 18),),
+        title: const Text('About', style: TextStyle(fontWeight: FontWeight.w400, fontSize: 18),),
       ),
- body: SingleChildScrollView(
+ body: const SingleChildScrollView(
         child: Padding(
-          padding: const EdgeInsets.all(16.0),
+          padding: EdgeInsets.all(16.0),
           child: Column(
             children: [
               _CustomListTile(
@@ -59,7 +57,7 @@ class _CustomListTile extends StatelessWidget {
   final String title;
   final String subtitle;
 
-  _CustomListTile({
+  const _CustomListTile({
     required this.title,
     required this.subtitle,
   });
@@ -71,14 +69,14 @@ class _CustomListTile extends StatelessWidget {
         ListTile(
           title: Text(
             title,
-            style: TextStyle(
+            style: const TextStyle(
               fontWeight: FontWeight.bold,
               fontSize: 16,
             ),
           ),
           subtitle: Text(
             subtitle,
-            style: TextStyle(fontSize: 14),
+            style: const TextStyle(fontSize: 14),
           ),
         ),
         Divider(

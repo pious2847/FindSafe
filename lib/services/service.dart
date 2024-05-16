@@ -1,7 +1,4 @@
-import 'dart:ui';
 
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:lost_mode_app/utils/messages.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:dio/dio.dart';
 import 'package:lost_mode_app/.env.dart';

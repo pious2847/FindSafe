@@ -28,8 +28,8 @@ void initializeService() {
   );
 
    Workmanager().registerPeriodicTask(
-    'updateLocationTask',
-    'updateLocationTask',
+    'updateLocation',
+    'updateLocation',
     frequency: const Duration(minutes: 1),
   );
 }
@@ -77,7 +77,7 @@ Future<void> updateLocationTask() async {
 
 Future<void> updateLocation(String deviceId, Position position) async {
   final dio = Dio();
-  final url = '$APIURL/update-location';
+  const url = '$APIURL/update-location';
   final data = {
     'deviceId': deviceId,
     'latitude': position.latitude,

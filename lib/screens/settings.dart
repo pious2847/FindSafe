@@ -38,6 +38,7 @@ class _SettingsState extends State<Settings> {
     final responseMessage = await updatemode(mode);
     print('resmsg:  $responseMessage');
     SnackbarUtils.showCustomSnackBar(
+      // ignore: use_build_context_synchronously
       context,
       responseMessage,
       responseMessage.startsWith('Error')
@@ -101,9 +102,6 @@ class _SettingsState extends State<Settings> {
                           _isActiveMode =
                               false; // Turn off Active Mode if Lost Mode is turned on
                           handleModeUpdate('disable');
-                          // updatemode(
-                          //     'disable'); // Update the mode in the backend
-
                           updateMode('disable');
                         }
                       });
@@ -123,8 +121,6 @@ class _SettingsState extends State<Settings> {
                           _isLostMode =
                               false; // Turn off Lost Mode if Active Mode is turned on
                           handleModeUpdate('active');
-                          // updatemode(
-                          //     'active'); // Update the mode in the backend
                           updateMode('active');
                         }
                       });

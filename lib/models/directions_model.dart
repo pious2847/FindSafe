@@ -54,6 +54,4 @@ factory Directions.fromMap(Map<String, dynamic> map) {
     totalDuration: duration,
   );
 }
-
-
 }
