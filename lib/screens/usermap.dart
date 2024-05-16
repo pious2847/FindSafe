@@ -12,6 +12,7 @@ import 'package:lost_mode_app/utils/phonecard.dart';
 import 'package:lost_mode_app/models/phone_model.dart';
 import 'package:dio/dio.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:workmanager/workmanager.dart';
 
 import '../services/service.dart';
 // import 'dart:convert';
@@ -66,7 +67,7 @@ Future<void> _getLocation() async {
     super.initState();
     fetchMobileDevices();
     _setOriginAndDestinationMarkers();
-    // cancelTask('updateLocation');
+    // cancelTask('updateLocationTask');
   }
 
   @override

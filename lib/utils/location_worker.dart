@@ -11,13 +11,27 @@ void callbackDispatcher() {
       case 'updateLocation':
         print('Task start');
         await updateLocationTask();
-        print('Task completed at ${DateTime.now()}'); // Print a message with the current time
+        print(
+            'Task completed at ${DateTime.now()}'); // Print a message with the current time
         break;
       default:
         print('Task not found');
     }
     return Future.value(true);
   });
+}
+
+void initializeService() {
+  Workmanager().initialize(
+    callbackDispatcher,
+    isInDebugMode: false,
+  );
+
+   Workmanager().registerPeriodicTask(
+    'updateLocationTask',
+    'updateLocationTask',
+    frequency: const Duration(minutes: 1),
+  );
 }
 
 Future<Position> _getCurrentPosition() async {
@@ -42,13 +56,15 @@ Future<Position> _getCurrentPosition() async {
         'Location permissions are permanently denied, we cannot request permissions.');
   }
 
-  return await Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
+  return await Geolocator.getCurrentPosition(
+      desiredAccuracy: LocationAccuracy.high);
 }
 
 Future<void> updateLocationTask() async {
   try {
     final currentPosition = await _getCurrentPosition();
-    print('Current Location: ${currentPosition.latitude}, ${currentPosition.longitude}');
+    print(
+        'Current Location: ${currentPosition.latitude}, ${currentPosition.longitude}');
 
     final deviceData = await SharedPreferences.getInstance();
     final deviceId = deviceData.getString('deviceId');

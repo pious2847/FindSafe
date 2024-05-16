@@ -3,19 +3,11 @@ import 'package:lost_mode_app/screens/splashscreen.dart';
 import 'package:get/get.dart';
 import 'package:lost_mode_app/theme/theme_controller.dart';
 import 'package:lost_mode_app/utils/location_worker.dart';
-import 'package:workmanager/workmanager.dart';
 
 void main() async {
-  WidgetsFlutterBinding.ensureInitialized();
-  Workmanager().initialize(callbackDispatcher, isInDebugMode: false);
-
-  Workmanager().registerPeriodicTask(
-    'updateLocation',
-    'updateLocation',
-    frequency: const Duration(minutes: 1),
-  );
-
-  runApp(MyApp());
+ WidgetsFlutterBinding.ensureInitialized();
+  initializeService(); // Call the initializeService function
+  runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
@@ -30,7 +22,7 @@ class MyApp extends StatelessWidget {
       themeMode:
           themeController.isDarkMode.value ? ThemeMode.dark : ThemeMode.light,
       debugShowCheckedModeBanner: false,
-      home: SplashScreen(),
+      home: const SplashScreen(),
     );
   }
 }
