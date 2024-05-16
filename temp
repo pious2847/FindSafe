@@ -60,8 +60,9 @@ Future<void> _getLocation() async {
 
   @override
   void initState() {
-    _getLocation();
     super.initState();
+    _location = Location();
+    _getLocation();
     fetchMobileDevices();
     _setOriginAndDestinationMarkers();
     // cancelTask('updateLocation');
@@ -277,7 +278,7 @@ Future<void> _getLocation() async {
     );
   }
 
-Future<void> _setOriginAndDestinationMarkers() async {
+ Future<void> _setOriginAndDestinationMarkers() async {
    // Get current location
    Position currentPosition = await Geolocator.getCurrentPosition();
    print('Current location: $currentPosition');
@@ -355,6 +356,7 @@ Future<void> _setOriginAndDestinationMarkers() async {
      throw Exception('Failed to make API call: $e');
    }
  }
+
 
  Future<List<dynamic>> fetchLocationHistory() async {
    final dio = Dio();
