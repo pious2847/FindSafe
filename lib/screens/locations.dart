@@ -103,16 +103,16 @@ class _LocationHistoryState extends State<LocationHistory> {
                 ),
               )
             else
-              Center(child: CircularProgressIndicator()),
+              const Center(child: CircularProgressIndicator()),
             SizedBox(height: 20),
             if (locationHistory.isNotEmpty)
               Expanded(
                 child: ListView.builder(
                   itemCount: locationHistory.length,
-                  itemBuilder: (context, index) {
+                  itemBuilder: (context, index)  {
                     final location = locationHistory[index];
                     final locationName =
-                        locationservice.getPlaceName(location.latitude, location.longitude);
+                         locationservice.getPlaceName(location.latitude, location.longitude);
                     return ListTile(
                       title: Text(
                         'Location: ${locationName}',
