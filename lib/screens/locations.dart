@@ -96,15 +96,15 @@ class _LocationHistoryState extends State<LocationHistory> {
                   ),
                 ),
                 dropdownColor: Colors.white,
-                icon: Icon(Icons.arrow_drop_down, color: Colors.black),
-                style: TextStyle(
+                icon: const Icon(Icons.arrow_drop_down, color: Colors.black),
+                style: const TextStyle(
                   color: Colors.black,
                   fontSize: 16,
                 ),
               )
             else
               const Center(child: CircularProgressIndicator()),
-            SizedBox(height: 20),
+            const SizedBox(height: 20),
             if (locationHistory.isNotEmpty)
               Expanded(
                 child: ListView.builder(
@@ -123,9 +123,9 @@ class _LocationHistoryState extends State<LocationHistory> {
                 ),
               )
             else if (selectedDevice != null)
-              Center(child: CircularProgressIndicator())
+              const Center(child: CircularProgressIndicator())
             else
-              Center(child: Text('No location history available')),
+              const Center(child: Text('No location history available')),
           ],
         ),
       ),
