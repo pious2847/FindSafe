@@ -43,6 +43,7 @@ Future<LatLng?> fetchLatestLocation(String deviceId) async {
     return null;
   }
 }
+
 Future<List<dynamic>> fetchLocationHistory() async {
   final dio = Dio();
 

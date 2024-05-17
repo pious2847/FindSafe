@@ -38,12 +38,12 @@ class PhoneListCard extends StatelessWidget {
                 errorBuilder: (context, error, stackTrace) {
                   // Handle the error case
                   return Container(
-                    width: 120, // Increase the container width
-                    height: 120, // Increase the container height
+                    width: 90, // Increase the container width
+                    height: 90, // Increase the container height
                     alignment: Alignment
                         .center, // Center the CircularProgressIndicator
                     child: const CircularProgressIndicator(
-                      value: 45, // Adjust the radius value to change the size
+                      // value: 45, // Adjust the radius value to change the size
                     ),
                   );
                 },
