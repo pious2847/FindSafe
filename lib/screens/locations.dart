@@ -14,7 +14,7 @@ class LocationHistory extends StatefulWidget {
 
 class _LocationHistoryState extends State<LocationHistory> {
   late ApiService apiService;
-  late LocationService locationService;
+  late LocationService locationservice;
   List<Device> devices = [];
   Device? selectedDevice;
   List<Location> locationHistory = [];
@@ -23,7 +23,7 @@ class _LocationHistoryState extends State<LocationHistory> {
   void initState() {
     super.initState();
     apiService = ApiService();
-    locationService = LocationService();
+    locationservice = LocationService();
     fetchDevices();
   }
 
@@ -33,7 +33,6 @@ class _LocationHistoryState extends State<LocationHistory> {
       final userId = prefs.getString('userId');
       if (userId != null) {
         devices = await apiService.fetchDevices(userId);
-        print('The list of user selected devices: $devices');
         if (devices.isNotEmpty) {
           setState(() {
             selectedDevice = devices[0];
@@ -44,17 +43,17 @@ class _LocationHistoryState extends State<LocationHistory> {
         throw Exception('User ID not found in preferences');
       }
     } catch (e) {
-      // Handle errors
       print('Failed to fetch devices: $e');
     }
   }
 
   fetchLocationHistory(Device device) async {
     try {
-      locationHistory = await apiService.fetchLocationHistories(device.id);
-      setState(() {});
+      List<Location> history = await apiService.fetchLocationHistory(device.id);
+      setState(() {
+        locationHistory = history;
+      });
     } catch (e) {
-      // Handle errors
       print('Failed to fetch location history: $e');
     }
   }
@@ -104,9 +103,7 @@ class _LocationHistoryState extends State<LocationHistory> {
                 ),
               )
             else
-              Center(
-                child: CircularProgressIndicator(),
-              ),
+              Center(child: CircularProgressIndicator()),
             SizedBox(height: 20),
             if (locationHistory.isNotEmpty)
               Expanded(
@@ -114,32 +111,21 @@ class _LocationHistoryState extends State<LocationHistory> {
                   itemCount: locationHistory.length,
                   itemBuilder: (context, index) {
                     final location = locationHistory[index];
+                    final locationName =
+                        locationservice.getPlaceName(location.latitude, location.longitude);
                     return ListTile(
                       title: Text(
-                        'Latitude: ${location.latitude}, Longitude: ${location.longitude}',
+                        'Location: ${locationName}',
                       ),
-                      subtitle: FutureBuilder(
-                        future: locationService.getPlaceName(
-                            location.latitude, location.longitude),
-                        builder: (context, snapshot) {
-                          if (snapshot.connectionState ==
-                              ConnectionState.waiting) {
-                            return Text('Fetching address...');
-                          } else if (snapshot.hasError) {
-                            return Text('Error fetching address');
-                          } else {
-                            return Text(snapshot.data.toString());
-                          }
-                        },
-                      ),
+                      subtitle: Text('Timestamp: ${location.timestamp}'),
                     );
                   },
                 ),
               )
+            else if (selectedDevice != null)
+              Center(child: CircularProgressIndicator())
             else
-              Center(
-                child: Text('No location history available'),
-              ),
+              Center(child: Text('No location history available')),
           ],
         ),
       ),

@@ -25,21 +25,20 @@ class ApiService {
     }
   }
 
-  Future<List<dynamic>> fetchLocationHistory() async {
-  final dio = Dio();
+  Future<List<Location>> fetchLocationHistory(String deviceId) async {
+    try {
+    final dio = Dio();
 
-  try {
-    final deviceData = await SharedPreferences.getInstance();
-    final deviceId = deviceData.getString('deviceId');
-    final response = await dio.get('$APIURL/mobiledevices/$deviceId/locations');
-    print('Resloc: $response');
-    if (response.statusCode == 200) {
-      return response.data;
-    } else {
-      throw Exception('Failed to fetch location history');
+      final response = await dio.get('$APIURL/mobiledevices/$deviceId/locations');
+      if (response.statusCode == 200) {
+        List jsonResponse = response.data;
+        return jsonResponse.map((location) => Location.fromJson(location)).toList();
+      } else {
+        throw Exception('Failed to fetch location history');
+      }
+    } catch (error) {
+      throw Exception('Failed to fetch location history: $error');
     }
-  } catch (e) {
-    throw Exception('Failed to make API call: $e');
   }
 }
 
@@ -63,4 +62,3 @@ class ApiService {
       throw Exception('Failed to load location history');
     }
   }
-}
