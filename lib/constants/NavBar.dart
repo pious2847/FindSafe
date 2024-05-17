@@ -1,6 +1,8 @@
 // ignore_for_file: avoid_print, file_names
 
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:lost_mode_app/screens/locations.dart';
 import 'package:lost_mode_app/screens/login.dart';
 import 'package:lost_mode_app/screens/settings.dart';
 import 'package:lost_mode_app/screens/usermap.dart';
@@ -42,11 +44,7 @@ class NavBar extends StatelessWidget {
                         leading: const Icon(Iconsax.home_1_copy, color: Colors.purple,),
                         title: const Text('Dashboard'),
                         onTap: () => {
-                           Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => const MapScreen()),
-                        )
+                          Get.to(const MapScreen())
                         }),
 
                     ListTile(
@@ -62,7 +60,9 @@ class NavBar extends StatelessWidget {
                     ListTile(
                       leading: const Icon(Iconsax.data_copy,  color: Colors.purple),
                       title: const Text('Locations'),
-                      onTap: () => print('Location tapped'),
+                      onTap: () => {
+                        Get.to(const LocationHistory())
+                      },
                     ),
                     ListTile(
                       leading: const Icon(Iconsax.activity_copy,  color: Colors.purple),

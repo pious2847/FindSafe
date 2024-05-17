@@ -21,7 +21,9 @@ class PhoneListCard extends StatelessWidget {
         margin: const EdgeInsets.all(8.0),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(8.0),
-          color: isActive ? Colors.blue.withOpacity(0.2) : null, // Apply the active background color if isActive is true
+          color: isActive
+              ? Colors.blue.withOpacity(0.2)
+              : null, // Apply the active background color if isActive is true
         ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
@@ -35,10 +37,14 @@ class PhoneListCard extends StatelessWidget {
                 fit: BoxFit.contain,
                 errorBuilder: (context, error, stackTrace) {
                   // Handle the error case
-                  return const Icon(
-                    Icons.error,
-                    color: Colors.red,
-                    size: 90,
+                  return Container(
+                    width: 120, // Increase the container width
+                    height: 120, // Increase the container height
+                    alignment: Alignment
+                        .center, // Center the CircularProgressIndicator
+                    child: const CircularProgressIndicator(
+                      value: 45, // Adjust the radius value to change the size
+                    ),
                   );
                 },
               ),
@@ -60,7 +66,8 @@ class PhoneListCard extends StatelessWidget {
                 height: 8.0,
                 decoration: const BoxDecoration(
                   shape: BoxShape.circle,
-                  color: Colors.green, // Change the color of the active indicator as desired
+                  color: Colors
+                      .green, // Change the color of the active indicator as desired
                 ),
               ),
           ],

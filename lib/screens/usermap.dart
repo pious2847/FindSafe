@@ -6,6 +6,7 @@ import 'package:geolocator/geolocator.dart';
 import 'package:lost_mode_app/.env.dart';
 import 'package:lost_mode_app/constants/NavBar.dart';
 import 'package:lost_mode_app/models/directions_model.dart';
+import 'package:lost_mode_app/services/locations.dart';
 import 'package:lost_mode_app/utils/directions_repository.dart';
 import 'package:lost_mode_app/utils/phonecard.dart';
 import 'package:lost_mode_app/models/phone_model.dart';
@@ -29,7 +30,8 @@ class _MapScreenState extends State<MapScreen> {
   Marker? _destination;
   Directions? _info;
   String? _selectedDeviceId;
-  late CameraPosition _initialCameraPosition = const CameraPosition(
+
+  late  CameraPosition _initialCameraPosition = const CameraPosition(
     target: LatLng(0, 0), // Set a default initial position
     zoom: 11.5,
   );
@@ -44,7 +46,7 @@ Future<void> _getLocation() async {
 
     try {
       Position currentPosition = await Geolocator.getCurrentPosition();
-      print('Current location: $currentPosition');
+      print('Current location 12: $currentPosition');
 
       setState(() {
         _initialCameraPosition = CameraPosition(
@@ -60,8 +62,8 @@ Future<void> _getLocation() async {
 
   @override
   void initState() {
-    _getLocation();
     super.initState();
+    _getLocation();
     fetchMobileDevices();
     _setOriginAndDestinationMarkers();
     // cancelTask('updateLocationTask');
@@ -356,41 +358,6 @@ Future<void> _setOriginAndDestinationMarkers() async {
    }
  }
 
- Future<List<dynamic>> fetchLocationHistory() async {
-   final dio = Dio();
 
-   try {
-     final deviceData = await SharedPreferences.getInstance();
-     final deviceId = deviceData.getString('deviceId');
-     final response =
-         await dio.get('$APIURL/mobiledevices/$deviceId/locations');
-     print('Resloc: $response');
-     if (response.statusCode == 200) {
-       return response.data;
-     } else {
-       throw Exception('Failed to fetch location history');
-     }
-   } catch (e) {
-     throw Exception('Failed to make API call: $e');
-   }
- }
 
- Future<LatLng?> fetchLatestLocation(String deviceId) async {
-   final dio = Dio();
-   final apiUrl = '$APIURL/mobiledevices/$deviceId/locations';
-
-   try {
-     final response = await dio.get(apiUrl);
-
-     if (response.statusCode == 200 && response.data.isNotEmpty) {
-       final latestLocation = response.data[0];
-       return LatLng(latestLocation['latitude'], latestLocation['longitude']);
-     } else {
-       return null;
-     }
-   } catch (e) {
-     print('Failed to fetch latest location: $e');
-     return null;
-   }
- }
 }
