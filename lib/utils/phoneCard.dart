@@ -55,7 +55,6 @@ class PhoneListCard extends StatelessWidget {
               style: const TextStyle(
                 fontSize: 12.0,
                 fontWeight: FontWeight.bold,
-                color: Colors.black, // Set the text color to black
               ),
             ),
             if (isActive) // Show an active indicator if isActive is true

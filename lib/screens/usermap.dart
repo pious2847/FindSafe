@@ -25,18 +25,20 @@ class MapScreen extends StatefulWidget {
 
 class _MapScreenState extends State<MapScreen> {
   late GoogleMapController _googleMapController;
-  late LocationPermission permission; // Add this line to track permission status
+  late LocationPermission
+      permission; // Add this line to track permission status
   Marker? _origin;
   Marker? _destination;
   Directions? _info;
   String? _selectedDeviceId;
+  final locatinService = LocationApiService();
 
-  late  CameraPosition _initialCameraPosition = const CameraPosition(
+  late CameraPosition _initialCameraPosition = const CameraPosition(
     target: LatLng(0, 0), // Set a default initial position
     zoom: 11.5,
   );
 
-Future<void> _getLocation() async {
+  Future<void> _getLocation() async {
     permission = await Geolocator.requestPermission(); // Request permission
 
     if (permission == LocationPermission.denied) {
@@ -182,7 +184,8 @@ Future<void> _getLocation() async {
                         });
                         // Fetch the latest location for the device
                         final latestLocation =
-                            await fetchLatestLocation(deviceId);
+                            await locatinService.fetchLatestLocation(
+                                deviceId);
                         if (latestLocation != null) {
                           setState(() {
                             _destination = Marker(
@@ -279,85 +282,82 @@ Future<void> _getLocation() async {
     );
   }
 
-Future<void> _setOriginAndDestinationMarkers() async {
-   // Get current location
-   Position currentPosition = await Geolocator.getCurrentPosition();
-   print('Current location: $currentPosition');
+  Future<void> _setOriginAndDestinationMarkers() async {
+    // Get current location
+    Position currentPosition = await Geolocator.getCurrentPosition();
+    print('Current location: $currentPosition');
 
-   LatLng currentLatLng =
-       LatLng(currentPosition.latitude, currentPosition.longitude);
+    LatLng currentLatLng =
+        LatLng(currentPosition.latitude, currentPosition.longitude);
 
-   // Set origin to current location
-   setState(() {
-     _origin = Marker(
-       markerId: const MarkerId('origin'),
-       infoWindow: const InfoWindow(title: 'Origin'),
-       icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueGreen),
-       position: currentLatLng,
-     );
-   });
+    // Set origin to current location
+    setState(() {
+      _origin = Marker(
+        markerId: const MarkerId('origin'),
+        infoWindow: const InfoWindow(title: 'Origin'),
+        icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueGreen),
+        position: currentLatLng,
+      );
+    });
 
-   // Set destination marker based on the latest location from the API
-   LatLng destinationCoordinates = await _getDestinationCoordinatesFromAPI();
-   print('destinationCoordinates" $destinationCoordinates');
-   setState(() {
-     _destination = Marker(
-       markerId: const MarkerId('destination'),
-       infoWindow: const InfoWindow(title: 'Destination'),
-       icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueBlue),
-       position: destinationCoordinates,
-     );
-   });
+    // Set destination marker based on the latest location from the API
+    LatLng destinationCoordinates = await _getDestinationCoordinatesFromAPI();
+    print('destinationCoordinates" $destinationCoordinates');
+    setState(() {
+      _destination = Marker(
+        markerId: const MarkerId('destination'),
+        infoWindow: const InfoWindow(title: 'Destination'),
+        icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueBlue),
+        position: destinationCoordinates,
+      );
+    });
 
-   // Get directions
-   final directions = await DirectionsRepository().getDirections(
-     origin: _origin!.position,
-     destination: destinationCoordinates,
-   );
-   setState(() => _info = directions);
- }
+    // Get directions
+    final directions = await DirectionsRepository().getDirections(
+      origin: _origin!.position,
+      destination: destinationCoordinates,
+    );
+    setState(() => _info = directions);
+  }
 
- Future<LatLng> _getDestinationCoordinatesFromAPI() async {
-   final locationHistory = await fetchLocationHistory();
+  Future<LatLng> _getDestinationCoordinatesFromAPI() async {
+    final locationHistory = await  locatinService.fetchLocationHistory();
 
-   if (locationHistory.isNotEmpty) {
-     final latestLocation = locationHistory[0];
-     return LatLng(latestLocation['latitude'], latestLocation['longitude']);
-   } else {
-     // Return default coordinates or handle the case when location history is empty
-     return const LatLng(0, 0);
-   }
- }
+    if (locationHistory.isNotEmpty) {
+      final latestLocation = locationHistory[0];
+      return LatLng(latestLocation['latitude'], latestLocation['longitude']);
+    } else {
+      // Return default coordinates or handle the case when location history is empty
+      return const LatLng(0, 0);
+    }
+  }
 
- Future<void> fetchMobileDevices() async {
-   final dio = Dio();
+  Future<void> fetchMobileDevices() async {
+    final dio = Dio();
 
-   try {
-     final userData = await getUserDataFromLocalStorage();
-     final userId = userData['userId'] as String?;
+    try {
+      final userData = await getUserDataFromLocalStorage();
+      final userId = userData['userId'] as String?;
 
-     final response = await dio.get('$APIURL/mobiledevices/$userId');
-     print('Response: $response');
+      final response = await dio.get('$APIURL/mobiledevices/$userId');
+      print('Response: $response');
 
-     if (response.statusCode == 200) {
-       // Access the 'mobileDevices' property from the response data
-       final List<dynamic> mobileDevicesData = response.data['mobileDevices'];
-       // Map over the mobile devices data and convert them into Phone objects
-       final List<Phone> phonesList =
-           mobileDevicesData.map((item) => Phone.fromJson(item)).toList();
+      if (response.statusCode == 200) {
+        // Access the 'mobileDevices' property from the response data
+        final List<dynamic> mobileDevicesData = response.data['mobileDevices'];
+        // Map over the mobile devices data and convert them into Phone objects
+        final List<Phone> phonesList =
+            mobileDevicesData.map((item) => Phone.fromJson(item)).toList();
 
-       setState(() {
-         phones = phonesList;
-       });
-       print('error occured here');
-     } else {
-       throw Exception('Failed to load mobile devices');
-     }
-   } catch (e) {
-     throw Exception('Failed to make API call: $e');
-   }
- }
-
-
-
+        setState(() {
+          phones = phonesList;
+        });
+        print('error occured here');
+      } else {
+        throw Exception('Failed to load mobile devices');
+      }
+    } catch (e) {
+      throw Exception('Failed to make API call: $e');
+    }
+  }
 }

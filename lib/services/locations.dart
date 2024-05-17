@@ -1,68 +1,66 @@
-import 'dart:js';
-
 import 'package:dio/dio.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/framework.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:lost_mode_app/.env.dart';
-import 'package:lost_mode_app/utils/messages.dart';
+import 'package:lost_mode_app/models/devices.dart';
+import 'package:lost_mode_app/models/location_model.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-Future<void> getLocationHistory() async {
+class LocationApiService {
+
+ Future<List<Device>> fetchDevices(String userId) async {
+    final dio = Dio();
+    try {
+      final response = await dio.get('${Uri.parse(APIURL)}/mobiledevices/$userId');
+      print('Response of devices: ${response.data}');
+      if (response.statusCode == 200) {
+        List jsonResponse = response.data['mobileDevices'];
+        print(jsonResponse);
+        return jsonResponse.map((device) => Device.fromJson(device)).toList();
+      } else {
+        throw Exception('Failed to load devices');
+      }
+    } catch (error) {
+      print('Error fetching devices: $error');
+      throw Exception('Failed to load devices');
+    }
+  }
+  
+Future<LatLng?> fetchLatestLocation(String deviceId) async {
   final dio = Dio();
-  final response = await dio.get(
-    '$APIURL/location_history',
-  );
+  final apiUrl = '$APIURL/mobiledevices/$deviceId/locations';
+
   try {
-    if (response.statusCode == 200) {
-      ToastMsg.showToastMsg(
-          context as BuildContext,
-          'Location History fetch Succeeded ',
-          Color.fromARGB(213, 71, 238, 65));
-      print(response.data);
+    final response = await dio.get(apiUrl);
+
+    if (response.statusCode == 200 && response.data.isNotEmpty) {
+      final latestLocation = response.data[0];
+      return LatLng(latestLocation['latitude'], latestLocation['longitude']);
+    } else {
+      return null;
     }
   } catch (e) {
-    ToastMsg.showToastMsg(
-        context as BuildContext,
-        'Error occured fetching Location History',
-        Color.fromARGB(214, 238, 77, 65));
+    print('Failed to fetch latest location: $e');
+    return null;
+  }
+}
+Future<List<dynamic>> fetchLocationHistory() async {
+  final dio = Dio();
+
+  try {
+    final deviceData = await SharedPreferences.getInstance();
+    final deviceId = deviceData.getString('deviceId');
+    final response = await dio.get('$APIURL/mobiledevices/$deviceId/locations');
+    print('Resloc: $response');
+    if (response.statusCode == 200) {
+      return response.data;
+    } else {
+      throw Exception('Failed to fetch location history');
+    }
+  } catch (e) {
+    throw Exception('Failed to make API call: $e');
   }
 }
 
- Future<List<dynamic>> fetchLocationHistory() async {
-   final dio = Dio();
 
-   try {
-     final deviceData = await SharedPreferences.getInstance();
-     final deviceId = deviceData.getString('deviceId');
-     final response =
-         await dio.get('$APIURL/mobiledevices/$deviceId/locations');
-     print('Resloc: $response');
-     if (response.statusCode == 200) {
-       return response.data;
-     } else {
-       throw Exception('Failed to fetch location history');
-     }
-   } catch (e) {
-     throw Exception('Failed to make API call: $e');
-   }
- }
+}
 
- Future<LatLng?> fetchLatestLocation(String deviceId) async {
-   final dio = Dio();
-   final apiUrl = '$APIURL/mobiledevices/$deviceId/locations';
-
-   try {
-     final response = await dio.get(apiUrl);
-
-     if (response.statusCode == 200 && response.data.isNotEmpty) {
-       final latestLocation = response.data[0];
-       return LatLng(latestLocation['latitude'], latestLocation['longitude']);
-     } else {
-       return null;
-     }
-   } catch (e) {
-     print('Failed to fetch latest location: $e');
-     return null;
-   }
- }
