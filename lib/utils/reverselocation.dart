@@ -2,7 +2,6 @@ import 'package:dio/dio.dart';
 import 'package:lost_mode_app/.env.dart';
 
 class LocationService {
-  final String _apiKey = googleAPIKey; // Replace with your API key
 
   Future<String> getPlaceName(double latitude, double longitude) async {
     final dio = Dio();
@@ -10,7 +9,7 @@ class LocationService {
       'https://maps.googleapis.com/maps/api/geocode/json',
       queryParameters: {
         'latlng': '$latitude,$longitude',
-        'key': _apiKey,
+        'key': googleAPIKey,
       },
     );
         print('Then Set set results ${response}');

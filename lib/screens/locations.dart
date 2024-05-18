@@ -109,15 +109,30 @@ class _LocationHistoryState extends State<LocationHistory> {
               Expanded(
                 child: ListView.builder(
                   itemCount: locationHistory.length,
-                  itemBuilder: (context, index)  {
+                  itemBuilder: (context, index) {
                     final location = locationHistory[index];
-                    final locationName =
-                         locationservice.getPlaceName(location.latitude, location.longitude);
-                    return ListTile(
-                      title: Text(
-                        'Location: ${locationName}',
-                      ),
-                      subtitle: Text('Timestamp: ${location.timestamp}'),
+                    return FutureBuilder<String>(
+                      future: locationservice.getPlaceName(
+                          location.latitude, location.longitude),
+                      builder: (context, snapshot) {
+                        if (snapshot.connectionState ==
+                            ConnectionState.waiting) {
+                          return ListTile(
+                            title: CircularProgressIndicator(),
+                          );
+                        } else if (snapshot.hasError) {
+                          return ListTile(
+                            title: Text('Error: ${snapshot.error}'),
+                          );
+                        } else {
+                          final locationName =
+                              snapshot.data ?? 'Unknown location';
+                          return ListTile(
+                            title: Text('Location: $locationName'),
+                            subtitle: Text('Timestamp: ${location.timestamp}'),
+                          );
+                        }
+                      },
                     );
                   },
                 ),

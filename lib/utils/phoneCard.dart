@@ -29,26 +29,40 @@ class PhoneListCard extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             ClipRRect(
-              borderRadius: BorderRadius.circular(8.0),
-              child: Image.network(
-                phone.imageUrl,
-                width: 90,
-                height: 90,
-                fit: BoxFit.contain,
-                errorBuilder: (context, error, stackTrace) {
-                  // Handle the error case
-                  return Container(
-                    width: 90, // Increase the container width
-                    height: 90, // Increase the container height
-                    alignment: Alignment
-                        .center, // Center the CircularProgressIndicator
-                    child: const CircularProgressIndicator(
-                      // value: 45, // Adjust the radius value to change the size
-                    ),
-                  );
-                },
-              ),
-            ),
+                borderRadius: BorderRadius.circular(8.0),
+                child: Image.network(
+                  phone.imageUrl,
+                  width: 90,
+                  height: 90,
+                  fit: BoxFit.contain,
+                  errorBuilder: (context, error, stackTrace) {
+                    // Handle the error case
+                    return Container(
+                      width: 90,
+                      height: 90,
+                      alignment: Alignment.center,
+                      child: const Icon(Icons.error),
+                    );
+                  },
+                  loadingBuilder: (context, child, loadingProgress) {
+                    if (loadingProgress == null) {
+                      return child;
+                    }
+                    double? progress;
+                    if (loadingProgress.expectedTotalBytes != null) {
+                      progress = loadingProgress.cumulativeBytesLoaded /
+                          loadingProgress.expectedTotalBytes!;
+                    }
+                    return Container(
+                      width: 90,
+                      height: 90,
+                      alignment: Alignment.center,
+                      child: CircularProgressIndicator(
+                        value: progress,
+                      ),
+                    );
+                  },
+                )),
             const SizedBox(height: 8.0),
             Text(
               phone.name,
