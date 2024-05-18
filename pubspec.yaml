@@ -52,6 +52,7 @@ dependencies:
   get: ^4.6.6
   geocoding: ^3.0.0
   geolocator: ^11.1.0
+  flutter_local_notifications: ^17.1.2
 
 
 

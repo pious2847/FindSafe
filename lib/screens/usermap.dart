@@ -352,7 +352,6 @@ class _MapScreenState extends State<MapScreen> {
         setState(() {
           phones = phonesList;
         });
-        print('error occured here');
       } else {
         throw Exception('Failed to load mobile devices');
       }

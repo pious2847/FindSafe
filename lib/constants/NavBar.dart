@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:lost_mode_app/screens/locations.dart';
 import 'package:lost_mode_app/screens/login.dart';
+import 'package:lost_mode_app/screens/profile.dart';
 import 'package:lost_mode_app/screens/settings.dart';
 import 'package:lost_mode_app/screens/usermap.dart';
 import 'package:lost_mode_app/services/service.dart';
@@ -50,7 +51,9 @@ class NavBar extends StatelessWidget {
                     ListTile(
                       leading: const Icon(Iconsax.user_octagon_copy,  color: Colors.purple),
                       title: const Text('Profile'),
-                      onTap: () => print('tapped'),
+                      onTap: () => {
+                        Get.to(const UserProfile())
+                      },
                     ),
                                         ListTile(
                       leading: const Icon(Iconsax.mobile_copy, color: Colors.purple),

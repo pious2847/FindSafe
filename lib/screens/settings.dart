@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:get/get.dart';
 import 'package:iconsax_flutter/iconsax_flutter.dart';
+import 'package:lost_mode_app/main.dart';
 import 'package:lost_mode_app/models/settings_model.dart';
 import 'package:lost_mode_app/screens/about.dart';
 import 'package:lost_mode_app/services/settings_service.dart';
@@ -25,7 +27,29 @@ class _SettingsState extends State<Settings> {
     _loadModes();
     super.initState();
   }
+Future<void> showLostModeNotification() async {
+  const androidPlatformChannelSpecifics = AndroidNotificationDetails(
+    'lost_mode_channel',
+    'Lost Mode',
+    importance: Importance.max,
+    priority: Priority.high,
+    ticker: 'ticker',
+  );
+  // const iOSPlatformChannelSpecifics = IOSNotificationDetails();
+  const platformChannelSpecifics = NotificationDetails(
+    android: androidPlatformChannelSpecifics,
+    // iOS: iOSPlatformChannelSpecifics,
+  );
 
+  await flutterLocalNotificationsPlugin.show(
+    0,
+    'Lost Mode Enabled',
+    'Your device has been put in lost mode.',
+    platformChannelSpecifics,
+    payload: 'lost_mode_notification',
+  );
+}
+  
   Future<void> _loadModes() async {
     final prefs = await SharedPreferences.getInstance();
     setState(() {
@@ -34,19 +58,30 @@ class _SettingsState extends State<Settings> {
     });
   }
 
-  void handleModeUpdate(String mode) async {
-    final responseMessage = await updatemode(mode);
+Future<void> handleModeUpdate(String mode) async {
+  bool proceedWithUpdate = await showConfirmationDialog(context, mode);
+
+  if (proceedWithUpdate) {
+    final prefs = await SharedPreferences.getInstance();
+
+    if (mode == 'active') {
+      await prefs.setBool('isLostMode', false);
+      await prefs.setBool('isActiveMode', true);
+    } else if (mode == 'disable') {
+      await prefs.setBool('isActiveMode', false);
+      await prefs.setBool('isLostMode', true);
+      await showLostModeNotification(); // Show notification when lost mode is enabled
+    }
+
+    final responseMessage = 'Mode updated successfully';
     print('resmsg:  $responseMessage');
     SnackbarUtils.showCustomSnackBar(
-      // ignore: use_build_context_synchronously
       context,
       responseMessage,
-      responseMessage.startsWith('Error')
-          ? Colors.red
-          : const Color.fromARGB(255, 76, 175, 80),
+      const Color.fromARGB(255, 76, 175, 80),
     );
   }
-
+}
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -95,16 +130,17 @@ class _SettingsState extends State<Settings> {
                   title: "Lost Mode",
                   trailing: Switch(
                     value: _isLostMode,
-                    onChanged: (value) {
-                      setState(() {
-                        _isLostMode = value;
-                        if (value) {
+                    onChanged: (value) async {
+                      bool proceedWithUpdate = await showConfirmationDialog(
+                          context, value ? 'disable' : 'active');
+                      if (proceedWithUpdate) {
+                        setState(() {
+                          _isLostMode = value;
                           _isActiveMode =
-                              false; // Turn off Active Mode if Lost Mode is turned on
-                          handleModeUpdate('disable');
-                          updateMode('disable');
-                        }
-                      });
+                              !value; // Set active mode to the opposite of lost mode
+                          handleModeUpdate(value ? 'disable' : 'active');
+                        });
+                      }
                     },
                   ),
                 ),
@@ -114,16 +150,17 @@ class _SettingsState extends State<Settings> {
                   title: "Active Mode",
                   trailing: Switch(
                     value: _isActiveMode,
-                    onChanged: (value) {
-                      setState(() {
-                        _isActiveMode = value;
-                        if (value) {
+                    onChanged: (value) async {
+                      bool proceedWithUpdate = await showConfirmationDialog(
+                          context, value ? 'active' : 'disable');
+                      if (proceedWithUpdate) {
+                        setState(() {
+                          _isActiveMode = value;
                           _isLostMode =
-                              false; // Turn off Lost Mode if Active Mode is turned on
-                          handleModeUpdate('active');
-                          updateMode('active');
-                        }
-                      });
+                              !value; // Set lost mode to the opposite of active mode
+                          handleModeUpdate(value ? 'active' : 'disable');
+                        });
+                      }
                     },
                   ),
                 ),
@@ -133,6 +170,37 @@ class _SettingsState extends State<Settings> {
           ),
         ),
       ),
+    );
+  }
+
+  Future showConfirmationDialog(BuildContext context, String mode) {
+    return showDialog(
+      context: context,
+      barrierDismissible: false, // User must tap a button to dismiss the dialog
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text('Warning'),
+          content: Text(
+            mode == 'disable'
+                ? 'Are you sure you want to disable the mode?'
+                : 'Are you sure you want to switch to active mode?',
+          ),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop(false); // Cancel
+              },
+              child: const Text('Cancel'),
+            ),
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop(true); // Proceed
+              },
+              child: const Text('OK'),
+            ),
+          ],
+        );
+      },
     );
   }
 }

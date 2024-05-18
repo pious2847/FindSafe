@@ -107,34 +107,69 @@ class _LocationHistoryState extends State<LocationHistory> {
             const SizedBox(height: 20),
             if (locationHistory.isNotEmpty)
               Expanded(
-                child: ListView.builder(
-                  itemCount: locationHistory.length,
-                  itemBuilder: (context, index) {
-                    final location = locationHistory[index];
-                    return FutureBuilder<String>(
-                      future: locationservice.getPlaceName(
-                          location.latitude, location.longitude),
-                      builder: (context, snapshot) {
-                        if (snapshot.connectionState ==
-                            ConnectionState.waiting) {
-                          return ListTile(
-                            title: CircularProgressIndicator(),
-                          );
-                        } else if (snapshot.hasError) {
-                          return ListTile(
-                            title: Text('Error: ${snapshot.error}'),
-                          );
-                        } else {
-                          final locationName =
-                              snapshot.data ?? 'Unknown location';
-                          return ListTile(
-                            title: Text('Location: $locationName'),
-                            subtitle: Text('Timestamp: ${location.timestamp}'),
-                          );
-                        }
-                      },
-                    );
-                  },
+                child: ListView(
+                  children: [
+                    DataTable(
+                      columns: const <DataColumn>[
+                        DataColumn(
+                          label: Text(
+                            'Location',
+                            style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ),
+                        DataColumn(
+                          label: Text(
+                            'Timestamp',
+                            style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ),
+                      ],
+                      rows: locationHistory.map((location) {
+                        return DataRow(
+                          cells: [
+                            DataCell(
+                              FutureBuilder<String>(
+                                future: locationservice.getPlaceName(
+                                  location.latitude,
+                                  location.longitude,
+                                ),
+                                builder: (context, snapshot) {
+                                  if (snapshot.connectionState ==
+                                      ConnectionState.waiting) {
+                                    return const CircularProgressIndicator();
+                                  } else if (snapshot.hasError) {
+                                    return Text('Error: ${snapshot.error}');
+                                  } else {
+                                    final locationName =
+                                        snapshot.data ?? 'Unknown location';
+                                    return Text(locationName);
+                                  }
+                                },
+                              ),
+                            ),
+                            DataCell(
+                              Text(
+                                location.timestamp.toString(),
+                                style: const TextStyle(
+                                  color: Colors.blueGrey,
+                                ),
+                              ),
+                            ),
+                          ],
+                        );
+                      }).toList(),
+                      dataRowHeight: 60, // Adjust the row height
+                      headingRowHeight: 50, // Adjust the heading row height
+                      dividerThickness: 2, // Adjust the divider thickness
+                      dataTextStyle: const TextStyle(
+                        fontSize: 16, // Adjust the text size
+                      ),
+                    ),
+                  ],
                 ),
               )
             else if (selectedDevice != null)

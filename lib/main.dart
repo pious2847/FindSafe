@@ -3,10 +3,24 @@ import 'package:lost_mode_app/screens/splashscreen.dart';
 import 'package:get/get.dart';
 import 'package:lost_mode_app/theme/theme_controller.dart';
 import 'package:lost_mode_app/utils/location_worker.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+
+final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
+    FlutterLocalNotificationsPlugin();
 
 void main() async {
- WidgetsFlutterBinding.ensureInitialized();
+  WidgetsFlutterBinding.ensureInitialized();
   initializeService(); // Call the initializeService function
+  const initializationSettingsAndroid =
+      AndroidInitializationSettings('@mipmap/ic_launcher');
+  // const initializationSettingsIOS = IOSInitializationSettings();
+  const initializationSettings = InitializationSettings(
+    android: initializationSettingsAndroid,
+    // iOS: initializationSettingsIOS,
+  );
+  await flutterLocalNotificationsPlugin.initialize(
+    initializationSettings,
+  );
   runApp(const MyApp());
 }
 

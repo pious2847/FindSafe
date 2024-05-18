@@ -48,21 +48,16 @@ class PhoneListCard extends StatelessWidget {
                     if (loadingProgress == null) {
                       return child;
                     }
-                    double? progress;
-                    if (loadingProgress.expectedTotalBytes != null) {
-                      progress = loadingProgress.cumulativeBytesLoaded /
-                          loadingProgress.expectedTotalBytes!;
-                    }
-                    return Container(
+                    return const SizedBox(
                       width: 90,
                       height: 90,
-                      alignment: Alignment.center,
-                      child: CircularProgressIndicator(
-                        value: progress,
+                      child: Center(
+                        child: CircularProgressIndicator(
+                        ),
                       ),
                     );
                   },
-                )),
+                ),),
             const SizedBox(height: 8.0),
             Text(
               phone.name,
