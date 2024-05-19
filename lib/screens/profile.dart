@@ -32,7 +32,7 @@ class _UserProfileState extends State<UserProfile> {
                   bottom: 30,
                   left: 20,
                   child: CircleAvatar(
-                    
+
                   radius: 50,
                   backgroundImage: AssetImage('assets/images/avatar.jpg'),
                 ),
