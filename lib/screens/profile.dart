@@ -22,7 +22,7 @@ class _UserProfileState extends State<UserProfile> {
           children:[
             Stack(
               children: [
-                Image(image: AssetImage('assetName'))
+                Image(image: AssetImage('assets/images/avatar.jpg'))
               ],
             )
           ]
