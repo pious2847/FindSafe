@@ -62,21 +62,11 @@ class _MapScreenState extends State<MapScreen> {
       // Handle the error accordingly
     }
   }
-  Future<void> requestPermissions() async {
-    // ignore: unused_local_variable
-    Map<Permission, PermissionStatus> statuses = await [
-      Permission.location,
-      Permission.storage,
-      Permission.locationAlways,
-      Permission.notification
-    ].request();
-  }
+
 
   @override
   void initState() {
     super.initState();
-    requestPermissions();
-
     _getLocation();
     fetchMobileDevices();
     _setOriginAndDestinationMarkers();
