@@ -22,6 +22,7 @@ class _OnbordingState extends State<Onbording> {
     Map<Permission, PermissionStatus> statuses = await [
       Permission.location,
       Permission.storage,
+      Permission.locationAlways,
     ].request();
   }
 

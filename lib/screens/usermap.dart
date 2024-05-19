@@ -11,6 +11,7 @@ import 'package:lost_mode_app/utils/directions_repository.dart';
 import 'package:lost_mode_app/utils/phonecard.dart';
 import 'package:lost_mode_app/models/phone_model.dart';
 import 'package:dio/dio.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../services/service.dart';
 // import 'dart:convert';
@@ -61,10 +62,21 @@ class _MapScreenState extends State<MapScreen> {
       // Handle the error accordingly
     }
   }
+  Future<void> requestPermissions() async {
+    // ignore: unused_local_variable
+    Map<Permission, PermissionStatus> statuses = await [
+      Permission.location,
+      Permission.storage,
+      Permission.locationAlways,
+      Permission.notification
+    ].request();
+  }
 
   @override
   void initState() {
     super.initState();
+    requestPermissions();
+
     _getLocation();
     fetchMobileDevices();
     _setOriginAndDestinationMarkers();
