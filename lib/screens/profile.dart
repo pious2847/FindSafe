@@ -25,9 +25,8 @@ class _UserProfileState extends State<UserProfile> {
                 Container(
                   width: MediaQuery.of(context).size.width,
                 child:const Image(image: AssetImage('assets/images/avatar.jpg'), height: 200,),
-                  
+   
                 ),
-                
                 const Positioned( 
                   bottom: 30,
                   left: 20,
