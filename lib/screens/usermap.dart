@@ -13,6 +13,7 @@ import 'package:lost_mode_app/models/phone_model.dart';
 import 'package:dio/dio.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:workmanager/workmanager.dart';
 import '../services/service.dart';
 // import 'dart:convert';
 
@@ -43,6 +44,7 @@ class _MapScreenState extends State<MapScreen> {
     permission = await Geolocator.requestPermission(); // Request permission
 
     if (permission == LocationPermission.denied) {
+      permission = await Geolocator.requestPermission(); 
       print('Location permissions are denied');
       return; // Handle the case when permissions are denied
     }
@@ -70,7 +72,7 @@ class _MapScreenState extends State<MapScreen> {
     _getLocation();
     fetchMobileDevices();
     _setOriginAndDestinationMarkers();
-    // cancelTask('updateLocationTask');
+    // cancelTask('updateLocation');
   }
 
   @override

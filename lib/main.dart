@@ -4,13 +4,26 @@ import 'package:get/get.dart';
 import 'package:lost_mode_app/theme/theme_controller.dart';
 import 'package:lost_mode_app/utils/location_worker.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:workmanager/workmanager.dart';
 
 final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
     FlutterLocalNotificationsPlugin();
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  initializeService(); // Call the initializeService function
+
+    // Initialize the WorkManager
+  await Workmanager().initialize(
+    callbackDispatcher,
+    isInDebugMode: false,
+  );
+    // Register the periodic task
+  await Workmanager().registerPeriodicTask(
+    'updateLocation',
+    'updateLocation',
+    frequency: const Duration(minutes: 15),
+  );
+  
   const initializationSettingsAndroid =
       AndroidInitializationSettings('@mipmap/ic_launcher');
   // const initializationSettingsIOS = IOSInitializationSettings();

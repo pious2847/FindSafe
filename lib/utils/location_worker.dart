@@ -11,27 +11,13 @@ void callbackDispatcher() {
       case 'updateLocation':
         print('Task start');
         await updateLocationTask();
-        print(
-            'Task completed at ${DateTime.now()}'); // Print a message with the current time
+        print('Task completed at ${DateTime.now()}');
         break;
       default:
         print('Task not found');
     }
     return Future.value(true);
   });
-}
-
-void initializeService() {
-  Workmanager().initialize(
-    callbackDispatcher,
-    isInDebugMode: false,
-  );
-
-   Workmanager().registerPeriodicTask(
-    'updateLocation',
-    'updateLocation',
-    frequency: const Duration(minutes: 1),
-  );
 }
 
 Future<Position> _getCurrentPosition() async {
