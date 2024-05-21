@@ -11,8 +11,8 @@ import 'package:lost_mode_app/utils/directions_repository.dart';
 import 'package:lost_mode_app/utils/phonecard.dart';
 import 'package:lost_mode_app/models/phone_model.dart';
 import 'package:dio/dio.dart';
+import 'package:workmanager/workmanager.dart';
 import '../services/service.dart';
-// import 'dart:convert';
 
 class MapScreen extends StatefulWidget {
   const MapScreen({super.key});
@@ -69,7 +69,7 @@ class _MapScreenState extends State<MapScreen> {
     _getLocation();
     fetchMobileDevices();
     _setOriginAndDestinationMarkers();
-    // cancelTask('updateLocation');
+    cancelTask('updateLocation');
   }
 
   @override
@@ -78,10 +78,10 @@ class _MapScreenState extends State<MapScreen> {
     super.dispose();
   }
 
-  // void cancelTask(String uniqueName) {
-  //   Workmanager().cancelByUniqueName(uniqueName);
-  //   print("Task Cancel");
-  // }
+  void cancelTask(String uniqueName) async {
+   await Workmanager().cancelByUniqueName(uniqueName);
+    print("Task Cancel");
+  }
 
   List<Phone> phones = [];
   List<dynamic> locationHistory = [];
