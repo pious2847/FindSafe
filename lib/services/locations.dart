@@ -3,7 +3,6 @@ import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:lost_mode_app/.env.dart';
 import 'package:lost_mode_app/models/devices.dart';
-import 'package:lost_mode_app/models/location_model.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class LocationApiService {

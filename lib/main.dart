@@ -5,7 +5,6 @@ import 'package:lost_mode_app/theme/theme_controller.dart';
 import 'package:lost_mode_app/utils/location_worker.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:workmanager/workmanager.dart';
-import 'package:permission_handler/permission_handler.dart';
 import 'package:geolocator/geolocator.dart';
 
 final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =

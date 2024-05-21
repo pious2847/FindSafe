@@ -2,7 +2,6 @@ import 'package:dio/dio.dart';
 import 'package:lost_mode_app/.env.dart';
 import 'package:lost_mode_app/models/devices.dart';
 import 'package:lost_mode_app/models/location_model.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class ApiService {
   Future<List<Device>> fetchDevices(String userId) async {
