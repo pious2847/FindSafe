@@ -69,7 +69,7 @@ class _MapScreenState extends State<MapScreen> {
     _getLocation();
     fetchMobileDevices();
     _setOriginAndDestinationMarkers();
-    cancelTask('updateLocation');
+    // cancelTask('updateLocation');
   }
 
   @override
@@ -78,10 +78,10 @@ class _MapScreenState extends State<MapScreen> {
     super.dispose();
   }
 
-  void cancelTask(String uniqueName) async {
-   await Workmanager().cancelByUniqueName(uniqueName);
-    print("Task Cancel");
-  }
+  // void cancelTask(String uniqueName) async {
+  //  await Workmanager().cancelByUniqueName(uniqueName);
+  //   print("Task Cancel");
+  // }
 
   List<Phone> phones = [];
   List<dynamic> locationHistory = [];
