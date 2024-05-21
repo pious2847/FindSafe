@@ -36,7 +36,12 @@ Future<void> updateLocationTask(Geolocator geolocator) async {
     final deviceData = await SharedPreferences.getInstance();
     final deviceId = deviceData.getString('deviceId');
 
-    await updateLocation(deviceId!, currentPosition);
+    // await updateLocation(deviceId!, currentPosition);
+     if (deviceId != null) {
+      await updateLocation(deviceId, currentPosition);
+    } else {
+      print('Device ID not found in SharedPreferences');
+    }
   } catch (e) {
     print('Error updating location: $e');
   }

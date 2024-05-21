@@ -1,8 +1,8 @@
-
+import 'package:geolocator/geolocator.dart';
+import 'package:lost_mode_app/services/locations.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:dio/dio.dart';
 import 'package:lost_mode_app/.env.dart';
-
 
 Future<void> saveUserDataToLocalStorage(String userId) async {
   final prefs = await SharedPreferences.getInstance();
@@ -25,7 +25,6 @@ Future<void> logout() async {
   await prefs.setBool('showHome', false);
   await prefs.setBool('isRegisted', false);
 
-
   print("User Logged Out");
 }
 
@@ -35,6 +34,13 @@ Future<void> addDeviceInfo(
   modelNumer,
 ) async {
   final dio = Dio();
+  final locatinService = LocationApiService();
+  final currentPosition = await Geolocator.getCurrentPosition(
+    desiredAccuracy: LocationAccuracy.high,
+  );
+  print(
+      'Current Location position for new device: ${currentPosition.latitude}, ${currentPosition.longitude}');
+
   try {
     final response = await dio.post(
       "$APIURL/register-device/$userId/$devicename/$modelNumer",
@@ -45,9 +51,10 @@ Future<void> addDeviceInfo(
       await prefs.setBool('isRegisted', true);
       final deviceId = response.data['deviceId'] as String;
       await prefs.setString('deviceId', deviceId);
+      
+      await locatinService.registerCurrentLocation(deviceId, currentPosition);
       print('The responds for adding new device: $response');
       print("device info inserted successfull");
-      
     } else {
       print("Invalid response ${response.statusCode}: ${response.data}");
     }

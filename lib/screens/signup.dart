@@ -9,7 +9,6 @@ import 'package:lost_mode_app/screens/login.dart';
 import 'package:lost_mode_app/utils/messages.dart';
 import 'package:get/get.dart';
 
-
 class Signup extends StatefulWidget {
   const Signup({super.key});
 
@@ -38,24 +37,22 @@ class _SignupState extends State<Signup> {
         },
       );
       print('Response: $response');
-     
+
       if (response.statusCode == 200) {
         print(response.data);
-        SnackbarUtils.showCustomSnackBar(context, 'Account Created successful', const Color.fromARGB(255, 85, 189, 89));
-        Navigator.push(
-          context,
-          MaterialPageRoute(builder: (context) => const Signin()),
-        );
+        SnackbarUtils.showCustomSnackBar(context, 'Account Created successful',
+            const Color.fromARGB(255, 85, 189, 89));
+        Get.to(const Signin());
       } else {
         print("Invalid response ${response.statusCode}: ${response.data}");
       }
     } catch (e) {
-      SnackbarUtils.showCustomSnackBar(context, 'An error occurred: $e', Colors.red);
+      SnackbarUtils.showCustomSnackBar(
+          context, 'An error occurred: $e', Colors.red);
       print("Error occurred: $e");
       // Handle error, show toast or snackbar
     }
   }
-
 
   User user = User('', '', '');
   @override
@@ -63,7 +60,6 @@ class _SignupState extends State<Signup> {
     return Scaffold(
         body: Stack(
       children: [
-      
         SingleChildScrollView(
           child: Container(
             alignment: Alignment.center,
@@ -76,7 +72,7 @@ class _SignupState extends State<Signup> {
                   const SizedBox(
                     height: 150,
                   ),
-                   Text(
+                  Text(
                     "Signup",
                     style: GoogleFonts.pacifico(
                         fontWeight: FontWeight.bold,
@@ -100,14 +96,15 @@ class _SignupState extends State<Signup> {
                         return null;
                       },
                       decoration: InputDecoration(
-                         
                           hintText: 'Enter Username',
                           enabledBorder: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(16),
-                              borderSide: const BorderSide(color: Colors.purple)),
+                              borderSide:
+                                  const BorderSide(color: Colors.purple)),
                           focusedBorder: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(16),
-                              borderSide: const BorderSide(color: Colors.purple)),
+                              borderSide:
+                                  const BorderSide(color: Colors.purple)),
                           errorBorder: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(16),
                               borderSide: const BorderSide(color: Colors.red)),
@@ -138,10 +135,12 @@ class _SignupState extends State<Signup> {
                           hintText: 'Enter Email',
                           enabledBorder: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(16),
-                              borderSide: const BorderSide(color: Colors.purple)),
+                              borderSide:
+                                  const BorderSide(color: Colors.purple)),
                           focusedBorder: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(16),
-                              borderSide: const BorderSide(color: Colors.purple)),
+                              borderSide:
+                                  const BorderSide(color: Colors.purple)),
                           errorBorder: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(16),
                               borderSide: const BorderSide(color: Colors.red)),
@@ -167,7 +166,9 @@ class _SignupState extends State<Signup> {
                           hintText: 'Enter Password',
                           suffixIcon: IconButton(
                             icon: Icon(
-                              _obscureText ? Icons.visibility : Icons.visibility_off,
+                              _obscureText
+                                  ? Icons.visibility
+                                  : Icons.visibility_off,
                             ),
                             onPressed: () {
                               setState(() {
@@ -177,10 +178,12 @@ class _SignupState extends State<Signup> {
                           ),
                           enabledBorder: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(16),
-                              borderSide: const BorderSide(color: Colors.purple)),
+                              borderSide:
+                                  const BorderSide(color: Colors.purple)),
                           focusedBorder: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(16),
-                              borderSide: const BorderSide(color: Color.fromARGB(255, 103, 10, 119))),
+                              borderSide: const BorderSide(
+                                  color: Color.fromARGB(255, 103, 10, 119))),
                           errorBorder: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(16),
                               borderSide: const BorderSide(color: Colors.red)),
@@ -196,12 +199,16 @@ class _SignupState extends State<Signup> {
                       width: 400,
                       child: TextButton(
                         style: ButtonStyle(
-                          backgroundColor: MaterialStateProperty.resolveWith<Color>(
+                          backgroundColor:
+                              MaterialStateProperty.resolveWith<Color>(
                             (Set<MaterialState> states) {
                               if (states.contains(MaterialState.disabled)) {
                                 return Colors.grey; // Disabled button color
                               }
-                              return Get.isDarkMode ? Colors.purple[700]! : Colors.purple; // Button color based on theme
+                              return Get.isDarkMode
+                                  ? Colors.purple[700]!
+                                  : Colors
+                                      .purple; // Button color based on theme
                             },
                           ),
                           shape: MaterialStateProperty.all<OutlinedBorder>(
@@ -219,22 +226,22 @@ class _SignupState extends State<Signup> {
                         },
                         child: const Text(
                           "Signup",
-                          style: TextStyle(color: Colors.white, ),
+                          style: TextStyle(
+                            color: Colors.white,
+                          ),
                         ),
                       ),
-                    
                     ),
                   ),
-                  
                   Padding(
                       padding: const EdgeInsets.fromLTRB(20, 16, 0, 0),
                       child: Row(
-                        
                         children: [
                           const Text(
                             "Already have Account ? ",
                             style: TextStyle(
-                                color: Colors.black, fontWeight: FontWeight.bold),
+                                color: Colors.black,
+                                fontWeight: FontWeight.bold),
                           ),
                           InkWell(
                             onTap: () {
