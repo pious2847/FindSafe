@@ -4,51 +4,32 @@ import 'package:lost_mode_app/.env.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:workmanager/workmanager.dart';
 
+Geolocator? _geolocator;
+
 @pragma('vm:entry-point')
 void callbackDispatcher() {
   Workmanager().executeTask((task, inputData) async {
+    _geolocator ??= Geolocator();
+
     switch (task) {
       case 'updateLocation':
         print('Task start');
-        await updateLocationTask();
+        await updateLocationTask(_geolocator!);
         print('Task completed at ${DateTime.now()}');
         break;
       default:
         print('Task not found');
     }
+
     return Future.value(true);
   });
 }
 
-Future<Position> _getCurrentPosition() async {
-  bool serviceEnabled;
-  LocationPermission permission;
-
-  serviceEnabled = await Geolocator.isLocationServiceEnabled();
-  if (!serviceEnabled) {
-    return Future.error('Location services are disabled.');
-  }
-
-  permission = await Geolocator.checkPermission();
-  if (permission == LocationPermission.denied) {
-    permission = await Geolocator.requestPermission();
-    if (permission == LocationPermission.denied) {
-      return Future.error('Location permissions are denied');
-    }
-  }
-
-  if (permission == LocationPermission.deniedForever) {
-    return Future.error(
-        'Location permissions are permanently denied, we cannot request permissions.');
-  }
-
-  return await Geolocator.getCurrentPosition(
-      desiredAccuracy: LocationAccuracy.high);
-}
-
-Future<void> updateLocationTask() async {
+Future<void> updateLocationTask(Geolocator geolocator) async {
   try {
-    final currentPosition = await _getCurrentPosition();
+    final currentPosition = await Geolocator.getCurrentPosition(
+      desiredAccuracy: LocationAccuracy.high,
+    );
     print(
         'Current Location: ${currentPosition.latitude}, ${currentPosition.longitude}');
 
@@ -62,6 +43,7 @@ Future<void> updateLocationTask() async {
 }
 
 Future<void> updateLocation(String deviceId, Position position) async {
+  print('The passed Location Cordinates are ${position.latitude}  ${position.longitude} ');
   final dio = Dio();
   const url = '$APIURL/update-location';
   final data = {
