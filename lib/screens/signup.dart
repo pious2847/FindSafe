@@ -43,6 +43,7 @@ class _SignupState extends State<Signup> {
         SnackbarUtils.showCustomSnackBar(context, 'Account Created successful',
             const Color.fromARGB(255, 85, 189, 89));
         Get.to(const Signin());
+       
       } else {
         print("Invalid response ${response.statusCode}: ${response.data}");
       }

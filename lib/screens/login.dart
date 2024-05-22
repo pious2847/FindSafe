@@ -25,6 +25,8 @@ class _SigninState extends State<Signin> {
   final _formKey = GlobalKey<FormState>();
   bool isRegisted = false;
   bool _obscureText = true;
+  final emailController = TextEditingController();
+  final passwordController = TextEditingController();
 
   Future<void> save() async {
     final dio = Dio();

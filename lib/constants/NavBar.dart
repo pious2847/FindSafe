@@ -2,6 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:lost_mode_app/models/User_model.dart';
 import 'package:lost_mode_app/screens/locations.dart';
 import 'package:lost_mode_app/screens/login.dart';
 import 'package:lost_mode_app/screens/profile.dart';
@@ -12,7 +13,13 @@ import 'package:lost_mode_app/utils/messages.dart';
 import 'package:iconsax_flutter/iconsax_flutter.dart';
 
 class NavBar extends StatelessWidget {
-  const NavBar({super.key});
+   NavBar({super.key});
+
+  UserProfileModel myUser = UserProfileModel(
+  username: 'John Doe',
+  email: 'john.doe@example.com',
+  password: 'password123',
+);
 
   @override
   Widget build(BuildContext context) {
@@ -52,7 +59,7 @@ class NavBar extends StatelessWidget {
                       leading: const Icon(Iconsax.user_octagon_copy,  color: Colors.purple),
                       title: const Text('Profile'),
                       onTap: () => {
-                        Get.to(const UserProfile())
+                        Get.to( UserProfile(user: myUser,))
                       },
                     ),
                                         ListTile(
