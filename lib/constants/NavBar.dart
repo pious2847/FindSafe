@@ -150,7 +150,7 @@ class _NavBarState extends State<NavBar> {
       final userData = await getUserDataFromLocalStorage();
       final userId = userData['userId'];
       final dio = Dio();
-      final url = '$APIURL/api/get-user/$userId';
+      final url = '$APIURL/get-user/$userId';
 
       final response = await dio.get(
         url,
@@ -161,7 +161,7 @@ class _NavBarState extends State<NavBar> {
         ),
       );
       if (response.statusCode == 200) {
-        print("Success Retrieve User data ${response.data}");
+        print("Success Retrieve User data ${response.data['User']}");
         final userJson = response.data['User'];
         setState(() {
           myUser = UserProfileModel.fromJson(userJson);
