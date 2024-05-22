@@ -38,72 +38,128 @@ class _UserProfileState extends State<UserProfile> {
         ),
       ),
       body: Column(
+        mainAxisAlignment: MainAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Stack(
             children: [
               Container(
                 width: MediaQuery.of(context).size.width,
-                height: MediaQuery.of(context).size.height * 0.2,
+                height: MediaQuery.of(context).size.height * 0.3,
                 child: FittedBox(
                   fit: BoxFit.cover,
                   child: ImageFiltered(
                     imageFilter: ImageFilter.blur(sigmaX: 3, sigmaY: 3),
                     child: Image.asset(
                       'assets/images/avatar.jpg',
-                      height: 100,
+                      // height: 50,
                     ),
                   ),
                 ),
               ),
               const Positioned(
-                bottom: 2,
+                bottom: -70.5,
                 left: 20,
+
                 child: CircleAvatar(
-                  radius: 60,
+                  radius: 70,
                   backgroundImage: AssetImage('assets/images/avatar.jpg'),
                 ),
               ),
             ],
           ),
+
+          const Padding(
+            padding: EdgeInsets.all(15.0),
+            child: Text("Personal Info:", style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold, ),),
+          ),
           const SizedBox(
-            height: 140,
+            height: 10,
           ),
           Expanded(
             child: ListView(
               children: <Widget>[
                 ListTile(
-                  title: Text(
+                  title: const Text(
                     'Username',
                     style: TextStyle(fontWeight: FontWeight.bold),
                   ),
                   subtitle: Text(_user.username),
                   trailing: IconButton(
-                    icon: Icon(Icons.edit),
+                    icon: const Icon(Icons.edit),
                     onPressed: () =>
                         _showEditDialog('username', _user.username),
                   ),
                 ),
                 ListTile(
-                  title: Text(
+                  title: const Text(
                     'Email',
                     style: TextStyle(fontWeight: FontWeight.bold),
                   ),
                   subtitle: Text(_user.email),
                   trailing: IconButton(
-                    icon: Icon(Icons.edit),
+                    icon: const Icon(Icons.edit),
                     onPressed: () => _showEditDialog('email', _user.email),
                   ),
                 ),
                 ListTile(
-                  title: Text(
+                  title: const Text(
                     'Phone',
                     style: TextStyle(fontWeight: FontWeight.bold),
                   ),
                   subtitle: Text(_user.phone ?? ''),
                   trailing: IconButton(
-                    icon: Icon(Icons.edit),
+                    icon: const Icon(Icons.edit),
                     onPressed: () =>
                         _showEditDialog('phone', _user.phone ?? ''),
+                  ),
+                ),
+                ListTile(
+                  title: const Text(
+                    'Area',
+                    style: TextStyle(fontWeight: FontWeight.bold),
+                  ),
+                  subtitle: Text(_user.addressInfo!.area ?? ''),
+                  trailing: IconButton(
+                    icon: const Icon(Icons.edit),
+                    onPressed: () =>
+                        _showEditDialog('area', _user.addressInfo!.area ?? ''),
+                  ),
+                ),
+                ListTile(
+                  title: const Text(
+                    'House No',
+                    style: TextStyle(fontWeight: FontWeight.bold),
+                  ),
+                  subtitle: Text(_user.addressInfo!.houseNo ?? ''),
+                  trailing: IconButton(
+                    icon: const Icon(Icons.edit),
+                    onPressed: () => _showEditDialog(
+                        'houseNo', _user.addressInfo!.houseNo ?? ''),
+                  ),
+                ),
+                ListTile(
+                  title: const Text(
+                    'Emergency  Name',
+                    style: TextStyle(fontWeight: FontWeight.bold),
+                  ),
+                  subtitle: Text(_user.emergencyContact!.name ?? ''),
+                  trailing: IconButton(
+                    icon: const Icon(Icons.edit),
+                    onPressed: () => _showEditDialog(
+                        'emergencyName', _user.emergencyContact!.name ?? ''),
+                  ),
+                ),
+                ListTile(
+                  title: const Text(
+                    'Emergency Contact',
+                    style: TextStyle(fontWeight: FontWeight.bold),
+                  ),
+                  subtitle: Text(_user.emergencyContact!.contact ?? ''),
+                  trailing: IconButton(
+                    icon: const Icon(Icons.edit),
+                    onPressed: () => _showEditDialog('emergencyContact',
+                        _user.emergencyContact!.contact ?? ''),
                   ),
                 ),
                 // Add more ListTiles for other fields as needed
@@ -120,7 +176,7 @@ class _UserProfileState extends State<UserProfile> {
     final userId = userData['userId'] as String?;
 
     final url = '$APIURL/update/$userId';
-    final body = {fieldName: newValue};
+    final updatedFields = _getUpdatedFields(fieldName, newValue);
     final dio = Dio();
     final response = await dio.put(
       Uri.parse(url) as String,
@@ -129,7 +185,7 @@ class _UserProfileState extends State<UserProfile> {
           'Content-Type': 'application/json; charset=UTF-8',
         },
       ),
-      data: json.encode(body),
+      data: json.encode(updatedFields),
     );
 
     if (response.statusCode == 200) {
@@ -145,22 +201,45 @@ class _UserProfileState extends State<UserProfile> {
             _user.phone = newValue;
             break;
           case 'area':
-            _user.addressInfo!.area = newValue;
+            _user.addressInfo?.area = newValue;
             break;
-          case 'house':
-            _user.addressInfo!.houseNo = newValue;
+          case 'houseNo':
+            _user.addressInfo?.houseNo = newValue;
             break;
-          case 'name':
+          case 'emergencyName':
             _user.emergencyContact?.name = newValue;
             break;
-          case 'contact':
+          case 'emergencyContact':
             _user.emergencyContact?.contact = newValue;
             break;
           // Add cases for other fields as needed
         }
       });
+      print('\n================================ Results after updatig the field: $response');
     } else {
-      print('An Error Occured');
+      print('An Error Occurred: ${response.statusMessage}');
+    }
+  }
+
+  Map<String, dynamic> _getUpdatedFields(String fieldName, String newValue) {
+    switch (fieldName) {
+      case 'username':
+        return {'name': newValue};
+      case 'email':
+        return {'email': newValue};
+      case 'phone':
+        return {'phone': newValue};
+      case 'area':
+        return {'addressinfo.area': newValue};
+      case 'houseNo':
+        return {'addressinfo.houseNo': newValue};
+      case 'emergencyName':
+        return {'emergencycontact.name': newValue};
+      case 'emergencyContact':
+        return {'emergencycontact.contact': newValue};
+      // Add cases for other fields as needed
+      default:
+        return {};
     }
   }
 

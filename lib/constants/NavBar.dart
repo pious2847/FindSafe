@@ -145,30 +145,30 @@ class _NavBarState extends State<NavBar> {
     );
   }
 
-  Future<void> fetchUser() async {
-    try {
-      final userData = await getUserDataFromLocalStorage();
-      final userId = userData['userId'];
-      final dio = Dio();
-      final url = '$APIURL/get-user/$userId';
+Future<void> fetchUser() async {
+  try {
+    final userData = await getUserDataFromLocalStorage();
+    final userId = userData['userId'];
+    final dio = Dio();
+    final url = '$APIURL/get-user/$userId';
 
-      final response = await dio.get(
-        url,
-        options: Options(
-          headers: {
-            'Content-Type': 'application/json; charset=UTF-8',
-          },
-        ),
-      );
-      if (response.statusCode == 200) {
-        print("Success Retrieve User data ${response.data['User']}");
-        final userJson = response.data['User'];
-        setState(() {
-          myUser = UserProfileModel.fromJson(userJson);
-        });
-      }
-    } catch (e) {
-      print('An Error Occurred $e');
+    final response = await dio.get(
+      url,
+      options: Options(
+        headers: {
+          'Content-Type': 'application/json; charset=UTF-8',
+        },
+      ),
+    );
+    if (response.statusCode == 200) {
+      print("Success Retrieve User data ${response.data['User']}");
+      final userJson = response.data;
+      setState(() {
+        myUser = UserProfileModel.fromJson(userJson);
+      });
     }
+  } catch (e) {
+    print('An Error Occurred $e');
   }
+}
 }

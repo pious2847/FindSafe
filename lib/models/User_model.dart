@@ -4,7 +4,7 @@ class User {
   String username;
   String email;
   String password;
-  User(this.username,this.email, this.password);
+  User(this.username, this.email, this.password);
 }
 
 class UserProfileModel {
@@ -30,25 +30,26 @@ class UserProfileModel {
     this.devices,
   });
 
-  factory UserProfileModel.fromJson(Map<String, dynamic> json) {
-    return UserProfileModel(
-      id: json['_id'],
-      username: json['username'],
-      phone: json['phone'],
-      email: json['email'],
-      addressInfo: json['addressinfo'] != null
-          ? Address.fromJson(json['addressinfo'])
-          : null,
-      emergencyContact: json['emergencycontact'] != null
-          ? EmergencyContact.fromJson(json['emergencycontact'])
-          : null,
-      verified: json['verified'],
-      password: json['password'],
-      devices: json['devices'] != null
-          ? List<String>.from(json['devices'].map((x) => x.toString()))
-          : null,
-    );
-  }
+factory UserProfileModel.fromJson(Map<String, dynamic> json) {
+  final userJson = json['User'];
+  return UserProfileModel(
+    id: userJson['_id'],
+    username: userJson['name'],
+    phone: userJson['phone'],
+    email: userJson['email'],
+    addressInfo: userJson['addressinfo'] != null
+        ? Address.fromJson(userJson['addressinfo'])
+        : null,
+    emergencyContact: userJson['emergencycontact'] != null
+        ? EmergencyContact.fromJson(userJson['emergencycontact'])
+        : null,
+    verified: userJson['verified'],
+    password: userJson['password'],
+    devices: userJson['devices'] != null
+        ? List<String>.from(userJson['devices'].map((x) => x.toString()))
+        : null,
+  );
+}
 
   Map<String, dynamic> toJson() {
     return {
