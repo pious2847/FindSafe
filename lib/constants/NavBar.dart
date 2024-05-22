@@ -1,4 +1,4 @@
-// ignore_for_file: avoid_print, file_names
+// ignore_for_file: avoid_print, file_names, must_be_immutable
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -18,6 +18,7 @@ class NavBar extends StatelessWidget {
   UserProfileModel myUser = UserProfileModel(
   username: 'John Doe',
   email: 'john.doe@example.com',
+  phone: '+233 201025963',
   password: 'password123',
 );
 
@@ -118,4 +119,6 @@ class NavBar extends StatelessWidget {
       ),
     );
   }
+
+
 }

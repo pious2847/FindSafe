@@ -3,12 +3,13 @@ import 'dart:ui';
 
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:lost_mode_app/.env.dart';
 import 'package:lost_mode_app/models/User_model.dart';
 import 'package:lost_mode_app/services/service.dart';
 
 class UserProfile extends StatefulWidget {
-   final UserProfileModel user;
+  final UserProfileModel user;
 
   const UserProfile({super.key, required this.user});
 
@@ -17,7 +18,6 @@ class UserProfile extends StatefulWidget {
 }
 
 class _UserProfileState extends State<UserProfile> {
-
   late UserProfileModel _user;
   late TextEditingController _editingController;
 
@@ -37,86 +37,98 @@ class _UserProfileState extends State<UserProfile> {
           style: TextStyle(fontWeight: FontWeight.w400, fontSize: 18),
         ),
       ),
-      body: SingleChildScrollView(
-        child: Column(
-          children: [
-            Stack(
-              children: [
-                Container(
-                  width: MediaQuery.of(context).size.width,
-                  height: MediaQuery.of(context).size.height * 0.2,
-                  child: FittedBox(
-                    fit: BoxFit.cover,
-                    child: ImageFiltered(
-                      imageFilter: ImageFilter.blur(sigmaX: 3, sigmaY: 3),
-                      child: Image.asset(
-                        'assets/images/avatar.jpg',
-                        height: 100,
-                      ),
+      body: Column(
+        children: [
+          Stack(
+            children: [
+              Container(
+                width: MediaQuery.of(context).size.width,
+                height: MediaQuery.of(context).size.height * 0.2,
+                child: FittedBox(
+                  fit: BoxFit.cover,
+                  child: ImageFiltered(
+                    imageFilter: ImageFilter.blur(sigmaX: 3, sigmaY: 3),
+                    child: Image.asset(
+                      'assets/images/avatar.jpg',
+                      height: 100,
                     ),
                   ),
                 ),
-                const Positioned(
-                  bottom: 30,
-                  left: 20,
-                  child: CircleAvatar(
-                    radius: 60,
-                    backgroundImage: AssetImage('assets/images/avatar.jpg'),
+              ),
+              const Positioned(
+                bottom: 2,
+                left: 20,
+                child: CircleAvatar(
+                  radius: 60,
+                  backgroundImage: AssetImage('assets/images/avatar.jpg'),
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(
+            height: 140,
+          ),
+          Expanded(
+            child: ListView(
+              children: <Widget>[
+                ListTile(
+                  title: Text(
+                    'Username',
+                    style: TextStyle(fontWeight: FontWeight.bold),
+                  ),
+                  subtitle: Text(_user.username),
+                  trailing: IconButton(
+                    icon: Icon(Icons.edit),
+                    onPressed: () =>
+                        _showEditDialog('username', _user.username),
                   ),
                 ),
+                ListTile(
+                  title: Text(
+                    'Email',
+                    style: TextStyle(fontWeight: FontWeight.bold),
+                  ),
+                  subtitle: Text(_user.email),
+                  trailing: IconButton(
+                    icon: Icon(Icons.edit),
+                    onPressed: () => _showEditDialog('email', _user.email),
+                  ),
+                ),
+                ListTile(
+                  title: Text(
+                    'Phone',
+                    style: TextStyle(fontWeight: FontWeight.bold),
+                  ),
+                  subtitle: Text(_user.phone ?? ''),
+                  trailing: IconButton(
+                    icon: Icon(Icons.edit),
+                    onPressed: () =>
+                        _showEditDialog('phone', _user.phone ?? ''),
+                  ),
+                ),
+                // Add more ListTiles for other fields as needed
               ],
             ),
-          const SizedBox(height: 20,),
-
-            ListView(
-        children: <Widget>[
-          ListTile(
-            title: Text('UserName'),
-            subtitle: Text(_user.username),
-            trailing: IconButton(
-              icon: Icon(Icons.edit),
-              onPressed: () => _showEditDialog('name', _user.username),
-            ),
           ),
-            ListTile(
-            title: Text('UserName'),
-            subtitle: Text(_user.username),
-            trailing: IconButton(
-              icon: Icon(Icons.edit),
-              onPressed: () => _showEditDialog('name', _user.username),
-            ),
-          ),
-          ListTile(
-            title: Text('Phone'),
-            subtitle: Text(_user.phone ?? ''),
-            trailing: IconButton(
-              icon: Icon(Icons.edit),
-              onPressed: () => _showEditDialog('phone', _user.phone ?? ''),
-            ),
-          ),
-          // Add more ListTiles for other fields as needed
         ],
-      ),
-          ],
-        ),
       ),
     );
   }
 
   Future<void> _updateUserData(String fieldName, String newValue) async {
-     final userData = await getUserDataFromLocalStorage();
-      final userId = userData['userId'] as String?;
+    final userData = await getUserDataFromLocalStorage();
+    final userId = userData['userId'] as String?;
 
     final url = '$APIURL/update/$userId';
     final body = {fieldName: newValue};
     final dio = Dio();
     final response = await dio.put(
       Uri.parse(url) as String,
-       options: Options(
-          headers: {
-            'Content-Type': 'application/json; charset=UTF-8',
-          },
-        ),
+      options: Options(
+        headers: {
+          'Content-Type': 'application/json; charset=UTF-8',
+        },
+      ),
       data: json.encode(body),
     );
 
@@ -126,33 +138,33 @@ class _UserProfileState extends State<UserProfile> {
           case 'username':
             _user.username = newValue;
             break;
-             case 'email':
+          case 'email':
             _user.email = newValue;
             break;
-             case 'phone':
+          case 'phone':
             _user.phone = newValue;
             break;
-             case 'area':
+          case 'area':
             _user.addressInfo!.area = newValue;
             break;
           case 'house':
             _user.addressInfo!.houseNo = newValue;
             break;
-            case 'name':
+          case 'name':
             _user.emergencyContact?.name = newValue;
             break;
-             case 'contact':
+          case 'contact':
             _user.emergencyContact?.contact = newValue;
             break;
           // Add cases for other fields as needed
         }
       });
     } else {
-      // Handle error
+      print('An Error Occured');
     }
   }
 
-   Future<void> _showEditDialog(String fieldName, String initialValue) async {
+  Future<void> _showEditDialog(String fieldName, String initialValue) async {
     _editingController.text = initialValue;
 
     final result = await showDialog<String>(
@@ -182,6 +194,4 @@ class _UserProfileState extends State<UserProfile> {
       await _updateUserData(fieldName, result);
     }
   }
-
 }
-
