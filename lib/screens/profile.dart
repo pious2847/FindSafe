@@ -175,11 +175,12 @@ class _UserProfileState extends State<UserProfile> {
     final userData = await getUserDataFromLocalStorage();
     final userId = userData['userId'] as String?;
 
-    final url = '$APIURL/update/$userId';
+    // final url = '$APIURL/update/$userId';
     final updatedFields = _getUpdatedFields(fieldName, newValue);
+    print ('updatedfields $updatedFields');
     final dio = Dio();
     final response = await dio.put(
-      Uri.parse(url) as String,
+      '$APIURL/update/$userId',
       options: Options(
         headers: {
           'Content-Type': 'application/json; charset=UTF-8',
