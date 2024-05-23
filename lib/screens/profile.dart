@@ -1,3 +1,5 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'dart:convert';
 import 'dart:ui';
 
@@ -7,6 +9,8 @@ import 'package:flutter/widgets.dart';
 import 'package:lost_mode_app/.env.dart';
 import 'package:lost_mode_app/models/User_model.dart';
 import 'package:lost_mode_app/services/service.dart';
+import 'package:lost_mode_app/utils/messages.dart';
+
 
 class UserProfile extends StatefulWidget {
   final UserProfileModel user;
@@ -190,6 +194,8 @@ class _UserProfileState extends State<UserProfile> {
     );
 
     if (response.statusCode == 200) {
+        SnackbarUtils.showCustomSnackBar(context, '$fieldName Updated successful', const Color.fromARGB(255, 76, 175, 80));
+
       setState(() {
         switch (fieldName) {
           case 'username':
@@ -216,7 +222,7 @@ class _UserProfileState extends State<UserProfile> {
           // Add cases for other fields as needed
         }
       });
-      print('\n================================ Results after updatig the field: $response');
+      print('\n================================ Results after updating the field: $response');
     } else {
       print('An Error Occurred: ${response.statusMessage}');
     }
