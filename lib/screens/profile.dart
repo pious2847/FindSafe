@@ -155,6 +155,7 @@ class _UserProfileState extends State<UserProfile> {
                   ),
                 ),
                 ListTile(
+                  
                   title: const Text(
                     'Emergency Contact',
                     style: TextStyle(fontWeight: FontWeight.bold),
@@ -194,7 +195,8 @@ class _UserProfileState extends State<UserProfile> {
     );
 
     if (response.statusCode == 200) {
-        SnackbarUtils.showCustomSnackBar(context, '$fieldName Updated successful', const Color.fromARGB(255, 76, 175, 80));
+       final resmsg = response.data['message'];
+      SnackbarUtils.showCustomSnackBar(context, '$resmsg Updated successful', const Color.fromARGB(255, 76, 175, 80));
 
       setState(() {
         switch (fieldName) {
@@ -231,19 +233,19 @@ class _UserProfileState extends State<UserProfile> {
   Map<String, dynamic> _getUpdatedFields(String fieldName, String newValue) {
     switch (fieldName) {
       case 'username':
-        return {'name': newValue};
+        return {'username': newValue};
       case 'email':
         return {'email': newValue};
       case 'phone':
         return {'phone': newValue};
       case 'area':
-        return {'addressinfo.area': newValue};
+        return {'area': newValue};
       case 'houseNo':
-        return {'addressinfo.houseNo': newValue};
+        return {'houseNo': newValue};
       case 'emergencyName':
-        return {'emergencycontact.name': newValue};
+        return {'name': newValue};
       case 'emergencyContact':
-        return {'emergencycontact.contact': newValue};
+        return {'contact': newValue};
       // Add cases for other fields as needed
       default:
         return {};
