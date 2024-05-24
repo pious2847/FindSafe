@@ -83,88 +83,101 @@ class _UserProfileState extends State<UserProfile> {
           Expanded(
             child: ListView(
               children: <Widget>[
-                ListTile(
-                  title: const Text(
-                    'Username',
-                    style: TextStyle(fontWeight: FontWeight.bold),
-                  ),
-                  subtitle: Text(_user.username),
-                  trailing: IconButton(
-                    icon: const Icon(Icons.edit),
-                    onPressed: () =>
-                        _showEditDialog('username', _user.username),
-                  ),
-                ),
-                ListTile(
-                  title: const Text(
-                    'Email',
-                    style: TextStyle(fontWeight: FontWeight.bold),
-                  ),
-                  subtitle: Text(_user.email),
-                  trailing: IconButton(
-                    icon: const Icon(Icons.edit),
-                    onPressed: () => _showEditDialog('email', _user.email),
+                Card(
+                  child: ListTile(
+                    title: const Text(
+                      'Username',
+                      style: TextStyle(fontWeight: FontWeight.bold),
+                    ),
+                    subtitle: Text(_user.username),
+                    trailing: IconButton(
+                      icon: const Icon(Icons.edit),
+                      onPressed: () =>
+                          _showEditDialog('username', _user.username),
+                    ),
                   ),
                 ),
-                ListTile(
-                  title: const Text(
-                    'Phone',
-                    style: TextStyle(fontWeight: FontWeight.bold),
-                  ),
-                  subtitle: Text(_user.phone ?? ''),
-                  trailing: IconButton(
-                    icon: const Icon(Icons.edit),
-                    onPressed: () =>
-                        _showEditDialog('phone', _user.phone ?? ''),
-                  ),
-                ),
-                ListTile(
-                  title: const Text(
-                    'Area',
-                    style: TextStyle(fontWeight: FontWeight.bold),
-                  ),
-                  subtitle: Text(_user.addressInfo!.area ?? ''),
-                  trailing: IconButton(
-                    icon: const Icon(Icons.edit),
-                    onPressed: () =>
-                        _showEditDialog('area', _user.addressInfo!.area ?? ''),
+                Card(
+                  child: ListTile(
+                    title: const Text(
+                      'Email',
+                      style: TextStyle(fontWeight: FontWeight.bold),
+                    ),
+                    subtitle: Text(_user.email),
+                    trailing: IconButton(
+                      icon: const Icon(Icons.edit),
+                      onPressed: () => _showEditDialog('email', _user.email),
+                    ),
                   ),
                 ),
-                ListTile(
-                  title: const Text(
-                    'House No',
-                    style: TextStyle(fontWeight: FontWeight.bold),
-                  ),
-                  subtitle: Text(_user.addressInfo!.houseNo ?? ''),
-                  trailing: IconButton(
-                    icon: const Icon(Icons.edit),
-                    onPressed: () => _showEditDialog(
-                        'houseNo', _user.addressInfo!.houseNo ?? ''),
-                  ),
-                ),
-                ListTile(
-                  title: const Text(
-                    'Emergency  Name',
-                    style: TextStyle(fontWeight: FontWeight.bold),
-                  ),
-                  subtitle: Text(_user.emergencyContact!.name ?? ''),
-                  trailing: IconButton(
-                    icon: const Icon(Icons.edit),
-                    onPressed: () => _showEditDialog(
-                        'emergencyName', _user.emergencyContact!.name ?? ''),
+                Card(
+                  child: ListTile(
+                    title: const Text(
+                      'Phone',
+                      style: TextStyle(fontWeight: FontWeight.bold),
+                    ),
+                    subtitle: Text(_user.phone ?? ''),
+                    trailing: IconButton(
+                      icon: const Icon(Icons.edit),
+                      onPressed: () =>
+                          _showEditDialog('phone', _user.phone ?? ''),
+                    ),
                   ),
                 ),
-                ListTile(
-                  
-                  title: const Text(
-                    'Emergency Contact',
-                    style: TextStyle(fontWeight: FontWeight.bold),
+                Card(
+                  child: ListTile(
+                    title: const Text(
+                      'Area',
+                      style: TextStyle(fontWeight: FontWeight.bold),
+                    ),
+                    subtitle: Text(_user.addressInfo!.area ?? ''),
+                    trailing: IconButton(
+                      icon: const Icon(Icons.edit),
+                      onPressed: () =>
+                          _showEditDialog('area', _user.addressInfo!.area ?? ''),
+                    ),
                   ),
-                  subtitle: Text(_user.emergencyContact!.contact ?? ''),
-                  trailing: IconButton(
-                    icon: const Icon(Icons.edit),
-                    onPressed: () => _showEditDialog('emergencyContact',
-                        _user.emergencyContact!.contact ?? ''),
+                ),
+                Card(
+                  child: ListTile(
+                    title: const Text(
+                      'House No',
+                      style: TextStyle(fontWeight: FontWeight.bold),
+                    ),
+                    subtitle: Text(_user.addressInfo!.houseNo ?? ''),
+                    trailing: IconButton(
+                      icon: const Icon(Icons.edit),
+                      onPressed: () => _showEditDialog(
+                          'houseNo', _user.addressInfo!.houseNo ?? ''),
+                    ),
+                  ),
+                ),
+                Card(
+                  child: ListTile(
+                    title: const Text(
+                      'Emergency  Name',
+                      style: TextStyle(fontWeight: FontWeight.bold),
+                    ),
+                    subtitle: Text(_user.emergencyContact!.name ?? ''),
+                    trailing: IconButton(
+                      icon: const Icon(Icons.edit),
+                      onPressed: () => _showEditDialog(
+                          'emergencyName', _user.emergencyContact!.name ?? ''),
+                    ),
+                  ),
+                ),
+                Card(
+                  child: ListTile(
+                    title: const Text(
+                      'Emergency Contact',
+                      style: TextStyle(fontWeight: FontWeight.bold),
+                    ),
+                    subtitle: Text(_user.emergencyContact!.contact ?? ''),
+                    trailing: IconButton(
+                      icon: const Icon(Icons.edit),
+                      onPressed: () => _showEditDialog('emergencyContact',
+                          _user.emergencyContact!.contact ?? ''),
+                    ),
                   ),
                 ),
                 // Add more ListTiles for other fields as needed
