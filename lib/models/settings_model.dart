@@ -12,11 +12,13 @@ class CustomListTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ListTile(
-      title: Text(title),
-      leading: Icon(icon),
-      trailing: trailing,
-      onTap: onTap,
+    return Card(
+      child: ListTile(
+        title: Text(title),
+        leading: Icon(icon),
+        trailing: trailing,
+        onTap: onTap,
+      ),
     );
   }
 }
