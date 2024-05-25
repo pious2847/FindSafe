@@ -35,11 +35,11 @@ class _AboutPhoneState extends State<AboutPhone> {
               ),
               _CustomListTile(
                 title: 'Developer',
-                subtitle: 'Developed by Your Name or Company\nContact: yourname@example.com',
+                subtitle: 'Developed by Your Name or Company\nContact: abdulhafis2847@gmail.com \n Phone: +233 0201025963 ',
               ),
               _CustomListTile(
                 title: 'Privacy Policy',
-                subtitle: 'Link to your privacy policy',
+                subtitle: 'Link to your privacy policy\nLicense: MIT License',
               ),
               SizedBox(height: 16),
               // _SocialMediaLinks(),

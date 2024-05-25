@@ -97,7 +97,9 @@ class _UserProfileState extends State<UserProfile> {
           child: ListView(
             children: <Widget>[
               Card(
+                color: Colors.white,
                 child: ListTile(
+                  tileColor: Colors.white,
                   title: const Text(
                     'Username',
                     style: TextStyle(fontWeight: FontWeight.bold),
@@ -111,6 +113,7 @@ class _UserProfileState extends State<UserProfile> {
                 ),
               ),
               Card(
+                color: Colors.white,
                 child: ListTile(
                   title: const Text(
                     'Email',
