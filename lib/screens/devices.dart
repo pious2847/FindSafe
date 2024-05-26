@@ -163,7 +163,7 @@ class _DevicesState extends State<Devices> {
             ),
             TextButton(
               onPressed: () async => {
-                // Navigator.of(context).pop(true),
+                Navigator.of(context).pop(true),
                 await logout(),
                 Get.to(const Signin()),
                 SnackbarUtils.showCustomSnackBar(
