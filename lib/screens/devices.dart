@@ -8,6 +8,7 @@ import 'package:lost_mode_app/.env.dart';
 import 'package:lost_mode_app/constants/devce_info.dart';
 import 'package:lost_mode_app/models/User_model.dart';
 import 'package:lost_mode_app/models/devices.dart';
+import 'package:lost_mode_app/screens/login.dart';
 import 'package:lost_mode_app/screens/signup.dart';
 import 'package:lost_mode_app/screens/usermap.dart';
 import 'package:lost_mode_app/services/devices.dart';
@@ -85,38 +86,41 @@ Future<List<Device>> fetchDevices() async {
                           children: [
                             Padding(
                               padding: const EdgeInsets.all(10.0),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.end,
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                children: [
-                                  TextButton(
-                                    onPressed: () async {
-                                      final shouldDelete =
-                                          await showDeleteConfirmationDialog(
-                                              context, device.id);
-                                      if (shouldDelete) {
-                                        await apiService.deleteDevices(device.id);
-                                        // Refresh the device list or navigate back
-                                      }
-                                    },
-                                    style: TextButton.styleFrom(
-                                      foregroundColor: Colors.white,
-                                      backgroundColor: Colors.red,
-                                      padding: const EdgeInsets.symmetric(
-                                        vertical: 10,
-                                        horizontal: 20,
+                              child: SizedBox(
+                                width: MediaQuery.of(context).size.width,
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.end,
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  children: [
+                                    TextButton(
+                                      onPressed: () async {
+                                        final shouldDelete =
+                                            await showDeleteConfirmationDialog(
+                                                context, device.id);
+                                        if (shouldDelete) {
+                                          await apiService.deleteDevices(device.id);
+                                          // Refresh the device list or navigate back
+                                        }
+                                      },
+                                      style: TextButton.styleFrom(
+                                        foregroundColor: Colors.white,
+                                        backgroundColor: Colors.red,
+                                        padding: const EdgeInsets.symmetric(
+                                          vertical: 10,
+                                          horizontal: 20,
+                                        ),
+                                        shape: RoundedRectangleBorder(
+                                          borderRadius: BorderRadius.circular(8),
+                                        ),
+                                        textStyle: const TextStyle(
+                                          fontSize: 13,
+                                          fontWeight: FontWeight.bold,
+                                        ),
                                       ),
-                                      shape: RoundedRectangleBorder(
-                                        borderRadius: BorderRadius.circular(8),
-                                      ),
-                                      textStyle: const TextStyle(
-                                        fontSize: 13,
-                                        fontWeight: FontWeight.bold,
-                                      ),
+                                      child: const Text('Remove'),
                                     ),
-                                    child: const Text('Remove'),
-                                  ),
-                                ],
+                                  ],
+                                ),
                               ),
                             ),
                           ],
@@ -140,16 +144,25 @@ Future<List<Device>> fetchDevices() async {
       return await showDialog(
         context: context,
         builder: (context) => AlertDialog(
-          title: Text('Confirm Delete'),
-          content: Text('Are you sure you want to delete this device?'),
+          title: const Text('Confirm Delete'),
+          content: const Text('Are you sure you want to delete this device?'),
           actions: [
             TextButton(
               onPressed: () => Navigator.of(context).pop(false),
-              child: Text('Cancel'),
+              child: const Text('Cancel'),
             ),
             TextButton(
-              onPressed: () => Navigator.of(context).pop(true),
-              child: Text('Delete'),
+              onPressed: () async => {
+                 await logout(),
+                        Get.to(const Signin()),
+                       
+                        SnackbarUtils.showCustomSnackBar(
+                            context,
+                            'Device has been Removed please Login',
+                            const Color.fromARGB(255, 76, 175, 80)),
+                Navigator.of(context).pop(true)
+                },
+              child: const Text('Delete'),
             ),
           ],
         ),
