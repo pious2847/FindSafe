@@ -91,138 +91,143 @@ class _MapScreenState extends State<MapScreen> {
     return Scaffold(
       drawer:  NavBar(),
       appBar: _AppBar(),
-      body: SizedBox(
-        height: MediaQuery.of(context).size.height,
-        child: Column(
-          children: [
-            SizedBox(
-              height: MediaQuery.of(context).size.height * 0.6,
-              width: MediaQuery.of(context).size.width,
-              child: Stack(
-                alignment: Alignment.center,
-                children: [
-                  GoogleMap(
-                    myLocationButtonEnabled: true,
-                    zoomControlsEnabled: false,
-                    initialCameraPosition: _initialCameraPosition,
-                    onMapCreated: (controller) =>
-                        _googleMapController = controller,
-                    markers: {
-                      if (_origin != null) _origin!,
-                      if (_destination != null) _destination!,
-                    },
-                    polylines: {
-                      if (_info != null)
-                        Polyline(
-                          polylineId: const PolylineId('overview_polyline'),
-                          color: Colors.red,
-                          width: 5,
-                          points: _info!.polylinePoints
-                              .map((e) => LatLng(e.latitude, e.longitude))
-                              .toList(),
-                        ),
-                    },
-                    // onLongPress: _addMarker,
-                  ),
-                  if (_info != null)
-                    Positioned(
-                      top: 20.0,
-                      child: Container(
-                        padding: const EdgeInsets.symmetric(
-                          vertical: 6.0,
-                          horizontal: 12.0,
-                        ),
-                        decoration: BoxDecoration(
-                          color: Colors.yellowAccent,
-                          borderRadius: BorderRadius.circular(20.0),
-                          boxShadow: const [
-                            BoxShadow(
-                              color: Colors.black26,
-                              offset: Offset(0, 2),
-                              blurRadius: 6.0,
-                            )
-                          ],
-                        ),
-                        child: Text(
-                          '${_info?.totalDistance}, ${_info?.totalDuration}',
-                          style: const TextStyle(
-                            fontSize: 18.0,
-                            fontWeight: FontWeight.w600,
-                          ),
-                        ),
-                      ),
-                    ),
-                ],
-              ),
-            ),
-            const SizedBox(
-              height: 15,
-            ),
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                const Padding(
-                  padding: EdgeInsets.only(left: 10, bottom: 10),
-                  child: Text(
-                    'Connected Devices ',
-                    style: TextStyle(
-                      fontSize: 16.0,
-                      fontWeight: FontWeight.w300,
-                    ),
-                  ),
-                ),
-                SizedBox(
-                  height: MediaQuery.of(context).size.height * 0.2,
-                  child: ListView.builder(
-                    scrollDirection: Axis.horizontal,
-                    itemCount: phones.length,
-                    itemBuilder: (context, index) {
-                      final phone = phones[index];
-                      return PhoneListCard(
-                        phone: phone,
-                        onTap: (deviceId) async {
-                          setState(() {
-                            _selectedDeviceId =
-                                deviceId; // Update the selected device ID
-                          });
-                          // Fetch the latest location for the device
-                          final latestLocation =
-                              await locatinService.fetchLatestLocation(
-                                  deviceId);
-                          if (latestLocation != null) {
-                            setState(() {
-                              _destination = Marker(
-                                markerId: const MarkerId('destination'),
-                                infoWindow:
-                                    const InfoWindow(title: 'Destination'),
-                                icon: BitmapDescriptor.defaultMarkerWithHue(
-                                  BitmapDescriptor.hueBlue,
-                                ),
-                                position: latestLocation,
-                              );
-                            });
-                            // Get directions from the origin to the new destination
-                            final directions =
-                                await DirectionsRepository().getDirections(
-                              origin: _origin!.position,
-                              destination: latestLocation,
-                            );
-                            setState(() => _info = directions);
-                          }
-                        },
-                        isActive: phone.deviceId ==
-                            _selectedDeviceId, // Pass the active state based on the selected device ID
-                      );
-                    },
-                  ),
-                ),
-              ],
-            )
-          ],
-        ),
+      body: Column(
+        children: [
+          SizedBox(
+            height: MediaQuery.of(context).size.height * 0.6,
+            width: MediaQuery.of(context).size.width,
+            child: _GoogleMapStack(),
+          ),
+          const SizedBox(
+            height: 15,
+          ),
+          _ConnectedDevices(context)
+        ],
       ),
       floatingActionButton: _FloatingActionButton(context),
     );
+  }
+
+  Column _ConnectedDevices(BuildContext context) {
+    return Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const Padding(
+              padding: EdgeInsets.only(left: 10, bottom: 10),
+              child: Text(
+                'Connected Devices ',
+                style: TextStyle(
+                  fontSize: 16.0,
+                  fontWeight: FontWeight.w300,
+                ),
+              ),
+            ),
+            SizedBox(
+              height: MediaQuery.of(context).size.height * 0.2,
+              child: ListView.builder(
+                scrollDirection: Axis.horizontal,
+                itemCount: phones.length,
+                itemBuilder: (context, index) {
+                  final phone = phones[index];
+                  return PhoneListCard(
+                    phone: phone,
+                    onTap: (deviceId) async {
+                      setState(() {
+                        _selectedDeviceId =
+                            deviceId; // Update the selected device ID
+                      });
+                      // Fetch the latest location for the device
+                      final latestLocation =
+                          await locatinService.fetchLatestLocation(
+                              deviceId);
+                      if (latestLocation != null) {
+                        setState(() {
+                          _destination = Marker(
+                            markerId: const MarkerId('destination'),
+                            infoWindow:
+                                const InfoWindow(title: 'Destination'),
+                            icon: BitmapDescriptor.defaultMarkerWithHue(
+                              BitmapDescriptor.hueBlue,
+                            ),
+                            position: latestLocation,
+                          );
+                        });
+                        // Get directions from the origin to the new destination
+                        final directions =
+                            await DirectionsRepository().getDirections(
+                          origin: _origin!.position,
+                          destination: latestLocation,
+                        );
+                        setState(() => _info = directions);
+                      }
+                    },
+                    isActive: phone.deviceId ==
+                        _selectedDeviceId, // Pass the active state based on the selected device ID
+                  );
+                },
+              ),
+            ),
+          ],
+        );
+  }
+
+  Stack _GoogleMapStack() {
+    return Stack(
+            alignment: Alignment.center,
+            children: [
+              GoogleMap(
+                myLocationButtonEnabled: true,
+                zoomControlsEnabled: false,
+                initialCameraPosition: _initialCameraPosition,
+                onMapCreated: (controller) =>
+                    _googleMapController = controller,
+                markers: {
+                  if (_origin != null) _origin!,
+                  if (_destination != null) _destination!,
+                },
+                polylines: {
+                  if (_info != null)
+                    Polyline(
+                      polylineId: const PolylineId('overview_polyline'),
+                      color: Colors.red,
+                      width: 5,
+                      points: _info!.polylinePoints
+                          .map((e) => LatLng(e.latitude, e.longitude))
+                          .toList(),
+                    ),
+                },
+                // onLongPress: _addMarker,
+              ),
+              if (_info != null)
+                Positioned(
+                  top: 20.0,
+                  child: Container(
+                    padding: const EdgeInsets.symmetric(
+                      vertical: 6.0,
+                      horizontal: 12.0,
+                    ),
+                    decoration: BoxDecoration(
+                      color: Colors.yellowAccent,
+                      borderRadius: BorderRadius.circular(20.0),
+                      boxShadow: const [
+                        BoxShadow(
+                          color: Colors.black26,
+                          offset: Offset(0, 2),
+                          blurRadius: 6.0,
+                        )
+                      ],
+                    ),
+                    child: Text(
+                      '${_info?.totalDistance}, ${_info?.totalDuration}',
+                      style: const TextStyle(
+                        fontSize: 18.0,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                  ),
+                ),
+            ],
+          );
   }
 
   FloatingActionButton _FloatingActionButton(BuildContext context) {
