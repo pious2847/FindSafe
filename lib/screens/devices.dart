@@ -34,20 +34,20 @@ class _DevicesState extends State<Devices> {
     apiService = ApiService();
     fetchDevices();
   }
-   fetchDevices() async {
-    try {
-      final prefs = await SharedPreferences.getInstance();
-      final userId = prefs.getString('userId');
-      if (userId != null) {
-        devices = await apiService.fetchDevices(userId);
-      } else {
-        throw Exception('User ID not found in preferences');
-      }
-    } catch (e) {
-      print('Failed to fetch devices: $e');
+Future<List<Device>> fetchDevices() async {
+  try {
+    final prefs = await SharedPreferences.getInstance();
+    final userId = prefs.getString('userId');
+    if (userId != null) {
+      return await apiService.fetchDevices(userId);
+    } else {
+      throw Exception('User ID not found in preferences');
     }
+  } catch (e) {
+    print('Failed to fetch devices: $e');
+    throw Exception('Failed to fetch devices');
   }
-
+}
   @override
   Widget build(BuildContext context) {
     return Scaffold(
