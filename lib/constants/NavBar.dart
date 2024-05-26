@@ -8,6 +8,7 @@ import 'package:lost_mode_app/models/User_model.dart';
 import 'package:lost_mode_app/screens/devices.dart';
 import 'package:lost_mode_app/screens/locations.dart';
 import 'package:lost_mode_app/screens/login.dart';
+import 'package:lost_mode_app/screens/mode.dart';
 import 'package:lost_mode_app/screens/profile.dart';
 import 'package:lost_mode_app/screens/settings.dart';
 import 'package:lost_mode_app/screens/usermap.dart';
@@ -101,7 +102,9 @@ class _NavBarState extends State<NavBar> {
                       leading: const Icon(Iconsax.activity_copy,
                           color: Colors.purple),
                       title: const Text('Modes'),
-                      onTap: () => print('tapped'),
+                      onTap: () => {
+                        Get.to(const DeviceModes())
+                      },
                     ),
                   ],
                 ),
