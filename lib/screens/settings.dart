@@ -5,9 +5,7 @@ import 'package:iconsax_flutter/iconsax_flutter.dart';
 import 'package:lost_mode_app/main.dart';
 import 'package:lost_mode_app/models/settings_model.dart';
 import 'package:lost_mode_app/screens/about.dart';
-import 'package:lost_mode_app/services/settings_service.dart';
 import 'package:lost_mode_app/utils/messages.dart';
-import 'package:lost_mode_app/utils/settings.dart';
 import 'package:lost_mode_app/theme/theme_controller.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -169,6 +167,7 @@ class _SettingsState extends State<Settings> {
                 ),
                 const Divider(),
               ]),
+              
               SingleSection(
                 title: 'Privacy and Policies',
                 children: [
@@ -221,4 +220,5 @@ class _SettingsState extends State<Settings> {
       },
     );
   }
+
 }
