@@ -27,29 +27,30 @@ class _SettingsState extends State<Settings> {
     _loadModes();
     super.initState();
   }
-Future<void> showLostModeNotification() async {
-  const androidPlatformChannelSpecifics = AndroidNotificationDetails(
-    'lost_mode_channel',
-    'Lost Mode',
-    importance: Importance.max,
-    priority: Priority.high,
-    ticker: 'ticker',
-  );
-  // const iOSPlatformChannelSpecifics = IOSNotificationDetails();
-  const platformChannelSpecifics = NotificationDetails(
-    android: androidPlatformChannelSpecifics,
-    // iOS: iOSPlatformChannelSpecifics,
-  );
 
-  await flutterLocalNotificationsPlugin.show(
-    0,
-    'Lost Mode Enabled',
-    'Your device has been put in lost mode.',
-    platformChannelSpecifics,
-    payload: 'lost_mode_notification',
-  );
-}
-  
+  Future<void> showLostModeNotification() async {
+    const androidPlatformChannelSpecifics = AndroidNotificationDetails(
+      'lost_mode_channel',
+      'Lost Mode',
+      importance: Importance.max,
+      priority: Priority.high,
+      ticker: 'ticker',
+    );
+    // const iOSPlatformChannelSpecifics = IOSNotificationDetails();
+    const platformChannelSpecifics = NotificationDetails(
+      android: androidPlatformChannelSpecifics,
+      // iOS: iOSPlatformChannelSpecifics,
+    );
+
+    await flutterLocalNotificationsPlugin.show(
+      0,
+      'Lost Mode Enabled',
+      'Your device has been put in lost mode.',
+      platformChannelSpecifics,
+      payload: 'lost_mode_notification',
+    );
+  }
+
   Future<void> _loadModes() async {
     final prefs = await SharedPreferences.getInstance();
     setState(() {
@@ -58,30 +59,31 @@ Future<void> showLostModeNotification() async {
     });
   }
 
-Future<void> handleModeUpdate(String mode) async {
-  bool proceedWithUpdate = await showConfirmationDialog(context, mode);
+  Future<void> handleModeUpdate(String mode) async {
+    bool proceedWithUpdate = await showConfirmationDialog(context, mode);
 
-  if (proceedWithUpdate) {
-    final prefs = await SharedPreferences.getInstance();
+    if (proceedWithUpdate) {
+      final prefs = await SharedPreferences.getInstance();
 
-    if (mode == 'active') {
-      await prefs.setBool('isLostMode', false);
-      await prefs.setBool('isActiveMode', true);
-    } else if (mode == 'disable') {
-      await prefs.setBool('isActiveMode', false);
-      await prefs.setBool('isLostMode', true);
-      await showLostModeNotification(); // Show notification when lost mode is enabled
+      if (mode == 'active') {
+        await prefs.setBool('isLostMode', false);
+        await prefs.setBool('isActiveMode', true);
+      } else if (mode == 'disable') {
+        await prefs.setBool('isActiveMode', false);
+        await prefs.setBool('isLostMode', true);
+        await showLostModeNotification(); // Show notification when lost mode is enabled
+      }
+
+      final responseMessage = 'Mode updated successfully';
+      print('resmsg:  $responseMessage');
+      SnackbarUtils.showCustomSnackBar(
+        context,
+        responseMessage,
+        const Color.fromARGB(255, 76, 175, 80),
+      );
     }
-
-    final responseMessage = 'Mode updated successfully';
-    print('resmsg:  $responseMessage');
-    SnackbarUtils.showCustomSnackBar(
-      context,
-      responseMessage,
-      const Color.fromARGB(255, 76, 175, 80),
-    );
   }
-}
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -125,6 +127,7 @@ Future<void> handleModeUpdate(String mode) async {
                 ],
               ),
               SingleSection(title: "Modes", children: [
+                const Divider(),
                 CustomListTile(
                   icon: Iconsax.danger_copy,
                   title: "Lost Mode",
@@ -165,7 +168,22 @@ Future<void> handleModeUpdate(String mode) async {
                   ),
                 ),
                 const Divider(),
-              ])
+              ]),
+              SingleSection(
+                title: 'Privacy and Policies',
+                children: [
+                  const Divider(),
+                  CustomListTile(
+                    title: "Security",
+                    icon: Iconsax.lock_1_copy,
+                    trailing: const Icon(Iconsax.arrow_right_3_copy),
+                    onTap: () {
+                      Get.to(const AboutPhone());
+                    },
+                  ),
+                  const Divider(),
+                ],
+              ),
             ],
           ),
         ),
