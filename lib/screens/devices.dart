@@ -29,26 +29,28 @@ class _DevicesState extends State<Devices> {
   List<Device> devices = [];
   Device? selectedDevice;
 
-    @override
+  @override
   void initState() {
     super.initState();
     apiService = ApiService();
     fetchDevices();
   }
-Future<List<Device>> fetchDevices() async {
-  try {
-    final prefs = await SharedPreferences.getInstance();
-    final userId = prefs.getString('userId');
-    if (userId != null) {
-      return await apiService.fetchDevices(userId);
-    } else {
-      throw Exception('User ID not found in preferences');
+
+  Future<List<Device>> fetchDevices() async {
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      final userId = prefs.getString('userId');
+      if (userId != null) {
+        return await apiService.fetchDevices(userId);
+      } else {
+        throw Exception('User ID not found in preferences');
+      }
+    } catch (e) {
+      print('Failed to fetch devices: $e');
+      throw Exception('Failed to fetch devices');
     }
-  } catch (e) {
-    print('Failed to fetch devices: $e');
-    throw Exception('Failed to fetch devices');
   }
-}
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -77,9 +79,8 @@ Future<List<Device>> fetchDevices() async {
                       itemBuilder: (context, index) {
                         final device = devices[index];
                         return ExpansionTile(
-                          leading:  CircleAvatar(
-                            backgroundImage:
-                                NetworkImage(device.image),
+                          leading: CircleAvatar(
+                            backgroundImage: NetworkImage(device.image),
                           ),
                           title: Text(device.devicename),
                           subtitle: Text(device.mode),
@@ -98,8 +99,16 @@ Future<List<Device>> fetchDevices() async {
                                             await showDeleteConfirmationDialog(
                                                 context, device.id);
                                         if (shouldDelete) {
-                                          await apiService.deleteDevices(device.id);
+                                          await apiService
+                                              .deleteDevices(device.id);
                                           // Refresh the device list or navigate back
+                                        }
+                                        else{
+                                           await apiService
+                                              .deleteDevices(device.id);
+                                              setState(() {
+                                                
+                                              });
                                         }
                                       },
                                       style: TextButton.styleFrom(
@@ -110,7 +119,8 @@ Future<List<Device>> fetchDevices() async {
                                           horizontal: 20,
                                         ),
                                         shape: RoundedRectangleBorder(
-                                          borderRadius: BorderRadius.circular(8),
+                                          borderRadius:
+                                              BorderRadius.circular(8),
                                         ),
                                         textStyle: const TextStyle(
                                           fontSize: 13,
@@ -153,15 +163,17 @@ Future<List<Device>> fetchDevices() async {
             ),
             TextButton(
               onPressed: () async => {
-                 await logout(),
-                        Get.to(const Signin()),
-                       
-                        SnackbarUtils.showCustomSnackBar(
-                            context,
-                            'Device has been Removed please Login',
-                            const Color.fromARGB(255, 76, 175, 80)),
-                Navigator.of(context).pop(true)
-                },
+                // Navigator.of(context).pop(true),
+                await logout(),
+                Get.to(const Signin()),
+                SnackbarUtils.showCustomSnackBar(
+                    context,
+                    'Device has been Removed please Login',
+                    const Color.fromARGB(255, 76, 175, 80)),
+                    setState(() {
+                      
+                    }),
+              },
               child: const Text('Delete'),
             ),
           ],
