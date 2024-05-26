@@ -39,6 +39,23 @@ class ApiService {
       throw Exception('Failed to fetch location history: $error');
     }
   }
+
+Future<void> deleteDevices(String deviceId) async {
+  final dio = Dio();
+  try {
+    final response = await dio.delete('${Uri.parse(APIURL)}/deletedevice/$deviceId');
+    print('Response of devices: ${response.data}');
+    if (response.statusCode == 200) {
+      print(response.data['message']);
+      // Refresh the device list or navigate back
+    } else {
+      throw Exception('Failed to delete device');
+    }
+  } catch (error) {
+    print('Error deleting device: $error');
+    throw Exception('Failed to delete device');
+  }
+}
 }
 
 

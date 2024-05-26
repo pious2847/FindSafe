@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:lost_mode_app/.env.dart';
 import 'package:lost_mode_app/models/User_model.dart';
+import 'package:lost_mode_app/screens/devices.dart';
 import 'package:lost_mode_app/screens/locations.dart';
 import 'package:lost_mode_app/screens/login.dart';
 import 'package:lost_mode_app/screens/profile.dart';
@@ -86,7 +87,9 @@ class _NavBarState extends State<NavBar> {
                       leading:
                           const Icon(Iconsax.mobile_copy, color: Colors.purple),
                       title: const Text('Devices'),
-                      onTap: () => print('tapped'),
+                      onTap: () => {
+                        Get.to(const Devices())
+                      },
                     ),
                     ListTile(
                       leading:

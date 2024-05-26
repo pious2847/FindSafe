@@ -360,4 +360,5 @@ class _MapScreenState extends State<MapScreen> {
       throw Exception('Failed to make API call: $e');
     }
   }
+
 }
