@@ -76,9 +76,9 @@ class _DevicesState extends State<Devices> {
                       itemBuilder: (context, index) {
                         final device = devices[index];
                         return ExpansionTile(
-                          leading: const CircleAvatar(
+                          leading:  CircleAvatar(
                             backgroundImage:
-                                AssetImage('assets/images/avatar.jpg'),
+                                NetworkImage(device.image),
                           ),
                           title: Text(device.devicename),
                           subtitle: Text(device.mode),
