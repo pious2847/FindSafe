@@ -5,6 +5,7 @@ import 'package:iconsax_flutter/iconsax_flutter.dart';
 import 'package:lost_mode_app/main.dart';
 import 'package:lost_mode_app/models/settings_model.dart';
 import 'package:lost_mode_app/screens/about.dart';
+import 'package:lost_mode_app/services/settings_service.dart';
 import 'package:lost_mode_app/utils/messages.dart';
 import 'package:lost_mode_app/theme/theme_controller.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -62,7 +63,7 @@ class _SettingsState extends State<Settings> {
 
     if (proceedWithUpdate) {
       final prefs = await SharedPreferences.getInstance();
-
+       final responseMessage = await updatemode(mode);
       if (mode == 'active') {
         await prefs.setBool('isLostMode', false);
         await prefs.setBool('isActiveMode', true);
@@ -72,7 +73,7 @@ class _SettingsState extends State<Settings> {
         await showLostModeNotification(); // Show notification when lost mode is enabled
       }
 
-      final responseMessage = 'Mode updated successfully';
+      // final responseMessage = 'Mode updated successfully';
       print('resmsg:  $responseMessage');
       SnackbarUtils.showCustomSnackBar(
         context,

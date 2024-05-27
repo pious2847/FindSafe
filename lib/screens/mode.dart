@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:iconsax_flutter/iconsax_flutter.dart';
 import 'package:lost_mode_app/main.dart';
 import 'package:lost_mode_app/models/settings_model.dart';
+import 'package:lost_mode_app/services/settings_service.dart';
 import 'package:lost_mode_app/theme/theme_controller.dart';
 import 'package:lost_mode_app/utils/messages.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -61,6 +62,7 @@ class _DeviceModesState extends State<DeviceModes> {
 
     if (proceedWithUpdate) {
       final prefs = await SharedPreferences.getInstance();
+       await updatemode(mode);
 
       if (mode == 'active') {
         await prefs.setBool('isLostMode', false);
