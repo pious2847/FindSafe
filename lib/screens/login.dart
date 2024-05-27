@@ -68,25 +68,24 @@ class _SigninState extends State<Signin> {
           context,
           MaterialPageRoute(builder: (context) => const MapScreen()),
         );
-        final resMsg = response.data['message'];
+        final resMsg = 'Welcome Back !!!';
         ToastMsg.showToastMsg(
           context,
           resMsg,
           const Color.fromARGB(255, 76, 175, 80),
         );
       } else {
-        final resMsg = response.data['message'];
-         ToastMsg.showToastMsg(
-          context,
-          resMsg,
-          Color.fromARGB(255, 255, 37, 37),
-        );
+      
         print("Invalid response ${response.statusCode}: ${response.data}");
       }
     } catch (e) {
       print("Error occurred: $e");
-      SnackbarUtils.showCustomSnackBar(
-          context, 'An error occurred: $e', Colors.red);
+      
+         ToastMsg.showToastMsg(
+          context,
+          'An error occurred:  $e',
+          Color.fromARGB(255, 255, 37, 37),
+        );
       // Handle error, show toast or snackbar
     }
   }

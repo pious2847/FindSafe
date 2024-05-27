@@ -23,7 +23,7 @@ Future<void> logout() async {
   await prefs.remove('userId');
   await prefs.setBool('isLoggedIn', false);
   await prefs.setBool('showHome', false);
-  await prefs.setBool('isRegisted', false);
+  // await prefs.setBool('isRegisted', false);
 
   print("User Logged Out");
 }
