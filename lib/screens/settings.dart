@@ -63,7 +63,7 @@ class _SettingsState extends State<Settings> {
 
     if (proceedWithUpdate) {
       final prefs = await SharedPreferences.getInstance();
-       final responseMessage = await updatemode(mode);
+      final responseMessage = await updatemode(mode);
       if (mode == 'active') {
         await prefs.setBool('isLostMode', false);
         await prefs.setBool('isActiveMode', true);
@@ -73,13 +73,17 @@ class _SettingsState extends State<Settings> {
         await showLostModeNotification(); // Show notification when lost mode is enabled
       }
 
-      // final responseMessage = 'Mode updated successfully';
       print('resmsg:  $responseMessage');
-      SnackbarUtils.showCustomSnackBar(
+      ToastMsg.showToastMsg(
         context,
         responseMessage,
         const Color.fromARGB(255, 76, 175, 80),
       );
+      // SnackbarUtils.showCustomSnackBar(
+      //   context,
+      //   responseMessage,
+      //   const Color.fromARGB(255, 76, 175, 80),
+      // );
     }
   }
 
@@ -168,7 +172,6 @@ class _SettingsState extends State<Settings> {
                 ),
                 const Divider(),
               ]),
-              
               SingleSection(
                 title: 'Privacy and Policies',
                 children: [
@@ -221,5 +224,4 @@ class _SettingsState extends State<Settings> {
       },
     );
   }
-
 }

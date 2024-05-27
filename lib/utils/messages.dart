@@ -21,7 +21,7 @@ class ToastMsg {
     Fluttertoast.showToast(
       msg: message,
       toastLength: Toast.LENGTH_SHORT,
-      gravity: ToastGravity.CENTER,
+      gravity: ToastGravity.BOTTOM_LEFT,
       backgroundColor: backgroundColor,
       textColor: Colors.white,
       // toastDuration: Duration(seconds: 2),

@@ -40,11 +40,22 @@ class _SignupState extends State<Signup> {
 
       if (response.statusCode == 200) {
         print(response.data);
-        SnackbarUtils.showCustomSnackBar(context, 'Account Created successful',
-            const Color.fromARGB(255, 85, 189, 89));
+         final resMsg = response.data['message'];
+        ToastMsg.showToastMsg(
+          context,
+          resMsg,
+          const Color.fromARGB(255, 76, 175, 80),
+        );
+      
         Get.to(const Signin());
        
       } else {
+        final resMsg = response.data['message'];
+         ToastMsg.showToastMsg(
+          context,
+          resMsg,
+          Color.fromARGB(255, 255, 37, 37),
+        );
         print("Invalid response ${response.statusCode}: ${response.data}");
       }
     } catch (e) {

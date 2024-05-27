@@ -19,7 +19,7 @@ class DeviceModes extends StatefulWidget {
 class _DeviceModesState extends State<DeviceModes> {
    bool _isLostMode = false;
   bool _isActiveMode = true;
-  final ThemeController themeController = Get.find();
+  
   @override
   void initState() {
     _loadModes();
@@ -62,7 +62,7 @@ class _DeviceModesState extends State<DeviceModes> {
 
     if (proceedWithUpdate) {
       final prefs = await SharedPreferences.getInstance();
-       await updatemode(mode);
+     final responseMessage =  await updatemode(mode);
 
       if (mode == 'active') {
         await prefs.setBool('isLostMode', false);
@@ -73,13 +73,17 @@ class _DeviceModesState extends State<DeviceModes> {
         await showLostModeNotification(); // Show notification when lost mode is enabled
       }
 
-      final responseMessage = 'Mode updated successfully';
       print('resmsg:  $responseMessage');
-      SnackbarUtils.showCustomSnackBar(
+      ToastMsg.showToastMsg(
         context,
         responseMessage,
         const Color.fromARGB(255, 76, 175, 80),
       );
+      // SnackbarUtils.showCustomSnackBar(
+      //   context,
+      //   responseMessage,
+      //   const Color.fromARGB(255, 76, 175, 80),
+      // );
     }
   }
 

@@ -22,7 +22,7 @@ Future<String> updatemode(String mode) async {
           'Content-Type': 'application/json; charset=UTF-8',
         },
       ),
-      data: {"mode": "$mode"},
+      data: {"mode": mode},
     );
     print('Response: $response');
       final responsemessage = response.data['message'] as String;

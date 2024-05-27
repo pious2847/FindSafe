@@ -13,7 +13,6 @@ import 'package:lost_mode_app/utils/messages.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:get/get.dart';
 
-
 class Signin extends StatefulWidget {
   const Signin({super.key});
 
@@ -61,7 +60,7 @@ class _SigninState extends State<Signin> {
             deviceName,
             deviceModel,
           );
-          }
+        }
         await saveUserDataToLocalStorage(response.data);
         prefs.setBool('showHome', true);
 
@@ -69,13 +68,25 @@ class _SigninState extends State<Signin> {
           context,
           MaterialPageRoute(builder: (context) => const MapScreen()),
         );
-        SnackbarUtils.showCustomSnackBar(context, 'Login successful', const Color.fromARGB(255, 76, 175, 80));
+        final resMsg = response.data['message'];
+        ToastMsg.showToastMsg(
+          context,
+          resMsg,
+          const Color.fromARGB(255, 76, 175, 80),
+        );
       } else {
+        final resMsg = response.data['message'];
+         ToastMsg.showToastMsg(
+          context,
+          resMsg,
+          Color.fromARGB(255, 255, 37, 37),
+        );
         print("Invalid response ${response.statusCode}: ${response.data}");
       }
     } catch (e) {
       print("Error occurred: $e");
-      SnackbarUtils.showCustomSnackBar(context, 'An error occurred: $e', Colors.red);
+      SnackbarUtils.showCustomSnackBar(
+          context, 'An error occurred: $e', Colors.red);
       // Handle error, show toast or snackbar
     }
   }
@@ -141,10 +152,12 @@ class _SigninState extends State<Signin> {
                           hintText: 'Enter Email',
                           enabledBorder: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(16),
-                              borderSide: const BorderSide(color: Colors.purple)),
+                              borderSide:
+                                  const BorderSide(color: Colors.purple)),
                           focusedBorder: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(16),
-                              borderSide: const BorderSide(color: Colors.purple)),
+                              borderSide:
+                                  const BorderSide(color: Colors.purple)),
                           errorBorder: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(16),
                               borderSide: const BorderSide(color: Colors.red)),
@@ -169,9 +182,11 @@ class _SigninState extends State<Signin> {
                       obscureText: _obscureText,
                       decoration: InputDecoration(
                           hintText: 'Enter Password',
-                           suffixIcon: IconButton(
+                          suffixIcon: IconButton(
                             icon: Icon(
-                              _obscureText ? Icons.visibility : Icons.visibility_off,
+                              _obscureText
+                                  ? Icons.visibility
+                                  : Icons.visibility_off,
                             ),
                             onPressed: () {
                               setState(() {
@@ -181,10 +196,12 @@ class _SigninState extends State<Signin> {
                           ),
                           enabledBorder: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(16),
-                              borderSide: const BorderSide(color: Colors.purple)),
+                              borderSide:
+                                  const BorderSide(color: Colors.purple)),
                           focusedBorder: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(16),
-                              borderSide: const BorderSide(color: Colors.purple)),
+                              borderSide:
+                                  const BorderSide(color: Colors.purple)),
                           errorBorder: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(16),
                               borderSide: const BorderSide(color: Colors.red)),
@@ -193,19 +210,23 @@ class _SigninState extends State<Signin> {
                               borderSide: const BorderSide(color: Colors.red))),
                     ),
                   ),
-                    Padding(
+                  Padding(
                     padding: const EdgeInsets.fromLTRB(16.0, 16, 16, 0),
                     child: SizedBox(
                       height: 50,
                       width: MediaQuery.of(context).size.width,
                       child: TextButton(
                         style: ButtonStyle(
-                          backgroundColor: MaterialStateProperty.resolveWith<Color>(
+                          backgroundColor:
+                              MaterialStateProperty.resolveWith<Color>(
                             (Set<MaterialState> states) {
                               if (states.contains(MaterialState.disabled)) {
                                 return Colors.grey; // Disabled button color
                               }
-                              return Get.isDarkMode ? Colors.purple[700]! : Colors.purple; // Button color based on theme
+                              return Get.isDarkMode
+                                  ? Colors.purple[700]!
+                                  : Colors
+                                      .purple; // Button color based on theme
                             },
                           ),
                           shape: MaterialStateProperty.all<OutlinedBorder>(
@@ -228,7 +249,7 @@ class _SigninState extends State<Signin> {
                       ),
                     ),
                   ),
-                Padding(
+                  Padding(
                     padding: const EdgeInsets.fromLTRB(95, 20, 0, 0),
                     child: Row(
                       children: [
@@ -251,7 +272,9 @@ class _SigninState extends State<Signin> {
                           child: Text(
                             "Signup",
                             style: TextStyle(
-                              color: Get.isDarkMode ? Colors.purple[300] : Colors.purple,
+                              color: Get.isDarkMode
+                                  ? Colors.purple[300]
+                                  : Colors.purple,
                               fontWeight: FontWeight.bold,
                             ),
                           ),
