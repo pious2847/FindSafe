@@ -10,7 +10,6 @@ import 'package:lost_mode_app/utils/messages.dart';
 import 'package:get/get.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 
-
 class Signup extends StatefulWidget {
   const Signup({super.key});
 
@@ -76,7 +75,7 @@ class _SignupState extends State<Signup> {
   @override
   Widget build(BuildContext context) {
     return ModalProgressHUD(
-       inAsyncCall: _isLoading,
+      inAsyncCall: _isLoading,
       child: Scaffold(
           body: Stack(
         children: [
@@ -127,10 +126,12 @@ class _SignupState extends State<Signup> {
                                     const BorderSide(color: Colors.purple)),
                             errorBorder: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(16),
-                                borderSide: const BorderSide(color: Colors.red)),
+                                borderSide:
+                                    const BorderSide(color: Colors.red)),
                             focusedErrorBorder: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(16),
-                                borderSide: const BorderSide(color: Colors.red))),
+                                borderSide:
+                                    const BorderSide(color: Colors.red))),
                       ),
                     ),
                     Padding(
@@ -163,10 +164,12 @@ class _SignupState extends State<Signup> {
                                     const BorderSide(color: Colors.purple)),
                             errorBorder: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(16),
-                                borderSide: const BorderSide(color: Colors.red)),
+                                borderSide:
+                                    const BorderSide(color: Colors.red)),
                             focusedErrorBorder: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(16),
-                                borderSide: const BorderSide(color: Colors.red))),
+                                borderSide:
+                                    const BorderSide(color: Colors.red))),
                       ),
                     ),
                     Padding(
@@ -206,10 +209,12 @@ class _SignupState extends State<Signup> {
                                     color: Color.fromARGB(255, 103, 10, 119))),
                             errorBorder: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(16),
-                                borderSide: const BorderSide(color: Colors.red)),
+                                borderSide:
+                                    const BorderSide(color: Colors.red)),
                             focusedErrorBorder: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(16),
-                                borderSide: const BorderSide(color: Colors.red))),
+                                borderSide:
+                                    const BorderSide(color: Colors.red))),
                       ),
                     ),
                     Padding(
