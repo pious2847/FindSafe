@@ -42,7 +42,7 @@ class _DeviceModesState extends State<DeviceModes> {
 
     await flutterLocalNotificationsPlugin.show(
       0,
-      'Lost Mode Enabled',
+      'Security Alert',
       'Your device has been put in lost mode.',
       platformChannelSpecifics,
       payload: 'lost_mode_notification',
