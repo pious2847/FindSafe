@@ -219,7 +219,7 @@ class _UserProfileState extends State<UserProfile> {
 
     if (response.statusCode == 200) {
       final resmsg = response.data['message'];
-      SnackbarUtils.showCustomSnackBar(context, '$resmsg Updated successful',
+      SnackbarUtils.showCustomSnackBar(context, '$resmsg',
           const Color.fromARGB(255, 76, 175, 80));
 
       setState(() {
