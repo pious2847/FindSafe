@@ -103,26 +103,8 @@ class _SigninState extends State<Signin> {
     '',
   );
   
-//  void _showLoadingDialog() {
-//   showDialog(
-//     barrierDismissible: false,
-//     context: context,
-//     builder: (BuildContext context) {
-//       _dialogContext = context; // Store the dialog context
-//       return AlertDialog(
-//         content: Row(
-//           mainAxisAlignment: MainAxisAlignment.center,
-//           children: const [
-//             CircularProgressIndicator(),
-//             SizedBox(width: 16),
-//             Text("Loading..."),
-//           ],
-//         ),
-//       );
-//     },
-//   );
-// }
-  
+
+
   @override
   Widget build(BuildContext context) {
     return ModalProgressHUD(
