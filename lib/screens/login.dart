@@ -266,7 +266,6 @@ class _SigninState extends State<Signin> {
                           ),
                           onPressed: () async {
                             if (_formKey.currentState!.validate()) {
-                              _showLoadingDialog(); // Show the loading dialog
                               await save(); // Wait for the save function to complete
                              
                             } else {
