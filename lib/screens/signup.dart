@@ -8,6 +8,8 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:lost_mode_app/screens/login.dart';
 import 'package:lost_mode_app/utils/messages.dart';
 import 'package:get/get.dart';
+import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
+
 
 class Signup extends StatefulWidget {
   const Signup({super.key});
@@ -19,8 +21,12 @@ class Signup extends StatefulWidget {
 class _SignupState extends State<Signup> {
   final _formKey = GlobalKey<FormState>();
   bool _obscureText = true;
+  bool _isLoading = false; // Add this line
 
   Future<void> save() async {
+    setState(() {
+      _isLoading = true; // Set loading state to true
+    });
     final dio = Dio();
     try {
       final response = await dio.post(
@@ -40,18 +46,17 @@ class _SignupState extends State<Signup> {
 
       if (response.statusCode == 200) {
         print(response.data);
-         final resMsg = response.data['message'];
+        final resMsg = response.data['message'];
         ToastMsg.showToastMsg(
           context,
           resMsg,
           const Color.fromARGB(255, 76, 175, 80),
         );
-      
+
         Get.to(const Signin());
-       
       } else {
         final resMsg = response.data['message'];
-         ToastMsg.showToastMsg(
+        ToastMsg.showToastMsg(
           context,
           resMsg,
           Color.fromARGB(255, 255, 37, 37),
@@ -67,216 +72,220 @@ class _SignupState extends State<Signup> {
   }
 
   User user = User('', '', '');
+
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        body: Stack(
-      children: [
-        SingleChildScrollView(
-          child: Container(
-            alignment: Alignment.center,
-            child: Form(
-              key: _formKey,
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  const SizedBox(
-                    height: 150,
-                  ),
-                  Text(
-                    "Signup",
-                    style: GoogleFonts.pacifico(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 50,
-                        color: Colors.purple),
-                  ),
-                  const SizedBox(
-                    height: 25,
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.all(16.0),
-                    child: TextFormField(
-                      controller: TextEditingController(text: user.username),
-                      onChanged: (value) {
-                        user.username = value;
-                      },
-                      validator: (value) {
-                        if (value!.isEmpty) {
-                          return 'Field cannot be empty.';
-                        }
-                        return null;
-                      },
-                      decoration: InputDecoration(
-                          hintText: 'Enter Username',
-                          enabledBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(16),
-                              borderSide:
-                                  const BorderSide(color: Colors.purple)),
-                          focusedBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(16),
-                              borderSide:
-                                  const BorderSide(color: Colors.purple)),
-                          errorBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(16),
-                              borderSide: const BorderSide(color: Colors.red)),
-                          focusedErrorBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(16),
-                              borderSide: const BorderSide(color: Colors.red))),
+    return ModalProgressHUD(
+       inAsyncCall: _isLoading,
+      child: Scaffold(
+          body: Stack(
+        children: [
+          SingleChildScrollView(
+            child: Container(
+              alignment: Alignment.center,
+              child: Form(
+                key: _formKey,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    const SizedBox(
+                      height: 150,
                     ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.all(16.0),
-                    child: TextFormField(
-                      controller: TextEditingController(text: user.email),
-                      onChanged: (value) {
-                        user.email = value;
-                      },
-                      validator: (value) {
-                        if (value!.isEmpty) {
-                          return 'Field cannot be empty.';
-                        } else if (RegExp(
-                                r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
-                            .hasMatch(value)) {
+                    Text(
+                      "Signup",
+                      style: GoogleFonts.pacifico(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 50,
+                          color: Colors.purple),
+                    ),
+                    const SizedBox(
+                      height: 25,
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.all(16.0),
+                      child: TextFormField(
+                        controller: TextEditingController(text: user.username),
+                        onChanged: (value) {
+                          user.username = value;
+                        },
+                        validator: (value) {
+                          if (value!.isEmpty) {
+                            return 'Field cannot be empty.';
+                          }
                           return null;
-                        } else {
-                          return 'Enter valid email';
-                        }
-                      },
-                      decoration: InputDecoration(
-                          hintText: 'Enter Email',
-                          enabledBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(16),
-                              borderSide:
-                                  const BorderSide(color: Colors.purple)),
-                          focusedBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(16),
-                              borderSide:
-                                  const BorderSide(color: Colors.purple)),
-                          errorBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(16),
-                              borderSide: const BorderSide(color: Colors.red)),
-                          focusedErrorBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(16),
-                              borderSide: const BorderSide(color: Colors.red))),
+                        },
+                        decoration: InputDecoration(
+                            hintText: 'Enter Username',
+                            enabledBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(16),
+                                borderSide:
+                                    const BorderSide(color: Colors.purple)),
+                            focusedBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(16),
+                                borderSide:
+                                    const BorderSide(color: Colors.purple)),
+                            errorBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(16),
+                                borderSide: const BorderSide(color: Colors.red)),
+                            focusedErrorBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(16),
+                                borderSide: const BorderSide(color: Colors.red))),
+                      ),
                     ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.all(16.0),
-                    child: TextFormField(
-                      controller: TextEditingController(text: user.password),
-                      onChanged: (value) {
-                        user.password = value;
-                      },
-                      validator: (value) {
-                        if (value!.isEmpty) {
-                          return 'Field cannot be empty.';
-                        }
-                        return null;
-                      },
-                      decoration: InputDecoration(
-                          hintText: 'Enter Password',
-                          suffixIcon: IconButton(
-                            icon: Icon(
-                              _obscureText
-                                  ? Icons.visibility
-                                  : Icons.visibility_off,
-                            ),
-                            onPressed: () {
-                              setState(() {
-                                _obscureText = !_obscureText;
-                              });
-                            },
-                          ),
-                          enabledBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(16),
-                              borderSide:
-                                  const BorderSide(color: Colors.purple)),
-                          focusedBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(16),
-                              borderSide: const BorderSide(
-                                  color: Color.fromARGB(255, 103, 10, 119))),
-                          errorBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(16),
-                              borderSide: const BorderSide(color: Colors.red)),
-                          focusedErrorBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(16),
-                              borderSide: const BorderSide(color: Colors.red))),
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.fromLTRB(16, 16, 16, 0),
-                    child: SizedBox(
-                      height: 50,
-                      width: 400,
-                      child: TextButton(
-                        style: ButtonStyle(
-                          backgroundColor:
-                              MaterialStateProperty.resolveWith<Color>(
-                            (Set<MaterialState> states) {
-                              if (states.contains(MaterialState.disabled)) {
-                                return Colors.grey; // Disabled button color
-                              }
-                              return Get.isDarkMode
-                                  ? Colors.purple[700]!
-                                  : Colors
-                                      .purple; // Button color based on theme
-                            },
-                          ),
-                          shape: MaterialStateProperty.all<OutlinedBorder>(
-                            RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(16.0),
-                            ),
-                          ),
-                        ),
-                        onPressed: () {
-                          if (_formKey.currentState!.validate()) {
-                            save();
+                    Padding(
+                      padding: const EdgeInsets.all(16.0),
+                      child: TextFormField(
+                        controller: TextEditingController(text: user.email),
+                        onChanged: (value) {
+                          user.email = value;
+                        },
+                        validator: (value) {
+                          if (value!.isEmpty) {
+                            return 'Field cannot be empty.';
+                          } else if (RegExp(
+                                  r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
+                              .hasMatch(value)) {
+                            return null;
                           } else {
-                            print("not ok");
+                            return 'Enter valid email';
                           }
                         },
-                        child: const Text(
-                          "Signup",
-                          style: TextStyle(
-                            color: Colors.white,
+                        decoration: InputDecoration(
+                            hintText: 'Enter Email',
+                            enabledBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(16),
+                                borderSide:
+                                    const BorderSide(color: Colors.purple)),
+                            focusedBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(16),
+                                borderSide:
+                                    const BorderSide(color: Colors.purple)),
+                            errorBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(16),
+                                borderSide: const BorderSide(color: Colors.red)),
+                            focusedErrorBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(16),
+                                borderSide: const BorderSide(color: Colors.red))),
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.all(16.0),
+                      child: TextFormField(
+                        controller: TextEditingController(text: user.password),
+                        onChanged: (value) {
+                          user.password = value;
+                        },
+                        validator: (value) {
+                          if (value!.isEmpty) {
+                            return 'Field cannot be empty.';
+                          }
+                          return null;
+                        },
+                        decoration: InputDecoration(
+                            hintText: 'Enter Password',
+                            suffixIcon: IconButton(
+                              icon: Icon(
+                                _obscureText
+                                    ? Icons.visibility
+                                    : Icons.visibility_off,
+                              ),
+                              onPressed: () {
+                                setState(() {
+                                  _obscureText = !_obscureText;
+                                });
+                              },
+                            ),
+                            enabledBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(16),
+                                borderSide:
+                                    const BorderSide(color: Colors.purple)),
+                            focusedBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(16),
+                                borderSide: const BorderSide(
+                                    color: Color.fromARGB(255, 103, 10, 119))),
+                            errorBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(16),
+                                borderSide: const BorderSide(color: Colors.red)),
+                            focusedErrorBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(16),
+                                borderSide: const BorderSide(color: Colors.red))),
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.fromLTRB(16, 16, 16, 0),
+                      child: SizedBox(
+                        height: 50,
+                        width: 400,
+                        child: TextButton(
+                          style: ButtonStyle(
+                            backgroundColor:
+                                MaterialStateProperty.resolveWith<Color>(
+                              (Set<MaterialState> states) {
+                                if (states.contains(MaterialState.disabled)) {
+                                  return Colors.grey; // Disabled button color
+                                }
+                                return Get.isDarkMode
+                                    ? Colors.purple[700]!
+                                    : Colors
+                                        .purple; // Button color based on theme
+                              },
+                            ),
+                            shape: MaterialStateProperty.all<OutlinedBorder>(
+                              RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(16.0),
+                              ),
+                            ),
+                          ),
+                          onPressed: () {
+                            if (_formKey.currentState!.validate()) {
+                              save();
+                            } else {
+                              print("not ok");
+                            }
+                          },
+                          child: const Text(
+                            "Signup",
+                            style: TextStyle(
+                              color: Colors.white,
+                            ),
                           ),
                         ),
                       ),
                     ),
-                  ),
-                  Padding(
-                      padding: const EdgeInsets.fromLTRB(20, 16, 0, 0),
-                      child: Row(
-                        children: [
-                          const Text(
-                            "Already have Account ? ",
-                            style: TextStyle(
-                                color: Colors.black,
-                                fontWeight: FontWeight.bold),
-                          ),
-                          InkWell(
-                            onTap: () {
-                              Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) => const Signin()));
-                            },
-                            child: const Text(
-                              "Signin",
+                    Padding(
+                        padding: const EdgeInsets.fromLTRB(20, 16, 0, 0),
+                        child: Row(
+                          children: [
+                            const Text(
+                              "Already have Account ? ",
                               style: TextStyle(
-                                  color: Colors.purple,
+                                  color: Colors.black,
                                   fontWeight: FontWeight.bold),
                             ),
-                          ),
-                        ],
-                      ))
-                ],
+                            InkWell(
+                              onTap: () {
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) => const Signin()));
+                              },
+                              child: const Text(
+                                "Signin",
+                                style: TextStyle(
+                                    color: Colors.purple,
+                                    fontWeight: FontWeight.bold),
+                              ),
+                            ),
+                          ],
+                        ))
+                  ],
+                ),
               ),
             ),
-          ),
-        )
-      ],
-    ));
+          )
+        ],
+      )),
+    );
   }
 }
