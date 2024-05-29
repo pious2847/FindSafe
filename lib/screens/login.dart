@@ -25,9 +25,11 @@ class _SigninState extends State<Signin> {
   bool isRegisted = false;
   bool _obscureText = true;
   final emailController = TextEditingController();
-  final passwordController = TextEditingController();
+  final passwordController = TextEditingController(); 
+  BuildContext? _dialogContext;
 
   Future<void> save() async {
+      _showLoadingDialog(); // Show the loading dialog
     final dio = Dio();
     try {
       final response = await dio.post(
@@ -74,18 +76,21 @@ class _SigninState extends State<Signin> {
           resMsg,
           const Color.fromARGB(255, 76, 175, 80),
         );
+       // Dismiss the loading dialog after successful login
+      if (_dialogContext != null) {
+        Navigator.of(_dialogContext!).pop();
+      }
       } else {
-      
         print("Invalid response ${response.statusCode}: ${response.data}");
       }
     } catch (e) {
       print("Error occurred: $e");
-      
-         ToastMsg.showToastMsg(
-          context,
-          'An error occurred:  $e',
-          Color.fromARGB(255, 255, 37, 37),
-        );
+
+      ToastMsg.showToastMsg(
+        context,
+        'An error occurred:  $e',
+        Color.fromARGB(255, 255, 37, 37),
+      );
       // Handle error, show toast or snackbar
     }
   }
@@ -95,6 +100,26 @@ class _SigninState extends State<Signin> {
     '',
     '',
   );
+  
+ void _showLoadingDialog() {
+  showDialog(
+    barrierDismissible: false,
+    context: context,
+    builder: (BuildContext context) {
+      _dialogContext = context; // Store the dialog context
+      return AlertDialog(
+        content: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: const [
+            CircularProgressIndicator(),
+            SizedBox(width: 16),
+            Text("Loading..."),
+          ],
+        ),
+      );
+    },
+  );
+}
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -234,9 +259,11 @@ class _SigninState extends State<Signin> {
                             ),
                           ),
                         ),
-                        onPressed: () {
+                        onPressed: () async {
                           if (_formKey.currentState!.validate()) {
-                            save();
+                            _showLoadingDialog(); // Show the loading dialog
+                            await save(); // Wait for the save function to complete
+                           
                           } else {
                             print("not ok");
                           }
