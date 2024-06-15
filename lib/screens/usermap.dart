@@ -32,7 +32,7 @@ class _MapScreenState extends State<MapScreen> {
   String? _selectedDeviceId;
   final locatinService = LocationApiService();
 
-  late CameraPosition _initialCameraPosition = const CameraPosition(
+  late CameraPosition _initialCameraPosition =  CameraPosition(
     target: LatLng(0, 0), // Set a default initial position
     zoom: 11.5,
   );
@@ -65,8 +65,8 @@ class _MapScreenState extends State<MapScreen> {
 
   @override
   void initState() {
-    super.initState();
     _getLocation();
+    super.initState();
     fetchMobileDevices();
     _setOriginAndDestinationMarkers();
     // cancelTask('updateLocation');
@@ -176,6 +176,7 @@ class _MapScreenState extends State<MapScreen> {
             alignment: Alignment.center,
             children: [
               GoogleMap(
+                mapType: MapType.satellite,
                 myLocationButtonEnabled: true,
                 zoomControlsEnabled: false,
                 initialCameraPosition: _initialCameraPosition,
