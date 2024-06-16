@@ -1,2 +1,2 @@
-const String googleAPIKey = 'AIzaSyBu7z5B3smX56ryT895hHc-mpQ6qiAVWR4';
+const String googleAPIKey = 'AIzaSyBBrpmg3XACkHWNWpqDmXGHmV5f2brFXYY';
 const String APIURL = 'https://findsafe-backend.onrender.com/api';

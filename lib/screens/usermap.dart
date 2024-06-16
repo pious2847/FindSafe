@@ -11,7 +11,6 @@ import 'package:lost_mode_app/utils/directions_repository.dart';
 import 'package:lost_mode_app/utils/phonecard.dart';
 import 'package:lost_mode_app/models/phone_model.dart';
 import 'package:dio/dio.dart';
-import 'package:workmanager/workmanager.dart';
 import '../services/service.dart';
 
 class MapScreen extends StatefulWidget {
