@@ -1,15 +1,16 @@
-// ignore_for_file: library_private_types_in_public_api, use_build_context_synchronously, avoid_print
-
+// DeviceCard.dart
 import 'package:iconsax_flutter/iconsax_flutter.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:lost_mode_app/models/devices.dart';
-import 'package:lost_mode_app/models/phone_model.dart';
+import 'package:lost_mode_app/services/devices.dart';
+import 'package:lost_mode_app/services/websocket_service.dart';
+import 'package:provider/provider.dart';
+import 'package:web_socket_channel/web_socket_channel.dart';
 
-class DevicesCards extends StatelessWidget {
+class DevicesCards extends StatefulWidget {
   final Device phone;
   final Function(String) onTap;
-  final bool isActive; // Add a boolean parameter for active state
+  final bool isActive;
 
   const DevicesCards({
     super.key,
@@ -19,15 +20,58 @@ class DevicesCards extends StatelessWidget {
   });
 
   @override
+  State<DevicesCards> createState() => _DevicesCardsState();
+}
+
+class _DevicesCardsState extends State<DevicesCards> {
+    WebSocketChannel? _channel;
+
+  @override
+  void initState() {
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    _channel?.sink.close();
+    super.dispose();
+  }
+
+  Future<void> _sendAlarmCommand(String deviceId) async {
+    try {
+      final result = await ApiService.sendAlarmCommand(deviceId);
+      if (result['success']) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Alarm command sent successfully')),
+        );
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Failed to send alarm command')),
+        );
+      }
+    } catch (error) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Error: $error')),
+      );
+    }
+  }
+
+  void _connectWebSocket(String deviceId) {
+    _channel = WebSocketService.connect(deviceId);
+    _channel!.stream.listen((message) {
+      Provider.of<CommandNotifier>(context, listen: false).addCommand(message);
+    });
+  }
+  @override
   Widget build(BuildContext context) {
     return ExpansionTile(
-      onExpansionChanged: onTap(phone.id),
       leading: CircleAvatar(
-        backgroundImage: NetworkImage(phone.image),
-        radius: 50,
+        backgroundImage: NetworkImage(widget.phone.image),
+        radius: 30,
       ),
-      title: Text(phone.devicename),
-      subtitle: Text(phone.mode),
+      title: Text(widget.phone.devicename),
+      subtitle: Text(widget.phone.mode),
+      initiallyExpanded: widget.isActive, // Reflect active state
       children: [
         Padding(
           padding: const EdgeInsets.all(10.0),
@@ -39,7 +83,16 @@ class DevicesCards extends StatelessWidget {
               children: [
                 TextButton.icon(
                   icon: const Icon(Iconsax.music),
-                  onPressed: () async {},
+                  onPressed: () async {
+                     if (widget.phone.id.isEmpty) {
+                  _sendAlarmCommand(widget.phone.id);
+                  _connectWebSocket(widget.phone.id);
+                } else {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(content: Text('Please enter a Device ID')),
+                  );
+                }
+                  },
                   style: TextButton.styleFrom(
                     padding: const EdgeInsets.symmetric(
                       vertical: 10,
@@ -67,11 +120,37 @@ class DevicesCards extends StatelessWidget {
                   ),
                   label: const Text('Secure Device'),
                 ),
+              TextButton.icon(
+                  icon: const Icon(Iconsax.map_copy),
+                  onPressed:() => widget.onTap(widget.phone.id),
+                  style: TextButton.styleFrom(
+                    padding: const EdgeInsets.symmetric(
+                      vertical: 10,
+                      horizontal: 20,
+                    ),
+                    textStyle: const TextStyle(
+                      fontSize: 13,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  label: const Text('Locate Device'),
+                ),
+              
               ],
             ),
           ),
         ),
       ],
     );
+  }
+}
+class CommandNotifier extends ChangeNotifier {
+  List<String> _commands = [];
+
+  List<String> get commands => _commands;
+
+  void addCommand(String command) {
+    _commands.add(command);
+    notifyListeners();
   }
 }

@@ -25,24 +25,26 @@ class LocationApiService {
     }
   }
 
-  Future<LatLng?> fetchLatestLocation(String deviceId) async {
-    final dio = Dio();
-    final apiUrl = '$APIURL/mobiledevices/$deviceId/locations';
+// Function for location
+Future<LatLng?> fetchLatestLocation(String deviceId) async {
+  final dio = Dio();
+  final apiUrl = '$APIURL/mobiledevices/$deviceId/locations';
 
-    try {
-      final response = await dio.get(apiUrl);
+  try {
+    final response = await dio.get(apiUrl);
 
-      if (response.statusCode == 200 && response.data.isNotEmpty) {
-        final latestLocation = response.data[0];
-        return LatLng(latestLocation['latitude'], latestLocation['longitude']);
-      } else {
-        return null;
-      }
-    } catch (e) {
-      print('Failed to fetch latest location: $e');
+    if (response.statusCode == 200 && response.data.isNotEmpty) {
+      final latestLocation = response.data[0];
+      return LatLng(latestLocation['latitude'], latestLocation['longitude']);
+    } else {
+      print('No data found for the device: $deviceId');
       return null;
     }
+  } catch (e) {
+    print('Failed to fetch latest location: $e');
+    return null;
   }
+}
 
   Future<List<dynamic>> fetchLocationHistory() async {
     final dio = Dio();

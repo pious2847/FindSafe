@@ -4,6 +4,7 @@ import 'package:lost_mode_app/models/devices.dart';
 import 'package:lost_mode_app/models/location_model.dart';
 
 class ApiService {
+
  Future<List<Device>> fetchDevices(String userId) async {
   final dio = Dio();
   try {
@@ -55,6 +56,17 @@ Future<void> deleteDevices(String deviceId) async {
     throw Exception('Failed to delete device');
   }
 }
+static Future<Map<String, dynamic>> sendAlarmCommand(String deviceId) async {
+  final dio = Dio();
+    final url = '$APIURL/$deviceId/alarm';
+    final response = await dio.post(Uri.parse(url) as String);
+
+    if (response.statusCode == 200) {
+      return response.data;
+    } else {
+      throw Exception('Error: ${response.data}');
+    }
+  }
 }
 
 

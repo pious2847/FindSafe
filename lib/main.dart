@@ -2,10 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:lost_mode_app/screens/splashscreen.dart';
 import 'package:get/get.dart';
 import 'package:lost_mode_app/theme/theme_controller.dart';
+import 'package:lost_mode_app/utils/deviceCards.dart';
 import 'package:lost_mode_app/utils/location_worker.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:workmanager/workmanager.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:provider/provider.dart';
 
 final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
     FlutterLocalNotificationsPlugin();
@@ -63,7 +65,10 @@ void main() async {
     initializationSettings,
   );
 
-  runApp(const MyApp());
+  runApp(  ChangeNotifierProvider(
+      create: (_) => CommandNotifier(),
+      child: MyApp(),
+    ),);
 }
 
 class MyApp extends StatelessWidget {
