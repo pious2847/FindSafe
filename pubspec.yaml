@@ -54,6 +54,7 @@ dependencies:
   geolocator: ^11.1.0
   flutter_local_notifications: ^17.1.2
   modal_progress_hud_nsn: ^0.5.1
+  audioplayers: ^6.0.0
 
 
 

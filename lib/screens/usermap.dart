@@ -7,6 +7,7 @@ import 'package:lost_mode_app/.env.dart';
 import 'package:lost_mode_app/constants/NavBar.dart';
 import 'package:lost_mode_app/models/directions_model.dart';
 import 'package:lost_mode_app/services/locations.dart';
+import 'package:lost_mode_app/utils/deviceCards.dart';
 import 'package:lost_mode_app/utils/directions_repository.dart';
 import 'package:lost_mode_app/utils/phonecard.dart';
 import 'package:lost_mode_app/models/phone_model.dart';
@@ -123,49 +124,54 @@ class _MapScreenState extends State<MapScreen> {
             ),
             SizedBox(
               height: MediaQuery.of(context).size.height * 0.2,
-              child: ListView.builder(
-                scrollDirection: Axis.horizontal,
-                itemCount: phones.length,
-                itemBuilder: (context, index) {
-                  final phone = phones[index];
-                  return PhoneListCard(
-                    phone: phone,
-                    onTap: (deviceId) async {
-                      setState(() {
-                        _selectedDeviceId =
-                            deviceId; // Update the selected device ID
-                      });
-                      // Fetch the latest location for the device
-                      final latestLocation =
-                          await locatinService.fetchLatestLocation(
-                              deviceId);
-                      if (latestLocation != null) {
-                        setState(() {
-                          _destination = Marker(
-                            markerId: const MarkerId('destination'),
-                            infoWindow:
-                                const InfoWindow(title: 'Destination'),
-                            icon: BitmapDescriptor.defaultMarkerWithHue(
-                              BitmapDescriptor.hueBlue,
-                            ),
-                            position: latestLocation,
-                          );
-                        });
-                        // Get directions from the origin to the new destination
-                        final directions =
-                            await DirectionsRepository().getDirections(
-                          origin: _origin!.position,
-                          destination: latestLocation,
-                        );
-                        setState(() => _info = directions);
-                      }
-                    },
-                    isActive: phone.deviceId ==
-                        _selectedDeviceId, // Pass the active state based on the selected device ID
-                  );
-                },
-              ),
+              child: DevicesCards()
             ),
+            // SizedBox(
+            //   height: MediaQuery.of(context).size.height * 0.2,
+            //   child: ListView.builder(
+            //     scrollDirection: Axis.horizontal,
+            //     itemCount: phones.length,
+            //     itemBuilder: (context, index) {
+            //       final phone = phones[index];
+            //       return PhoneListCard(
+            //         phone: phone,
+            //         onTap: (deviceId) async {
+            //           setState(() {
+            //             _selectedDeviceId =
+            //                 deviceId; // Update the selected device ID
+            //           });
+            //           // Fetch the latest location for the device
+            //           final latestLocation =
+            //               await locatinService.fetchLatestLocation(
+            //                   deviceId);
+            //           if (latestLocation != null) {
+            //             setState(() {
+            //               _destination = Marker(
+            //                 markerId: const MarkerId('destination'),
+            //                 infoWindow:
+            //                     const InfoWindow(title: 'Destination'),
+            //                 icon: BitmapDescriptor.defaultMarkerWithHue(
+            //                   BitmapDescriptor.hueBlue,
+            //                 ),
+            //                 position: latestLocation,
+            //               );
+            //             });
+            //             // Get directions from the origin to the new destination
+            //             final directions =
+            //                 await DirectionsRepository().getDirections(
+            //               origin: _origin!.position,
+            //               destination: latestLocation,
+            //             );
+            //             setState(() => _info = directions);
+            //           }
+            //         },
+            //         isActive: phone.deviceId ==
+            //             _selectedDeviceId, // Pass the active state based on the selected device ID
+            //       );
+            //     },
+            //   ),
+            // ),
+          
           ],
         );
   }
