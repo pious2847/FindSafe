@@ -36,6 +36,7 @@ class _MapScreenState extends State<MapScreen> {
   late CameraPosition _initialCameraPosition = CameraPosition(
     target: LatLng(0, 0), // Set a default initial position
     zoom: 11.5,
+    tilt: 70.0
   );
 
   Future<void> _getLocation() async {
@@ -233,8 +234,8 @@ SizedBox(
       foregroundColor: const Color.fromARGB(255, 202, 202, 202),
       onPressed: () => _googleMapController.animateCamera(
         _info != null
-            ? CameraUpdate.newLatLngBounds(_info!.bounds, 100.0)
-            : CameraUpdate.newCameraPosition(_initialCameraPosition),
+            ? CameraUpdate.newCameraPosition(_initialCameraPosition)
+            : CameraUpdate.newLatLngBounds(_info!.bounds, 100.0),
       ),
       child: const Icon(Icons.center_focus_strong),
     );
@@ -255,7 +256,7 @@ SizedBox(
               CameraUpdate.newCameraPosition(
                 CameraPosition(
                   target: _origin!.position,
-                  zoom: 14.5,
+                  zoom: 18.5,
                   tilt: 50.0,
                 ),
               ),
@@ -272,7 +273,7 @@ SizedBox(
               CameraUpdate.newCameraPosition(
                 CameraPosition(
                   target: _destination!.position,
-                  zoom: 14.5,
+                  zoom: 18.5,
                   tilt: 50.0,
                 ),
               ),

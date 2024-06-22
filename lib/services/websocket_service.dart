@@ -1,10 +1,12 @@
-import 'package:web_socket_channel/web_socket_channel.dart';
+import 'package:web_socket_channel/io.dart';
 
 class WebSocketService {
-  static const String webSocketUrl = 'ws://localhost:8080';
+  static const String webSocketUrl =
+      'ws://https://findsafe-backend.onrender.com';
 
-  static WebSocketChannel connect(String deviceId) {
-    return WebSocketChannel.connect(
+  static IOWebSocketChannel connect(String deviceId) {
+    print('Connection Established');
+    return IOWebSocketChannel.connect(
       Uri.parse('$webSocketUrl/$deviceId'),
     );
   }

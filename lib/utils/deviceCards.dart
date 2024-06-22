@@ -2,10 +2,12 @@
 import 'package:iconsax_flutter/iconsax_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:lost_mode_app/models/devices.dart';
+import 'package:lost_mode_app/services/alarm_service.dart';
 import 'package:lost_mode_app/services/devices.dart';
 import 'package:lost_mode_app/services/websocket_service.dart';
 import 'package:provider/provider.dart';
-import 'package:web_socket_channel/web_socket_channel.dart';
+import 'package:web_socket_channel/io.dart';
+
 
 class DevicesCards extends StatefulWidget {
   final Device phone;
@@ -24,10 +26,15 @@ class DevicesCards extends StatefulWidget {
 }
 
 class _DevicesCardsState extends State<DevicesCards> {
-    WebSocketChannel? _channel;
+    IOWebSocketChannel? _channel;
+    late bool connected; // boolean value to track connection status
+    final AlarmService _alarmService = AlarmService();
+    late WebSocketService _channelconnect = WebSocketService();
 
   @override
   void initState() {
+    connected = false;
+    _channelconnect;
     super.initState();
   }
 
@@ -36,6 +43,8 @@ class _DevicesCardsState extends State<DevicesCards> {
     _channel?.sink.close();
     super.dispose();
   }
+ 
+  
 
   Future<void> _sendAlarmCommand(String deviceId) async {
     try {
@@ -60,6 +69,9 @@ class _DevicesCardsState extends State<DevicesCards> {
     _channel = WebSocketService.connect(deviceId);
     _channel!.stream.listen((message) {
       Provider.of<CommandNotifier>(context, listen: false).addCommand(message);
+       if (message == 'play_alarm') {
+        _alarmService.playAlarm();
+      }
     });
   }
   @override
@@ -84,9 +96,9 @@ class _DevicesCardsState extends State<DevicesCards> {
                 TextButton.icon(
                   icon: const Icon(Iconsax.music),
                   onPressed: () async {
-                     if (widget.phone.id.isEmpty) {
-                  _sendAlarmCommand(widget.phone.id);
+                if (widget.phone.id.isNotEmpty) {
                   _connectWebSocket(widget.phone.id);
+                  _sendAlarmCommand(widget.phone.id);
                 } else {
                   ScaffoldMessenger.of(context).showSnackBar(
                     SnackBar(content: Text('Please enter a Device ID')),

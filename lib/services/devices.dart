@@ -58,9 +58,8 @@ Future<void> deleteDevices(String deviceId) async {
 }
 static Future<Map<String, dynamic>> sendAlarmCommand(String deviceId) async {
   final dio = Dio();
-    final url = '$APIURL/$deviceId/alarm';
-    final response = await dio.post(Uri.parse(url) as String);
-
+    final url = '$APIURL/device/$deviceId/alarm';
+    final response = await dio.post(url);
     if (response.statusCode == 200) {
       return response.data;
     } else {
