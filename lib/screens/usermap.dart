@@ -5,6 +5,7 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:lost_mode_app/.env.dart';
 import 'package:lost_mode_app/constants/NavBar.dart';
+import 'package:lost_mode_app/models/devices.dart';
 import 'package:lost_mode_app/models/directions_model.dart';
 import 'package:lost_mode_app/services/locations.dart';
 import 'package:lost_mode_app/utils/deviceCards.dart';
@@ -83,7 +84,7 @@ class _MapScreenState extends State<MapScreen> {
   //   print("Task Cancel");
   // }
 
-  List<Phone> phones = [];
+  List<Device> phones = [];
   List<dynamic> locationHistory = [];
 
   @override
@@ -122,55 +123,52 @@ class _MapScreenState extends State<MapScreen> {
                 ),
               ),
             ),
+
             SizedBox(
               height: MediaQuery.of(context).size.height * 0.2,
-              child: DevicesCards()
+              child: ListView.builder(
+                scrollDirection: Axis.vertical,
+                itemCount: phones.length,
+                itemBuilder: (context, index) {
+                  final phone = phones[index];
+                  return DevicesCards(
+                    phone: phone,
+                    onTap: (deviceId) async {
+                      setState(() {
+                        _selectedDeviceId =
+                            deviceId; // Update the selected device ID
+                      });
+                      // Fetch the latest location for the device
+                      final latestLocation =
+                          await locatinService.fetchLatestLocation(
+                              deviceId);
+                      if (latestLocation != null) {
+                        setState(() {
+                          _destination = Marker(
+                            markerId: const MarkerId('destination'),
+                            infoWindow:
+                                const InfoWindow(title: 'Destination'),
+                            icon: BitmapDescriptor.defaultMarkerWithHue(
+                              BitmapDescriptor.hueBlue,
+                            ),
+                            position: latestLocation,
+                          );
+                        });
+                        // Get directions from the origin to the new destination
+                        final directions =
+                            await DirectionsRepository().getDirections(
+                          origin: _origin!.position,
+                          destination: latestLocation,
+                        );
+                        setState(() => _info = directions);
+                      }
+                    },
+                    isActive: phone.id ==
+                        _selectedDeviceId, // Pass the active state based on the selected device ID
+                  );
+                },
+              ),
             ),
-            // SizedBox(
-            //   height: MediaQuery.of(context).size.height * 0.2,
-            //   child: ListView.builder(
-            //     scrollDirection: Axis.horizontal,
-            //     itemCount: phones.length,
-            //     itemBuilder: (context, index) {
-            //       final phone = phones[index];
-            //       return PhoneListCard(
-            //         phone: phone,
-            //         onTap: (deviceId) async {
-            //           setState(() {
-            //             _selectedDeviceId =
-            //                 deviceId; // Update the selected device ID
-            //           });
-            //           // Fetch the latest location for the device
-            //           final latestLocation =
-            //               await locatinService.fetchLatestLocation(
-            //                   deviceId);
-            //           if (latestLocation != null) {
-            //             setState(() {
-            //               _destination = Marker(
-            //                 markerId: const MarkerId('destination'),
-            //                 infoWindow:
-            //                     const InfoWindow(title: 'Destination'),
-            //                 icon: BitmapDescriptor.defaultMarkerWithHue(
-            //                   BitmapDescriptor.hueBlue,
-            //                 ),
-            //                 position: latestLocation,
-            //               );
-            //             });
-            //             // Get directions from the origin to the new destination
-            //             final directions =
-            //                 await DirectionsRepository().getDirections(
-            //               origin: _origin!.position,
-            //               destination: latestLocation,
-            //             );
-            //             setState(() => _info = directions);
-            //           }
-            //         },
-            //         isActive: phone.deviceId ==
-            //             _selectedDeviceId, // Pass the active state based on the selected device ID
-            //       );
-            //     },
-            //   ),
-            // ),
           
           ],
         );
@@ -361,8 +359,8 @@ class _MapScreenState extends State<MapScreen> {
         // Access the 'mobileDevices' property from the response data
         final List<dynamic> mobileDevicesData = response.data['mobileDevices'];
         // Map over the mobile devices data and convert them into Phone objects
-        final List<Phone> phonesList =
-            mobileDevicesData.map((item) => Phone.fromJson(item)).toList();
+        final List<Device> phonesList =
+            mobileDevicesData.map((item) => Device.fromJson(item)).toList();
 
         setState(() {
           phones = phonesList;
