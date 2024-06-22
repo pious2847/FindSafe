@@ -10,8 +10,6 @@ import 'package:lost_mode_app/models/directions_model.dart';
 import 'package:lost_mode_app/services/locations.dart';
 import 'package:lost_mode_app/utils/deviceCards.dart';
 import 'package:lost_mode_app/utils/directions_repository.dart';
-import 'package:lost_mode_app/utils/phonecard.dart';
-import 'package:lost_mode_app/models/phone_model.dart';
 import 'package:dio/dio.dart';
 import '../services/service.dart';
 

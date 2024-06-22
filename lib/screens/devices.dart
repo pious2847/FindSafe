@@ -1,16 +1,9 @@
 // ignore_for_file: library_private_types_in_public_api, use_build_context_synchronously, avoid_print
 
-import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:google_fonts/google_fonts.dart';
-import 'package:lost_mode_app/.env.dart';
-import 'package:lost_mode_app/constants/devce_info.dart';
-import 'package:lost_mode_app/models/User_model.dart';
 import 'package:lost_mode_app/models/devices.dart';
 import 'package:lost_mode_app/screens/login.dart';
-import 'package:lost_mode_app/screens/signup.dart';
-import 'package:lost_mode_app/screens/usermap.dart';
 import 'package:lost_mode_app/services/devices.dart';
 import 'package:lost_mode_app/services/service.dart';
 import 'package:lost_mode_app/utils/messages.dart';

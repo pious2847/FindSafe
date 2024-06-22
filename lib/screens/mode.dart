@@ -1,11 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
-import 'package:get/get.dart';
 import 'package:iconsax_flutter/iconsax_flutter.dart';
 import 'package:lost_mode_app/main.dart';
 import 'package:lost_mode_app/models/settings_model.dart';
 import 'package:lost_mode_app/services/settings_service.dart';
-import 'package:lost_mode_app/theme/theme_controller.dart';
 import 'package:lost_mode_app/utils/messages.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
