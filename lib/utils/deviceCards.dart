@@ -21,8 +21,10 @@ class DevicesCards extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ExpansionTile(
+      onExpansionChanged: onTap(phone.id),
       leading: CircleAvatar(
         backgroundImage: NetworkImage(phone.image),
+        radius: 50,
       ),
       title: Text(phone.devicename),
       subtitle: Text(phone.mode),
@@ -32,11 +34,11 @@ class DevicesCards extends StatelessWidget {
           child: SizedBox(
             width: MediaQuery.of(context).size.width,
             child: Column(
-              crossAxisAlignment: CrossAxisAlignment.end,
+              crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
                 TextButton.icon(
-                  icon: const Icon(Iconsax.audio_square_copy),
+                  icon: const Icon(Iconsax.music),
                   onPressed: () async {},
                   style: TextButton.styleFrom(
                     padding: const EdgeInsets.symmetric(
