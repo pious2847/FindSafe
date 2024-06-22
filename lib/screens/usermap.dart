@@ -181,7 +181,7 @@ class _MapScreenState extends State<MapScreen> {
             alignment: Alignment.center,
             children: [
               GoogleMap(
-                mapType: MapType.satellite,
+                mapType: MapType.hybrid,
                 myLocationButtonEnabled: true,
                 zoomControlsEnabled: false,
                 initialCameraPosition: _initialCameraPosition,
