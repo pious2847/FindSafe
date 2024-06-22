@@ -13,8 +13,7 @@ import 'package:lost_mode_app/services/websocket_service.dart';
 import 'package:lost_mode_app/services/alarm_service.dart';
 import 'dart:convert';
 
-final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
-    FlutterLocalNotificationsPlugin();
+final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
 
 Future<bool> _isLocationPermissionGranted() async {
   final serviceEnabled = await Geolocator.isLocationServiceEnabled();
@@ -35,6 +34,13 @@ Future<bool> _isLocationPermissionGranted() async {
   }
 
   return true;
+}
+
+void callbackDispatcher() {
+  Workmanager().executeTask((task, inputData) async {
+    // Your background task code here
+    return Future.value(true);
+  });
 }
 
 void main() async {
@@ -58,8 +64,7 @@ void main() async {
     print('Location permissions are not granted');
   }
 
-  const initializationSettingsAndroid =
-      AndroidInitializationSettings('@mipmap/ic_launcher');
+  const initializationSettingsAndroid = AndroidInitializationSettings('@mipmap/ic_launcher');
   const initializationSettings = InitializationSettings(
     android: initializationSettingsAndroid,
   );
@@ -87,8 +92,7 @@ class MyApp extends StatelessWidget {
     return GetMaterialApp(
       theme: ThemeData.light(),
       darkTheme: ThemeData.dark(),
-      themeMode:
-          themeController.isDarkMode.value ? ThemeMode.dark : ThemeMode.light,
+      themeMode: themeController.isDarkMode.value ? ThemeMode.dark : ThemeMode.light,
       debugShowCheckedModeBanner: false,
       home: const SplashScreen(),
     );
