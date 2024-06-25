@@ -24,14 +24,14 @@ class _SigninState extends State<Signin> {
   bool isRegisted = false;
   bool _obscureText = true;
   final emailController = TextEditingController();
-  final passwordController = TextEditingController(); 
+  final passwordController = TextEditingController();
   bool _isLoading = false; // Add this line
 
   Future<void> save() async {
     setState(() {
-    _isLoading = true; // Set loading state to true
-  });
-  
+      _isLoading = true; // Set loading state to true
+    });
+
     final dio = Dio();
     try {
       final response = await dio.post(
@@ -46,11 +46,12 @@ class _SigninState extends State<Signin> {
           'password': user.password,
         },
       );
+      print('Response: $response');
 
       if (response.statusCode == 200) {
-        print('Userid ' + response.data);
+        // print('Userid ' + response.data);
 
-        Map<String, dynamic> deviceInfo = await getDeviceInfo();
+        Map<String,dynamic> deviceInfo = await getDeviceInfo();
         print(deviceInfo);
         String deviceName = deviceInfo['model']; // Get the device name
         String deviceModel = deviceInfo['manufacturer']; // Get the device model
@@ -65,7 +66,7 @@ class _SigninState extends State<Signin> {
             deviceModel,
           );
         }
-        await saveUserDataToLocalStorage(response.data);
+        await saveUserDataToLocalStorage(response.data['userId']);
         prefs.setBool('showHome', true);
 
         Navigator.push(
@@ -78,10 +79,17 @@ class _SigninState extends State<Signin> {
           resMsg,
           const Color.fromARGB(255, 76, 175, 80),
         );
-       // Dismiss the loading dialog after successful login
-      
+        // Dismiss the loading dialog after successful login
       } else {
         print("Invalid response ${response.statusCode}: ${response.data}");
+        ToastMsg.showToastMsg(
+          context,
+          'Login Failed Please try again',
+          Color.fromARGB(255, 255, 37, 37),
+        );
+        setState(() {
+          _isLoading = false; // Set loading state to true
+        });
       }
     } catch (e) {
       print("Error occurred: $e");
@@ -92,6 +100,9 @@ class _SigninState extends State<Signin> {
         Color.fromARGB(255, 255, 37, 37),
       );
       // Handle error, show toast or snackbar
+      setState(() {
+        _isLoading = false; // Set loading state to true
+      });
     }
   }
 
@@ -100,13 +111,11 @@ class _SigninState extends State<Signin> {
     '',
     '',
   );
-  
-
 
   @override
   Widget build(BuildContext context) {
     return ModalProgressHUD(
-       inAsyncCall: _isLoading,
+      inAsyncCall: _isLoading,
       child: Scaffold(
           body: Stack(
         children: [
@@ -169,10 +178,12 @@ class _SigninState extends State<Signin> {
                                     const BorderSide(color: Colors.purple)),
                             errorBorder: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(16),
-                                borderSide: const BorderSide(color: Colors.red)),
+                                borderSide:
+                                    const BorderSide(color: Colors.red)),
                             focusedErrorBorder: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(16),
-                                borderSide: const BorderSide(color: Colors.red))),
+                                borderSide:
+                                    const BorderSide(color: Colors.red))),
                       ),
                     ),
                     Padding(
@@ -213,10 +224,12 @@ class _SigninState extends State<Signin> {
                                     const BorderSide(color: Colors.purple)),
                             errorBorder: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(16),
-                                borderSide: const BorderSide(color: Colors.red)),
+                                borderSide:
+                                    const BorderSide(color: Colors.red)),
                             focusedErrorBorder: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(16),
-                                borderSide: const BorderSide(color: Colors.red))),
+                                borderSide:
+                                    const BorderSide(color: Colors.red))),
                       ),
                     ),
                     Padding(
@@ -246,8 +259,8 @@ class _SigninState extends State<Signin> {
                           ),
                           onPressed: () async {
                             if (_formKey.currentState!.validate()) {
+                              print('save called');
                               await save(); // Wait for the save function to complete
-                             
                             } else {
                               print("not ok");
                             }
@@ -266,7 +279,8 @@ class _SigninState extends State<Signin> {
                           Text(
                             "Not have Account ? ",
                             style: TextStyle(
-                              color: Get.isDarkMode ? Colors.white : Colors.black,
+                              color:
+                                  Get.isDarkMode ? Colors.white : Colors.black,
                               fontWeight: FontWeight.bold,
                             ),
                           ),
