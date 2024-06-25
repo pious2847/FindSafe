@@ -61,7 +61,7 @@ class _SigninState extends State<Signin> {
 
         if (!isRegisted) {
           await addDeviceInfo(
-            response.data,
+            response.data['userId'],
             deviceName,
             deviceModel,
           );
