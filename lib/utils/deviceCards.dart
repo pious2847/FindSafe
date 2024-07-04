@@ -2,7 +2,6 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:iconsax_flutter/iconsax_flutter.dart';
 import 'package:lost_mode_app/models/devices.dart';
-import 'package:lost_mode_app/services/alarm_service.dart';
 import 'package:lost_mode_app/services/websocket_service.dart';
 import 'package:web_socket_channel/io.dart';
 
@@ -24,7 +23,6 @@ class DevicesCards extends StatefulWidget {
 
 class _DevicesCardsState extends State<DevicesCards> {
   IOWebSocketChannel? _channel;
-  final AlarmService _alarmService = AlarmService();
   final WebSocketService _webSocketService = WebSocketService();
 
   @override
