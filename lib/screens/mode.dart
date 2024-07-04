@@ -3,6 +3,7 @@ import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:iconsax_flutter/iconsax_flutter.dart';
 import 'package:lost_mode_app/main.dart';
 import 'package:lost_mode_app/models/settings_model.dart';
+import 'package:lost_mode_app/services/alarm_service.dart';
 import 'package:lost_mode_app/services/settings_service.dart';
 import 'package:lost_mode_app/utils/messages.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -15,8 +16,9 @@ class DeviceModes extends StatefulWidget {
 }
 
 class _DeviceModesState extends State<DeviceModes> {
-   bool _isLostMode = false;
+  bool _isLostMode = false;
   bool _isActiveMode = true;
+  final _alarm_service = AlarmService();
   
   @override
   void initState() {
@@ -24,29 +26,6 @@ class _DeviceModesState extends State<DeviceModes> {
     super.initState();
   }
 
-  Future<void> showLostModeNotification() async {
-    const androidPlatformChannelSpecifics = AndroidNotificationDetails(
-      'lost_mode_channel',
-      'Lost Mode',
-      importance: Importance.max,
-      priority: Priority.high,
-      ticker: 'ticker',
-    );
-    // const iOSPlatformChannelSpecifics = IOSNotificationDetails();
-    const platformChannelSpecifics = NotificationDetails(
-      android: androidPlatformChannelSpecifics,
-      // iOS: iOSPlatformChannelSpecifics,
-    );
-
-    await flutterLocalNotificationsPlugin.show(
-      0,
-      'Security Alert',
-      'Your device has been put in lost mode.',
-      platformChannelSpecifics,
-      payload: 'lost_mode_notification',
-    );
-  }
- 
   Future<void> _loadModes() async {
     final prefs = await SharedPreferences.getInstance();
     setState(() {
@@ -55,12 +34,12 @@ class _DeviceModesState extends State<DeviceModes> {
     });
   }
 
-   Future<void> handleModeUpdate(String mode) async {
+  Future<void> handleModeUpdate(String mode) async {
     bool proceedWithUpdate = await showConfirmationDialog(context, mode);
 
     if (proceedWithUpdate) {
       final prefs = await SharedPreferences.getInstance();
-     final responseMessage =  await updatemode(mode);
+      final responseMessage = await updatemode(mode);
 
       if (mode == 'active') {
         await prefs.setBool('isLostMode', false);
@@ -68,7 +47,8 @@ class _DeviceModesState extends State<DeviceModes> {
       } else if (mode == 'disable') {
         await prefs.setBool('isActiveMode', false);
         await prefs.setBool('isLostMode', true);
-        await showLostModeNotification(); // Show notification when lost mode is enabled
+        await _alarm_service
+            .showLostModeNotification(); // Show notification when lost mode is enabled
       }
 
       print('resmsg:  $responseMessage');
@@ -87,7 +67,7 @@ class _DeviceModesState extends State<DeviceModes> {
 
   @override
   Widget build(BuildContext context) {
-    return  Scaffold(
+    return Scaffold(
       appBar: AppBar(
         title: const Text(
           "Modes",
@@ -95,60 +75,59 @@ class _DeviceModesState extends State<DeviceModes> {
         ),
       ),
       body: Container(
-          constraints: const BoxConstraints(maxWidth: 400),
+        constraints: const BoxConstraints(maxWidth: 400),
         child: ListView(
           children: [
-           SingleSection(title: "Modes", children: [
-                const Divider(),
-                CustomListTile(
-                  icon: Iconsax.danger_copy,
-                  title: "Lost Mode",
-                  trailing: Switch(
-                    value: _isLostMode,
-                    onChanged: (value) async {
-                      bool proceedWithUpdate = await showConfirmationDialog(
-                          context, value ? 'disable' : 'active');
-                      if (proceedWithUpdate) {
-                        setState(() {
-                          _isLostMode = value;
-                          _isActiveMode =
-                              !value; // Set active mode to the opposite of lost mode
-                          handleModeUpdate(value ? 'disable' : 'active');
-                        });
-                      }
-                    },
-                  ),
+            SingleSection(title: "Modes", children: [
+              const Divider(),
+              CustomListTile(
+                icon: Iconsax.danger_copy,
+                title: "Lost Mode",
+                trailing: Switch(
+                  value: _isLostMode,
+                  onChanged: (value) async {
+                    bool proceedWithUpdate = await showConfirmationDialog(
+                        context, value ? 'disable' : 'active');
+                    if (proceedWithUpdate) {
+                      setState(() {
+                        _isLostMode = value;
+                        _isActiveMode =
+                            !value; // Set active mode to the opposite of lost mode
+                        handleModeUpdate(value ? 'disable' : 'active');
+                      });
+                    }
+                  },
                 ),
-                const Divider(),
-                CustomListTile(
-                  icon: Iconsax.activity_copy,
-                  title: "Active Mode",
-                  trailing: Switch(
-                    value: _isActiveMode,
-                    onChanged: (value) async {
-                      bool proceedWithUpdate = await showConfirmationDialog(
-                          context, value ? 'active' : 'disable');
-                      if (proceedWithUpdate) {
-                        setState(() {
-                          _isActiveMode = value;
-                          _isLostMode =
-                              !value; // Set lost mode to the opposite of active mode
-                          handleModeUpdate(value ? 'active' : 'disable');
-                        });
-                      }
-                    },
-                  ),
+              ),
+              const Divider(),
+              CustomListTile(
+                icon: Iconsax.activity_copy,
+                title: "Active Mode",
+                trailing: Switch(
+                  value: _isActiveMode,
+                  onChanged: (value) async {
+                    bool proceedWithUpdate = await showConfirmationDialog(
+                        context, value ? 'active' : 'disable');
+                    if (proceedWithUpdate) {
+                      setState(() {
+                        _isActiveMode = value;
+                        _isLostMode =
+                            !value; // Set lost mode to the opposite of active mode
+                        handleModeUpdate(value ? 'active' : 'disable');
+                      });
+                    }
+                  },
                 ),
-                const Divider(),
-              ]),
-             
+              ),
+              const Divider(),
+            ]),
           ],
         ),
       ),
     );
   }
 
- Future showConfirmationDialog(BuildContext context, String mode) {
+  Future showConfirmationDialog(BuildContext context, String mode) {
     return showDialog(
       context: context,
       barrierDismissible: false, // User must tap a button to dismiss the dialog
@@ -178,5 +157,4 @@ class _DeviceModesState extends State<DeviceModes> {
       },
     );
   }
-
 }

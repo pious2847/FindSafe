@@ -1,10 +1,8 @@
 import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:iconsax_flutter/iconsax_flutter.dart';
 import 'package:lost_mode_app/models/devices.dart';
 import 'package:lost_mode_app/services/alarm_service.dart';
-import 'package:lost_mode_app/services/devices.dart';
 import 'package:lost_mode_app/services/websocket_service.dart';
 import 'package:web_socket_channel/io.dart';
 
@@ -27,41 +25,36 @@ class DevicesCards extends StatefulWidget {
 class _DevicesCardsState extends State<DevicesCards> {
   IOWebSocketChannel? _channel;
   final AlarmService _alarmService = AlarmService();
+  final WebSocketService _webSocketService = WebSocketService();
+
+  @override
+  void initState() {
+    super.initState();
+    _webSocketService.connect();
+  }
 
   @override
   void dispose() {
+    _webSocketService.disconnect();
     _channel?.sink.close();
     super.dispose();
   }
 
   Future<void> _sendAlarmCommand(String deviceId) async {
     try {
-      final result = await ApiService.sendAlarmCommand(deviceId);
-      if (result['success']) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Alarm command sent successfully')),
-        );
-        _connectWebSocket(deviceId);
-      } else {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Failed to send alarm command')),
-        );
-      }
+      final command = jsonEncode({
+        'deviceId': deviceId,
+        'command': 'play_alarm',
+      });
+      _webSocketService.sendCommand(command);
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Alarm command sent successfully')),
+      );
     } catch (error) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text('Error: $error')),
       );
     }
-  }
-
-  void _connectWebSocket(String deviceId) {
-    _channel = WebSocketService.connect(deviceId);
-    _channel!.stream.listen((message) {
-      final data = json.decode(message);
-      if (data['command'] == 'play_alarm') {
-        _alarmService.playAlarm();
-      }
-    });
   }
 
   @override
@@ -144,17 +137,5 @@ class _DevicesCardsState extends State<DevicesCards> {
         ),
       ],
     );
-  }
-}
-
-
-class CommandNotifier extends ChangeNotifier {
-  List<String> _commands = [];
-
-  List<String> get commands => _commands;
-
-  void addCommand(String command) {
-    _commands.add(command);
-    notifyListeners();
   }
 }

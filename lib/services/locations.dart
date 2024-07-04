@@ -90,4 +90,6 @@ Future<LatLng?> fetchLatestLocation(String deviceId) async {
     }
     return null;
   }
+
+
 }

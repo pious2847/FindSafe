@@ -5,6 +5,7 @@ import 'package:iconsax_flutter/iconsax_flutter.dart';
 import 'package:lost_mode_app/main.dart';
 import 'package:lost_mode_app/models/settings_model.dart';
 import 'package:lost_mode_app/screens/about.dart';
+import 'package:lost_mode_app/services/alarm_service.dart';
 import 'package:lost_mode_app/services/settings_service.dart';
 import 'package:lost_mode_app/utils/messages.dart';
 import 'package:lost_mode_app/theme/theme_controller.dart';
@@ -20,6 +21,8 @@ class Settings extends StatefulWidget {
 class _SettingsState extends State<Settings> {
   bool _isLostMode = false;
   bool _isActiveMode = true;
+  final _alarm_service = AlarmService();
+
   final ThemeController themeController = Get.find();
   @override
   void initState() {
@@ -27,28 +30,7 @@ class _SettingsState extends State<Settings> {
     super.initState();
   }
 
-  Future<void> showLostModeNotification() async {
-    const androidPlatformChannelSpecifics = AndroidNotificationDetails(
-      'lost_mode_channel',
-      'Lost Mode',
-      importance: Importance.max,
-      priority: Priority.high,
-      ticker: 'ticker',
-    );
-    // const iOSPlatformChannelSpecifics = IOSNotificationDetails();
-    const platformChannelSpecifics = NotificationDetails(
-      android: androidPlatformChannelSpecifics,
-      // iOS: iOSPlatformChannelSpecifics,
-    );
-
-    await flutterLocalNotificationsPlugin.show(
-      0,
-      'Lost Mode Enabled',
-      'Your device has been put in lost mode.',
-      platformChannelSpecifics,
-      payload: 'lost_mode_notification',
-    );
-  }
+  
 
   Future<void> _loadModes() async {
     final prefs = await SharedPreferences.getInstance();
@@ -70,7 +52,7 @@ class _SettingsState extends State<Settings> {
       } else if (mode == 'disable') {
         await prefs.setBool('isActiveMode', false);
         await prefs.setBool('isLostMode', true);
-        await showLostModeNotification(); // Show notification when lost mode is enabled
+        await _alarm_service.showLostModeNotification(); // Show notification when lost mode is enabled
       }
 
       print('resmsg:  $responseMessage');
