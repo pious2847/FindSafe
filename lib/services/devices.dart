@@ -56,7 +56,8 @@ Future<void> deleteDevices(String deviceId) async {
     throw Exception('Failed to delete device');
   }
 }
-static Future<Map<String, dynamic>> sendAlarmCommand(String deviceId) async {
+
+Future<Map<String, dynamic>> sendAlarmCommand(String deviceId) async {
   final dio = Dio();
     final url = '$APIURL/device/$deviceId/alarm';
     final response = await dio.post(url);
@@ -66,6 +67,8 @@ static Future<Map<String, dynamic>> sendAlarmCommand(String deviceId) async {
       throw Exception('Error: ${response.data}');
     }
   }
+
+
 }
 
 

@@ -1,8 +1,4 @@
-import 'package:dio/dio.dart';
-import 'package:geolocator/geolocator.dart';
 import 'package:location/location.dart';
-import 'package:lost_mode_app/.env.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class LocationService {
   final Location _location = Location();

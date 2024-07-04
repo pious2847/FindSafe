@@ -1,8 +1,10 @@
+import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 
 class AlarmService {
   final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
       FlutterLocalNotificationsPlugin();
+      final AudioPlayer _audioPlayer = AudioPlayer();
 
   AlarmService() {
     _initializeNotifications();
@@ -18,7 +20,7 @@ class AlarmService {
     );
   }
 
-  void playAlarm() {
+  void playAlarm() async {
     const androidPlatformChannelSpecifics = AndroidNotificationDetails(
       'alarm_channel',
       'Alarm Notifications',
@@ -36,6 +38,8 @@ class AlarmService {
       platformChannelSpecifics,
       payload: 'alarm',
     );
+    await _audioPlayer.play(AssetSource('assets/audio/alarmtone.mp3'));
+
   }
     Future<void> showLostModeNotification() async {
     const androidPlatformChannelSpecifics = AndroidNotificationDetails(

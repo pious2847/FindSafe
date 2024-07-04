@@ -10,7 +10,6 @@ void main() async {
 
  WidgetsFlutterBinding.ensureInitialized();
   await initializeBackgroundService();
-
   runApp(
   MyApp(),
   );

@@ -11,6 +11,7 @@ import 'notification_service.dart';
 Geolocator? _geolocator;
 
 // This is the top level function called by WorkManager
+@pragma('vm:entry-point')
 void callbackDispatcher() {
   Workmanager().executeTask((task, inputData) async {
     _geolocator ??= Geolocator();
@@ -23,9 +24,9 @@ void callbackDispatcher() {
 
     // Handle location update task
     if (task == 'updateLocation') {
-     print('Task start');
+      print('Task start');
       await updateLocationTask(_geolocator!);
-        print('Task completed at ${DateTime.now()}');
+      print('Task completed at ${DateTime.now()}');
     }
 
     return Future.value(true);
@@ -33,7 +34,9 @@ void callbackDispatcher() {
 }
 
 Future<void> initializeBackgroundService() async {
-  final isLocationPermissionGranted = await LocationService().isLocationPermissionGranted();
+  final _locationservice = LocationService();
+  final isLocationPermissionGranted =
+      await _locationservice.isLocationPermissionGranted();
   if (isLocationPermissionGranted) {
     // Initialize the WorkManager
     await Workmanager().initialize(
@@ -67,7 +70,7 @@ Future<void> updateLocationTask(Geolocator geolocator) async {
     final deviceId = deviceData.getString('deviceId');
 
     // await updateLocation(deviceId!, currentPosition);
-     if (deviceId != null) {
+    if (deviceId != null) {
       await updateLocation(deviceId, currentPosition);
     } else {
       print('Device ID not found in SharedPreferences');
@@ -78,7 +81,8 @@ Future<void> updateLocationTask(Geolocator geolocator) async {
 }
 
 Future<void> updateLocation(String deviceId, Position position) async {
-  print('The passed Location Cordinates are ${position.latitude}  ${position.longitude} ');
+  print(
+      'The passed Location Cordinates are ${position.latitude}  ${position.longitude} ');
   final dio = Dio();
   const url = '$APIURL/update-location';
   final data = {

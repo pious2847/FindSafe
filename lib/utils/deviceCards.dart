@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:iconsax_flutter/iconsax_flutter.dart';
 import 'package:lost_mode_app/models/devices.dart';
+import 'package:lost_mode_app/services/devices.dart';
 import 'package:lost_mode_app/services/websocket_service.dart';
 import 'package:web_socket_channel/io.dart';
 
@@ -24,6 +25,7 @@ class DevicesCards extends StatefulWidget {
 class _DevicesCardsState extends State<DevicesCards> {
   IOWebSocketChannel? _channel;
   final WebSocketService _webSocketService = WebSocketService();
+  final _ApiServics = ApiService();
 
   @override
   void initState() {
@@ -40,11 +42,13 @@ class _DevicesCardsState extends State<DevicesCards> {
 
   Future<void> _sendAlarmCommand(String deviceId) async {
     try {
-      final command = jsonEncode({
-        'deviceId': deviceId,
-        'command': 'play_alarm',
-      });
-      _webSocketService.sendCommand(command);
+      // final command = jsonEncode({
+      //   'deviceId': deviceId,
+      //   'command': 'play_alarm',
+      // });
+      // _webSocketService.sendCommand(command);
+      await _ApiServics.sendAlarmCommand(deviceId);
+      
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text('Alarm command sent successfully')),
       );
@@ -81,7 +85,7 @@ class _DevicesCardsState extends State<DevicesCards> {
                       await _sendAlarmCommand(widget.phone.id);
                     } else {
                       ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(content: Text('Please enter a Device ID')),
+                        SnackBar(content: Text('Failed to send alarm')),
                       );
                     }
                   },
