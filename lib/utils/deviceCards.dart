@@ -42,13 +42,13 @@ class _DevicesCardsState extends State<DevicesCards> {
 
   Future<void> _sendAlarmCommand(String deviceId) async {
     try {
-      // final command = jsonEncode({
-      //   'deviceId': deviceId,
-      //   'command': 'play_alarm',
-      // });
-      // _webSocketService.sendCommand(command);
-      await _ApiServics.sendAlarmCommand(deviceId);
-      
+      final command = jsonEncode({
+        'deviceId': deviceId,
+        'command': 'play_alarm',
+      });
+      _webSocketService.sendCommand(command);
+      // await _ApiServics.sendAlarmCommand(deviceId);
+
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text('Alarm command sent successfully')),
       );
