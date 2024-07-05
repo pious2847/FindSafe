@@ -23,11 +23,17 @@ class WebSocketService {
       Uri.parse('$webSocketUrl/$deviceId'),
     );
 
+    await _channel.ready;
+
     _channel.stream.listen((message) {
-      print('Received $message');
       try {
-        final data = jsonDecode(message);
+        final String stringMessage = String.fromCharCodes(message);
+      print('Received $stringMessage');
+
+        final data = jsonDecode(stringMessage);
+         print('Received data:  $data');
         final String command = data['command'];
+         print('Received command:  $data');
 
         switch (command) {
           case 'play_alarm':
