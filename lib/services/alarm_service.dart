@@ -5,7 +5,7 @@ class AlarmService {
   final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
       FlutterLocalNotificationsPlugin();
       final AudioPlayer _audioPlayer = AudioPlayer();
-
+  
   AlarmService() {
     _initializeNotifications();
   }
@@ -27,6 +27,11 @@ class AlarmService {
       importance: Importance.max,
       priority: Priority.high,
       sound: RawResourceAndroidNotificationSound('alarm'), // Make sure to add an alarm sound file in your res/raw folder
+       actions: [
+            AndroidNotificationAction('12', 'close')
+          ],
+          playSound: true,
+    enableVibration: true,
     );
     const platformChannelSpecifics = NotificationDetails(
       android: androidPlatformChannelSpecifics,
@@ -39,10 +44,11 @@ class AlarmService {
       payload: 'alarm',
     );
 
-    // await _audioPlayer.play(AssetSource('assets/audio/alarm.mp3'));
+    await _audioPlayer.play(AssetSource('assets/audio/alarm.mp3'));
 
   }
-    Future<void> showLostModeNotification() async {
+  
+  Future<void> showLostModeNotification() async {
     const androidPlatformChannelSpecifics = AndroidNotificationDetails(
       'lost_mode_channel',
       'Lost Mode',
