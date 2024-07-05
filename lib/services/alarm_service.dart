@@ -39,7 +39,7 @@ class AlarmService {
       payload: 'alarm',
     );
 
-    await _audioPlayer.play(AssetSource('assets/audio/alarm.mp3'));
+    // await _audioPlayer.play(AssetSource('assets/audio/alarm.mp3'));
 
   }
     Future<void> showLostModeNotification() async {
