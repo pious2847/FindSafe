@@ -24,13 +24,26 @@ class WebSocketService {
     );
 
     _channel.stream.listen((message) {
-      print('Revieved $message');
-      // Parse the command and execute it
-      final data = jsonDecode(message);
-      if (data['command'] == 'play_alarm') {
-        _AlarmService.playAlarm();
+      print('Received $message');
+      try {
+        final data = jsonDecode(message);
+        final String command = data['command'];
+
+        switch (command) {
+          case 'play_alarm':
+            _AlarmService.playAlarm();
+            break;
+          case 'other_command':
+            print('unknown command');
+            break;
+          default:
+            print('Unknown command: $command');
+        }
+      } catch (e) {
+        print('Error decoding or handling message: $e');
       }
     });
+  
   }
 
   void disconnect() {
