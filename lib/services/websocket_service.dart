@@ -34,17 +34,23 @@ class WebSocketService {
         final data = jsonDecode(stringMessage);
         print('Received data:  $data');
         final String command = data['command'];
-        print('Received command:  $data');
-        _receivedCommands.add(command);
-        switch (command) {
-          case 'play_alarm':
-            _AlarmService.playAlarm();
-            break;
-          case 'other_command':
-            print('unknown command');
-            break;
-          default:
-            print('Unknown command: $command');
+        final String targetDeviceId = data['deviceId'];
+        print('Current Device Id : $deviceId,    Target Device Id $targetDeviceId');
+        if (targetDeviceId == deviceId) {
+          print('Received command:  $data');
+          _receivedCommands.add(command);
+          switch (command) {
+            case 'play_alarm':
+              _AlarmService.playAlarm();
+              break;
+            case 'other_command':
+              print('unknown command');
+              break;
+            default:
+              print('Unknown command: $command');
+          }
+        } else {
+          return;
         }
       } catch (e) {
         print('Error decoding or handling message: $e');

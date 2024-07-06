@@ -30,7 +30,7 @@ class _DevicesCardsState extends State<DevicesCards> {
   @override
   void initState() {
     super.initState();
-    // _webSocketService.connect();
+    _webSocketService.connect();
   }
 
   // @override

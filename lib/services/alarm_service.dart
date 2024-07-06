@@ -31,12 +31,11 @@ class AlarmService {
       'Alarm Notifications',
       importance: Importance.max,
       priority: Priority.high,
-      sound: RawResourceAndroidNotificationSound(
-          'alarm'), // Make sure to add an alarm sound file in your res/raw folder
-
-      playSound: true,
+      ticker: 'ticker',
+      playSound: false,
       enableVibration: true,
     );
+    
     const platformChannelSpecifics = NotificationDetails(
       android: androidPlatformChannelSpecifics,
     );

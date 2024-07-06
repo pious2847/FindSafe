@@ -90,7 +90,7 @@ Future<void> checkForCommands() async {
     await executeCommand(command);
   }
   
-  webSocketService.disconnect();
+  // webSocketService.disconnect();
 }
 Future<void> executeCommand(String command) async {
   final alarmService = AlarmService();
