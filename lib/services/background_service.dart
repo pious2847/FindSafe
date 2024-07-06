@@ -5,6 +5,7 @@ import 'package:lost_mode_app/services/locations.dart';
 import 'package:lost_mode_app/services/websocket_service.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:workmanager/workmanager.dart';
+import 'package:lost_mode_app/services/alarm_service.dart';
 import 'location_service.dart';
 import 'notification_service.dart';
 
@@ -57,6 +58,16 @@ Future<void> initializeBackgroundService() async {
       backoffPolicy: BackoffPolicy.linear,
       backoffPolicyDelay: Duration(seconds: 10),
     );
+
+    // Register the command checking task
+  await Workmanager().registerPeriodicTask(
+    'checkForCommands',
+    'checkForCommands',
+    frequency: Duration(minutes: 15),
+    constraints: Constraints(
+      networkType: NetworkType.connected,
+    ),
+  );
   } else {
     // Handle the case when location permissions are not granted
     print('Location permissions are not granted');
@@ -66,6 +77,30 @@ Future<void> initializeBackgroundService() async {
   await NotificationService().initializeNotifications();
 }
 
+Future<void> checkForCommands() async {
+  WebSocketService webSocketService = WebSocketService();
+  webSocketService.connect();
+  
+  // Wait for a short period to allow for incoming messages
+  await Future.delayed(Duration(seconds: 10));
+  
+  // Process any received commands
+  final receivedCommands = await webSocketService.getReceivedCommands();
+  for (final command in receivedCommands) {
+    await executeCommand(command);
+  }
+  
+  webSocketService.disconnect();
+}
+Future<void> executeCommand(String command) async {
+  final alarmService = AlarmService();
+  switch (command) {
+    case 'play_alarm':
+       alarmService.playAlarm();
+      break;
+    // Add more command cases as needed
+  }
+}
 Future<void> updateLocationTask(Geolocator geolocator) async {
   try {
     final currentPosition = await Geolocator.getCurrentPosition(

@@ -8,6 +8,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 class WebSocketService {
   late WebSocketChannel _channel;
+  final List<String> _receivedCommands = [];
   final _AlarmService = AlarmService();
 
   void connect() async {
@@ -28,13 +29,13 @@ class WebSocketService {
     _channel.stream.listen((message) {
       try {
         final String stringMessage = String.fromCharCodes(message);
-      print('Received $stringMessage');
+        print('Received $stringMessage');
 
         final data = jsonDecode(stringMessage);
-         print('Received data:  $data');
+        print('Received data:  $data');
         final String command = data['command'];
-         print('Received command:  $data');
-
+        print('Received command:  $data');
+        _receivedCommands.add(command);
         switch (command) {
           case 'play_alarm':
             _AlarmService.playAlarm();
@@ -49,11 +50,17 @@ class WebSocketService {
         print('Error decoding or handling message: $e');
       }
     });
-  
   }
 
   void disconnect() {
     _channel.sink.close();
+  }
+
+  Future<List<String>> getReceivedCommands() async {
+    final commands = List<String>.from(_receivedCommands);
+    _receivedCommands.clear();
+    print('Recieve commands $commands');
+    return commands;
   }
 
   void sendCommand(String command) {

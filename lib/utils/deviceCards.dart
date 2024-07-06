@@ -23,22 +23,22 @@ class DevicesCards extends StatefulWidget {
 }
 
 class _DevicesCardsState extends State<DevicesCards> {
-  IOWebSocketChannel? _channel;
+  // IOWebSocketChannel? _channel;
   final WebSocketService _webSocketService = WebSocketService();
   final _ApiServics = ApiService();
 
   @override
   void initState() {
     super.initState();
-    _webSocketService.connect();
+    // _webSocketService.connect();
   }
 
-  @override
-  void dispose() {
-    _webSocketService.disconnect();
-    _channel?.sink.close();
-    super.dispose();
-  }
+  // @override
+  // void dispose() {
+  //   _webSocketService.disconnect();
+  //   _channel?.sink.close();
+  //   super.dispose();
+  // }
 
   Future<void> _sendAlarmCommand(String deviceId) async {
     try {
