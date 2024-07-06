@@ -45,6 +45,17 @@ Future<void> initializeBackgroundService() async {
       'updateLocation',
       'updateLocation',
       frequency: const Duration(minutes: 15),
+      initialDelay: Duration(seconds: 10),
+      constraints: Constraints(
+        networkType: NetworkType.connected,
+        requiresBatteryNotLow: true,
+        requiresCharging: false,
+        requiresDeviceIdle: false,
+        requiresStorageNotLow: false,
+      ),
+      existingWorkPolicy: ExistingWorkPolicy.replace,
+      backoffPolicy: BackoffPolicy.linear,
+      backoffPolicyDelay: Duration(seconds: 10),
     );
   } else {
     // Handle the case when location permissions are not granted
