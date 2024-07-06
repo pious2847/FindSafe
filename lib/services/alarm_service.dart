@@ -1,17 +1,22 @@
+import 'dart:async';
+
 import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 
 class AlarmService {
+  
   final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
       FlutterLocalNotificationsPlugin();
-      final AudioPlayer _audioPlayer = AudioPlayer();
-  
+  late AudioPlayer _player;
+  int _playCount = 0;
+
   AlarmService() {
     _initializeNotifications();
   }
 
   void _initializeNotifications() async {
-    const initializationSettingsAndroid = AndroidInitializationSettings('@mipmap/ic_launcher');
+    const initializationSettingsAndroid =
+        AndroidInitializationSettings('@mipmap/ic_launcher');
     const initializationSettings = InitializationSettings(
       android: initializationSettingsAndroid,
     );
@@ -26,12 +31,11 @@ class AlarmService {
       'Alarm Notifications',
       importance: Importance.max,
       priority: Priority.high,
-      sound: RawResourceAndroidNotificationSound('alarm'), // Make sure to add an alarm sound file in your res/raw folder
-       actions: [
-            AndroidNotificationAction('12', 'close')
-          ],
-          playSound: true,
-    enableVibration: true,
+      sound: RawResourceAndroidNotificationSound(
+          'alarm'), // Make sure to add an alarm sound file in your res/raw folder
+
+      playSound: true,
+      enableVibration: true,
     );
     const platformChannelSpecifics = NotificationDetails(
       android: androidPlatformChannelSpecifics,
@@ -43,11 +47,37 @@ class AlarmService {
       platformChannelSpecifics,
       payload: 'alarm',
     );
+  _player = AudioPlayer();
+  _playCount = 0;
 
-    await _audioPlayer.play(AssetSource('assets/audio/alarm.mp3'));
-
+    playAudioThreeTimes();
   }
-  
+
+  void playAudioThreeTimes() async {
+    if (_playCount < 3) {
+      try {
+        print('Playing audio. Count: $_playCount');
+        await _player.setSource(AssetSource('audio/alarm.mp3'));
+        await _player.resume();
+        _playCount++;
+
+        // Wait for the audio to finish before playing again
+        _player.onPlayerComplete.listen((_) {
+          print('Audio completed. Play count: $_playCount');
+          if (_playCount < 3) {
+            playAudioThreeTimes();
+          } else {
+            print('Finished playing 3 times. Stopping.');
+            _player.stop();
+            _player.dispose();
+          }
+        });
+      } catch (e) {
+        print('Error playing audio: $e');
+      }
+    }
+  }
+
   Future<void> showLostModeNotification() async {
     const androidPlatformChannelSpecifics = AndroidNotificationDetails(
       'lost_mode_channel',
@@ -70,5 +100,4 @@ class AlarmService {
       payload: 'lost_mode_notification',
     );
   }
- 
 }

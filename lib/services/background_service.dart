@@ -19,9 +19,6 @@ void callbackDispatcher() {
     WebSocketService webSocketService = WebSocketService();
     webSocketService.connect();
 
-    // Keep the WebSocket connection open
-    // You may need to periodically ping the server or reconnect as necessary
-
     // Handle location update task
     if (task == 'updateLocation') {
       print('Task start');
