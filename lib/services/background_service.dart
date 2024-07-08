@@ -4,6 +4,7 @@ import 'package:lost_mode_app/.env.dart';
 import 'package:lost_mode_app/services/locations.dart';
 import 'package:lost_mode_app/services/websocket_service.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:flutter_background/flutter_background.dart';
 import 'package:workmanager/workmanager.dart';
 import 'package:lost_mode_app/services/alarm_service.dart';
 import 'location_service.dart';
@@ -11,12 +12,13 @@ import 'notification_service.dart';
 
 Geolocator? _geolocator;
 
-// This is the top level function called by WorkManager
+
 @pragma('vm:entry-point')
 void callbackDispatcher() {
   Workmanager().executeTask((task, inputData) async {
     _geolocator ??= Geolocator();
 
+    // Ensure WebSocket connection is handled properly
     WebSocketService webSocketService = WebSocketService();
     webSocketService.connect();
 
@@ -27,22 +29,44 @@ void callbackDispatcher() {
       print('Task completed at ${DateTime.now()}');
     }
 
+    // Handle command check task
+    if (task == 'checkForCommands') {
+      print('Checking for commands');
+      await checkForCommands();
+    }
+
     return Future.value(true);
   });
 }
+
 
 Future<void> initializeBackgroundService() async {
   final _locationservice = LocationService();
   final isLocationPermissionGranted =
       await _locationservice.isLocationPermissionGranted();
+
+
+      // Initialize background execution
+  final androidConfig = FlutterBackgroundAndroidConfig(
+    notificationTitle: "Lost Mode App",
+    notificationText: "Tracking your device's location",
+    notificationImportance: AndroidNotificationImportance.Default,
+  );
+
+  bool hasPermissions = await FlutterBackground.initialize(androidConfig: androidConfig);
+  if (hasPermissions)  {
+   await FlutterBackground.enableBackgroundExecution();
+  }
+
   if (isLocationPermissionGranted) {
     // Initialize the WorkManager
     await Workmanager().initialize(
       callbackDispatcher,
       isInDebugMode: false,
     );
+
     // Register the periodic task
-    await Workmanager().registerPeriodicTask(
+   await Workmanager().registerPeriodicTask(
       'updateLocation',
       'updateLocation',
       frequency: const Duration(minutes: 15),
@@ -61,13 +85,13 @@ Future<void> initializeBackgroundService() async {
 
     // Register the command checking task
   await Workmanager().registerPeriodicTask(
-    'checkForCommands',
-    'checkForCommands',
-    frequency: Duration(minutes: 15),
-    constraints: Constraints(
-      networkType: NetworkType.connected,
-    ),
-  );
+      'checkForCommands',
+      'checkForCommands',
+      frequency: Duration(minutes: 15),
+      constraints: Constraints(
+        networkType: NetworkType.connected,
+      ),
+    );
   } else {
     // Handle the case when location permissions are not granted
     print('Location permissions are not granted');
