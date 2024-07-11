@@ -7,10 +7,10 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 class WebSocketService {
   late WebSocketChannel _channel;
-  final List<String> _receivedCommands = [];
   final _AlarmService = AlarmService();
   Timer? _reconnectTimer;
 
+  
   void connect() async {
     final deviceData = await SharedPreferences.getInstance();
     final deviceId = deviceData.getString('deviceId');
@@ -46,7 +46,6 @@ class WebSocketService {
       print('Current Device Id : $deviceId,    Target Device Id $targetDeviceId');
       if (targetDeviceId == deviceId) {
         print('Received command:  $data');
-        _receivedCommands.add(command);
         switch (command) {
           case 'play_alarm':
             _AlarmService.playAlarm();

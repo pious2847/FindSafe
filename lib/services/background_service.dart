@@ -29,8 +29,6 @@ void callbackDispatcher() {
       print('Task completed at ${DateTime.now()}');
     }
 
-  
-
     return Future.value(true);
   });
 }
