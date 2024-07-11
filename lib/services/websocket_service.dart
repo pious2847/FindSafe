@@ -80,13 +80,6 @@ class WebSocketService {
     }
   }
 
-  Future<List<String>> getReceivedCommands() async {
-    final commands = List<String>.from(_receivedCommands);
-    _receivedCommands.clear();
-    print('Received commands $commands');
-    return commands;
-  }
-
   void sendCommand(String command) {
     _channel.sink.add(command);
   }

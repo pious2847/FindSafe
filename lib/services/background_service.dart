@@ -29,11 +29,7 @@ void callbackDispatcher() {
       print('Task completed at ${DateTime.now()}');
     }
 
-    // Handle command check task
-    if (task == 'checkForCommands') {
-      print('Checking for commands');
-      await checkForCommands();
-    }
+  
 
     return Future.value(true);
   });
@@ -83,15 +79,7 @@ Future<void> initializeBackgroundService() async {
       backoffPolicyDelay: Duration(seconds: 10),
     );
 
-    // Register the command checking task
-  await Workmanager().registerPeriodicTask(
-      'checkForCommands',
-      'checkForCommands',
-      frequency: Duration(minutes: 15),
-      constraints: Constraints(
-        networkType: NetworkType.connected,
-      ),
-    );
+ 
   } else {
     // Handle the case when location permissions are not granted
     print('Location permissions are not granted');
@@ -101,30 +89,7 @@ Future<void> initializeBackgroundService() async {
   await NotificationService().initializeNotifications();
 }
 
-Future<void> checkForCommands() async {
-  WebSocketService webSocketService = WebSocketService();
-  webSocketService.connect();
-  
-  // Wait for a short period to allow for incoming messages
-  await Future.delayed(Duration(seconds: 10));
-  
-  // Process any received commands
-  final receivedCommands = await webSocketService.getReceivedCommands();
-  for (final command in receivedCommands) {
-    await executeCommand(command);
-  }
-  
-  // webSocketService.disconnect();
-}
-Future<void> executeCommand(String command) async {
-  final alarmService = AlarmService();
-  switch (command) {
-    case 'play_alarm':
-       alarmService.playAlarm();
-      break;
-    // Add more command cases as needed
-  }
-}
+
 Future<void> updateLocationTask(Geolocator geolocator) async {
   try {
     final currentPosition = await Geolocator.getCurrentPosition(
