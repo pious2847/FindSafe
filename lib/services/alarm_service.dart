@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:audioplayers/audioplayers.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 
 class AlarmService {
@@ -24,7 +25,17 @@ class AlarmService {
       initializationSettings,
     );
   }
-
+   void _lockDevice(String message) async {
+    // Implement device locking logic here
+    // This might involve using platform-specific code
+    // For example, on Android:
+    const platform = MethodChannel('com.example.app/device_admin');
+    try {
+      await platform.invokeMethod('lockDevice', {'message': message});
+    } on PlatformException catch (e) {
+      print("Failed to lock device: '${e.message}'.");
+    }
+  }
   void playAlarm() async {
     const androidPlatformChannelSpecifics = AndroidNotificationDetails(
       'alarm_channel',
