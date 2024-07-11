@@ -24,8 +24,10 @@ void callbackDispatcher() {
 
     // Handle location update task
     if (task == 'updateLocation') {
+
       print('Task start');
       await updateLocationTask(_geolocator!);
+   
       print('Task completed at ${DateTime.now()}');
     }
 
