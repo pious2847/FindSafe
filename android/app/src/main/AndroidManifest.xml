@@ -35,11 +35,7 @@
         android:name="com.dexterous.flutterlocalnotifications.ForegroundService"        
         android:exported="false"
         android:stopWithTask="false"/>
-         <service
-            android:name=".ForegroundService"
-            android:enabled="true"
-            android:exported="false" />
-
+        
     </application>
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
