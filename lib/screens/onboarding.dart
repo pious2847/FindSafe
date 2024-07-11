@@ -23,6 +23,7 @@ class _OnbordingState extends State<Onbording> {
       Permission.location,
       Permission.storage,
       Permission.locationAlways,
+      Permission.notification
     ].request();
   }
 
