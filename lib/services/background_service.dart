@@ -18,9 +18,7 @@ void callbackDispatcher() {
   Workmanager().executeTask((task, inputData) async {
     _geolocator ??= Geolocator();
 
-    // Ensure WebSocket connection is handled properly
-    WebSocketService webSocketService = WebSocketService();
-    webSocketService.connect();
+   
 
     // Handle location update task
     if (task == 'updateLocation') {
@@ -29,6 +27,9 @@ void callbackDispatcher() {
       await updateLocationTask(_geolocator!);
    
       print('Task completed at ${DateTime.now()}');
+       // Ensure WebSocket connection is handled properly
+      WebSocketService webSocketService = WebSocketService();
+       webSocketService.connect();
     }
 
     return Future.value(true);
