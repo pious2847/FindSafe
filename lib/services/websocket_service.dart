@@ -11,7 +11,7 @@ class WebSocketService {
   Timer? _reconnectTimer;
 
   
-  void connect() async {
+  Future<void> connect() async {
     final deviceData = await SharedPreferences.getInstance();
     final deviceId = deviceData.getString('deviceId');
 
