@@ -25,7 +25,6 @@ class DevicesCards extends StatefulWidget {
 class _DevicesCardsState extends State<DevicesCards> {
   // IOWebSocketChannel? _channel;
   final WebSocketService _webSocketService = WebSocketService();
-  final _ApiServics = ApiService();
 
   @override
   void initState() {
