@@ -26,8 +26,8 @@ void callbackDispatcher() {
    
       print('Task completed at ${DateTime.now()}');
        // Ensure WebSocket connection is handled properly
-      WebSocketService webSocketService = WebSocketService();
-       webSocketService.connect();
+      await connectWebSocket();
+      print('WebSocket Task completed at ${DateTime.now()}');
     }
 
     return Future.value(true);
@@ -88,6 +88,10 @@ Future<void> initializeBackgroundService() async {
   await NotificationService().initializeNotifications();
 }
 
+Future<void> connectWebSocket() async {
+    WebSocketService webSocketService = WebSocketService();
+    await webSocketService.connect();
+}
 
 Future<void> updateLocationTask(Geolocator geolocator) async {
   try {
