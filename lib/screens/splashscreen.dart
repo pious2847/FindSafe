@@ -3,7 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:lost_mode_app/constants/colors.dart';
-// import 'package:lost_mode_app/screens/login.dart';
+import 'package:iconsax_flutter/iconsax_flutter.dart';
 import 'package:lost_mode_app/screens/onboarding.dart';
 import 'package:lost_mode_app/screens/usermap.dart';
 import 'package:lost_mode_app/services/service.dart';
@@ -66,9 +66,9 @@ class _SplashScreenState extends State<SplashScreen>
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Icon(
-              Icons.location_on_outlined,
+              Iconsax.map_copy,
               size: 140,
-              color: secondarybgcolor,
+              color: secondarytextcolor,
             ),
             SizedBox(
               height: 15,

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:lost_mode_app/constants/colors.dart';
 import 'package:lost_mode_app/models/content_model.dart';
 import 'package:lost_mode_app/screens/login.dart';
 // import 'package:shared_preferences/shared_preferences.dart';
@@ -114,11 +115,11 @@ class _OnbordingState extends State<Onbording> {
               },
               style: ButtonStyle(
                 backgroundColor:
-                    MaterialStateProperty.all(Theme.of(context).primaryColor),
-                foregroundColor: MaterialStateProperty.all(Colors.white),
+                    MaterialStateProperty.all(primcolorlight),
+                foregroundColor: MaterialStateProperty.all(secondarytextcolor),
                 shape: MaterialStateProperty.all(
                   RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(20),
+                    borderRadius: BorderRadius.circular(10),
                   ),
                 ),
               ),
@@ -138,7 +139,7 @@ class _OnbordingState extends State<Onbording> {
       margin: const EdgeInsets.only(right: 5),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(20),
-        color: Theme.of(context).primaryColor,
+        color: primcolorlight,
       ),
     );
   }
